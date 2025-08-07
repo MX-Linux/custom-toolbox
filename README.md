@@ -16,7 +16,7 @@ A Qt-based application for creating custom launcher toolboxes for Linux. Custom 
 - **Theme Integration**: Integrates with system themes and icon sets
 
 ## Screenshots
-<img width="657" height="634" alt="image" src="https://github.com/user-attachments/assets/5c4bfc99-7a13-4150-8d50-4b7d017140da" />
+<img width="660" height="634" alt="Screenshot_2025-08-07_18-21-17" src="https://github.com/user-attachments/assets/27600694-4fea-4b87-accf-3a720443e965" />
 
 ## Installation
 
