@@ -1,7 +1,7 @@
-obj-x86_64-linux-gnu/custom-toolbox 	usr/bin
 custom-toolbox.conf 		etc/custom-toolbox
 custom-toolbox.desktop 		usr/share/applications
 example.list			etc/custom-toolbox
 help/*				usr/share/doc/custom-toolbox
 icons/custom-toolbox.svg	usr/share/pixmaps
-obj-x86_64-linux-gnu/*.qm 	usr/share/custom-toolbox/locale
+obj-*/*.qm 			usr/share/custom-toolbox/locale
+obj-*/custom-toolbox 		usr/bin
