@@ -90,9 +90,8 @@ set(RESOURCE_FILES
     images.qrc
 )
 
-set(TRANSLATION_FILES
-    translations/custom-toolbox_en.ts
-)
+# Get all translation files
+file(GLOB TRANSLATION_FILES "translations/*.ts")
 
 # Create the executable
 add_executable(custom-toolbox
@@ -147,6 +146,12 @@ endif()
 # Handle translations
 qt6_add_translations(custom-toolbox
     TS_FILES ${TRANSLATION_FILES}
+    QM_FILES_OUTPUT_VARIABLE qm_files
+)
+
+# Install translation files
+install(FILES ${qm_files}
+    DESTINATION share/${CMAKE_PROJECT_NAME}/locale
 )
 
 # Generate version.h file
