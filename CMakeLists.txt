@@ -162,11 +162,6 @@ qt6_add_translations(custom-toolbox
     QM_FILES_OUTPUT_VARIABLE qm_files
 )
 
-# Install translation files
-install(FILES ${qm_files}
-    DESTINATION share/${CMAKE_PROJECT_NAME}/locale
-)
-
 # Generate version.h file
 configure_file(
     "${CMAKE_SOURCE_DIR}/src/version.h.in"
@@ -182,8 +177,3 @@ set_target_properties(custom-toolbox PROPERTIES
 
 # Add build directory to include path for generated version.h
 target_include_directories(custom-toolbox PRIVATE ${CMAKE_BINARY_DIR}/src)
-
-# Installation
-install(TARGETS custom-toolbox
-    RUNTIME DESTINATION bin
-)

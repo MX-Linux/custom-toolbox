@@ -9,16 +9,8 @@ override_dh_auto_configure:
 
 override_dh_auto_clean:
 	dh_auto_clean
+	rm -rf build/
 	rm -f translations/*.qm
-
-override_dh_auto_build:
-	dh_auto_build
-
-override_dh_auto_test:
-	# Skip tests - no tests defined in project
-
-override_dh_auto_install:
-	dh_auto_install
 
 override_dh_shlibdeps:
 	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info
