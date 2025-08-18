@@ -29,6 +29,7 @@ BUILD_DIR="build"
 BUILD_TYPE="Release"
 USE_CLANG=false
 CLEAN=false
+DEBIAN_BUILD=false
 
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do
@@ -43,6 +44,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --clean)
             CLEAN=true
+            shift
+            ;;
+        --debian)
+            DEBIAN_BUILD=true
             shift
             ;;
         -h|--help)
@@ -61,10 +66,36 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+# Build Debian package
+if [ "$DEBIAN_BUILD" = true ]; then
+    echo "Building Debian package..."
+    debuild -us -uc
+
+    echo "Creating debs directory and moving debian artifacts..."
+    mkdir -p debs
+    mv ../*.deb debs/ 2>/dev/null || true
+    mv ../*.changes debs/ 2>/dev/null || true  
+    mv ../*.dsc debs/ 2>/dev/null || true
+    mv ../*.tar.* debs/ 2>/dev/null || true
+
+    echo "Cleaning build directory and debian artifacts..."
+    rm -rf "$BUILD_DIR"
+    rm -f debian/*.debhelper.log debian/*.substvars debian/files
+    rm -rf debian/.debhelper/ debian/deb-installer/ obj-*/
+    rm -f translations/*.qm
+
+    echo "Debian package build completed!"
+    echo "Debian artifacts moved to debs/ directory"
+    exit 0
+fi
+
 # Clean build directory if requested
 if [ "$CLEAN" = true ]; then
-    echo "Cleaning build directory..."
+    echo "Cleaning build directory and debian artifacts..."
     rm -rf "$BUILD_DIR"
+    rm -f debian/*.debhelper.log debian/*.substvars debian/files
+    rm -rf debian/.debhelper/ debian/deb-installer/ obj-*/
+    rm -f translations/*.qm
 fi
 
 # Create build directory
