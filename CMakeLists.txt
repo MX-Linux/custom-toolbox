@@ -149,8 +149,11 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
     target_compile_definitions(custom-toolbox PRIVATE NDEBUG)
     target_compile_options(custom-toolbox PRIVATE -O3)
 
-    # Only add LTO for GCC, not Clang
-    if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND NOT USE_CLANG)
+    # Add LTO - different flags for different compilers
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR USE_CLANG)
+        target_compile_options(custom-toolbox PRIVATE -flto=thin)
+        target_link_options(custom-toolbox PRIVATE -flto=thin)
+    else()
         target_compile_options(custom-toolbox PRIVATE -flto=auto)
         target_link_options(custom-toolbox PRIVATE -flto=auto)
     endif()
