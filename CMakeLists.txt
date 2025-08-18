@@ -148,7 +148,7 @@ target_compile_definitions(custom-toolbox PRIVATE
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
     target_compile_definitions(custom-toolbox PRIVATE NDEBUG)
     target_compile_options(custom-toolbox PRIVATE -O3)
-    
+
     # Only add LTO for GCC, not Clang
     if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND NOT USE_CLANG)
         target_compile_options(custom-toolbox PRIVATE -flto=auto)
@@ -177,3 +177,9 @@ set_target_properties(custom-toolbox PROPERTIES
 
 # Add build directory to include path for generated version.h
 target_include_directories(custom-toolbox PRIVATE ${CMAKE_BINARY_DIR}/src)
+
+# Install target (required by Debian build system)
+# Other files are handled by debian/install
+install(TARGETS custom-toolbox
+    RUNTIME DESTINATION bin
+)
