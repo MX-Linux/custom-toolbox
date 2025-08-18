@@ -22,8 +22,21 @@
 
 cmake_minimum_required(VERSION 3.16)
 
+# Get version from debian/changelog
+execute_process(
+    COMMAND dpkg-parsechangelog -SVersion
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    OUTPUT_VARIABLE PROJECT_VERSION_FROM_CHANGELOG
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    RESULT_VARIABLE DPKG_RESULT
+)
+
+if(NOT DPKG_RESULT EQUAL 0)
+    message(FATAL_ERROR "Failed to get version from debian/changelog using dpkg-parsechangelog")
+endif()
+
 project(custom-toolbox
-    VERSION 25.4
+    VERSION ${PROJECT_VERSION_FROM_CHANGELOG}
     DESCRIPTION "Custom Toolbox - Program for creating custom launchers for MX Linux"
     LANGUAGES CXX
 )
