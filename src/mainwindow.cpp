@@ -733,8 +733,9 @@ void MainWindow::pushEdit_clicked()
     QString editor = gui_editor.isEmpty() || QStandardPaths::findExecutable(gui_editor, {defaultPath}).isEmpty()
                          ? getDefaultEditor()
                          : gui_editor;
+
     QStringList cmdList = buildEditorCommand(editor) << editor << file_name;
-    QProcess::startDetached(cmdList.join(' '));
+    QProcess::execute("/bin/sh", {"-c", cmdList.join(' ')});
     readFile(file_name);
     setGui();
 }

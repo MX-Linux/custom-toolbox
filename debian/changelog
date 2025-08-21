@@ -1,4 +1,4 @@
-custom-toolbox (25.08.3) UNRELEASED; urgency=medium
+custom-toolbox (25.08.3) mx; urgency=medium
 
   * Quit app completely when pressing exit
 
