@@ -1,3 +1,9 @@
+custom-toolbox (25.08.4) mx; urgency=medium
+
+  * Fix Edit button: run edit command in a shell to process env variables
+
+ -- Adrian <adrian@mxlinux.org>  Thu, 21 Aug 2025 08:40:18 -0400
+
 custom-toolbox (25.08.3) mx; urgency=medium
 
   * Quit app completely when pressing exit
