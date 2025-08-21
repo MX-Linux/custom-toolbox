@@ -1,3 +1,9 @@
+custom-toolbox (25.08.3) UNRELEASED; urgency=medium
+
+  * Quit app completely when pressing exit
+
+ -- Adrian <adrian@mxlinux.org>  Wed, 20 Aug 2025 21:47:53 -0400
+
 custom-toolbox (25.08.2) mx; urgency=medium
 
   * Minor optimizations
