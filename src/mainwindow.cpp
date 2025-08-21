@@ -642,7 +642,7 @@ void MainWindow::setConnections()
 {
     connect(ui->checkBoxStartup, &QPushButton::clicked, this, &MainWindow::checkBoxStartup_clicked);
     connect(ui->pushAbout, &QPushButton::clicked, this, &MainWindow::pushAbout_clicked);
-    connect(ui->pushCancel, &QPushButton::clicked, this, &MainWindow::close);
+    connect(ui->pushCancel, &QPushButton::clicked, qApp, &QApplication::quit);
     connect(ui->pushEdit, &QPushButton::clicked, this, &MainWindow::pushEdit_clicked);
     connect(ui->pushHelp, &QPushButton::clicked, this, &MainWindow::pushHelp_clicked);
     connect(ui->textSearch, &QLineEdit::textChanged, this, &MainWindow::textSearch_textChanged);
