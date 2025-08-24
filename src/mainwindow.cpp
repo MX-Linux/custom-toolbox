@@ -40,8 +40,9 @@
 
 #include "about.h"
 #include "flatbutton.h"
-#include "version.h"
 #include <unistd.h>
+
+
 
 MainWindow::MainWindow(const QCommandLineParser &arg_parser, QWidget *parent)
     : QDialog(parent),
@@ -657,7 +658,7 @@ void MainWindow::pushAbout_clicked()
                   "<p align=\"center\"><h3>%4</h3></p>"
                   "<p align=\"center\"><a href=\"http://mxlinux.org\">http://mxlinux.org</a><br /></p>"
                   "<p align=\"center\">%5<br /><br /></p>")
-              .arg(windowTitle(), tr("Version:"), VERSION,
+              .arg(windowTitle(), tr("Version:"), QApplication::applicationVersion(),
                    tr("Custom Toolbox is a tool used for creating a custom launcher"), tr("Copyright (c) MX Linux"));
 
     displayAboutMsgBox(tr("About %1").arg(windowTitle()), aboutText, "/usr/share/doc/custom-toolbox/license.html",
