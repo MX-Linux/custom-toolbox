@@ -163,7 +163,7 @@ endif()
 # Handle translations
 qt6_add_translations(custom-toolbox
     TS_FILES ${TRANSLATION_FILES}
-    QM_FILES_OUTPUT_VARIABLE qm_files
+    LRELEASE_OPTIONS -compress -nounfinished -removeidentical -silent
 )
 
 # Set target properties
