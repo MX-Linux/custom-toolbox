@@ -713,7 +713,7 @@ void MainWindow::checkBoxStartup_clicked(bool checked)
             out << "[Desktop Entry]\n"
                 << "Name=" << windowTitle() << '\n'
                 << "Comment=" << ui->commentLabel->text() << '\n'
-                << "Exec=custom-toolbox " << file_location << '/' << custom_name << ".list\n"
+                << "Exec=custom-toolbox \"" << file_location << '/' << custom_name << ".list\"\n"
                 << "Terminal=false\n"
                 << "Type=Application\n"
                 << "Icon=custom-toolbox\n"

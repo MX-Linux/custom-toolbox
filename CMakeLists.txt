@@ -31,8 +31,10 @@ execute_process(
     RESULT_VARIABLE DPKG_RESULT
 )
 
-if(NOT DPKG_RESULT EQUAL 0)
-    message(FATAL_ERROR "Failed to get version from debian/changelog using dpkg-parsechangelog")
+# Fallback to a safe default when changelog parsing is unavailable
+if(NOT DPKG_RESULT EQUAL 0 OR PROJECT_VERSION_FROM_CHANGELOG STREQUAL "")
+    message(WARNING "Falling back to version 0.0.0 (dpkg-parsechangelog not available or failed)")
+    set(PROJECT_VERSION_FROM_CHANGELOG "0.0.0")
 endif()
 
 project(custom-toolbox
