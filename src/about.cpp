@@ -51,7 +51,7 @@ void displayDoc(const QString &url, const QString &title)
         } else {
             QProcess proc;
             proc.start("logname", {}, QIODevice::ReadOnly);
-            proc.waitForFinished();
+            proc.waitForFinished(3000);
             QString user = QString::fromUtf8(proc.readAllStandardOutput()).trimmed();
             QProcess::startDetached("runuser", {"-u", user, "--", "xdg-open", url});
         }
@@ -88,7 +88,7 @@ void displayAboutMsgBox(const QString &title, const QString &message, const QStr
             "zless",
             {"/usr/share/doc/" + QFileInfo(QCoreApplication::applicationFilePath()).fileName() + "/changelog.gz"},
             QIODevice::ReadOnly);
-        proc.waitForFinished();
+        proc.waitForFinished(5000);
         text->setText(proc.readAllStandardOutput());
 
         auto *btnClose = new QPushButton(QObject::tr("&Close"), &changelog);

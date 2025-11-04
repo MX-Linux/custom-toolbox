@@ -757,7 +757,7 @@ QString MainWindow::getDefaultEditor()
 {
     QProcess proc;
     proc.start("xdg-mime", {"query", "default", "text/plain"});
-    if (!proc.waitForFinished() || proc.exitCode() != 0) {
+    if (!proc.waitForFinished(3000) || proc.exitCode() != 0) {
         qWarning() << "xdg-mime failed to query default editor";
         return "nano"; // Fallback to nano
     }
