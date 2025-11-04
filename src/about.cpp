@@ -37,7 +37,7 @@
 void displayDoc(const QString &url, const QString &title)
 {
     bool started_as_root = false;
-    if (qEnvironmentVariable("HOME") == "root") {
+    if (QFileInfo(qEnvironmentVariable("HOME")).canonicalFilePath() == "/root") {
         started_as_root = true;
         qputenv("HOME", starting_home.toUtf8()); // Use original home for theming purposes
     }
