@@ -207,11 +207,11 @@ void MainWindow::setup()
 
     QSettings settings("/etc/custom-toolbox/custom-toolbox.conf", QSettings::NativeFormat);
     hideGUI = settings.value("hideGUI", false).toBool();
-    min_height = settings.value("min_height").toInt();
-    min_width = settings.value("min_width").toInt();
+    min_height = qBound(300, settings.value("min_height").toInt(), 3000);
+    min_width = qBound(300, settings.value("min_width").toInt(), 3000);
     gui_editor = settings.value("gui_editor").toString();
-    fixed_number_col = settings.value("fixed_number_columns", 0).toInt();
-    int size = settings.value("icon_size", default_icon_size).toInt();
+    fixed_number_col = qBound(0, settings.value("fixed_number_columns", 0).toInt(), 20);
+    int size = qBound(8, settings.value("icon_size", default_icon_size).toInt(), 1024);
     icon_size = {size, size};
 }
 
