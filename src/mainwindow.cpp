@@ -247,6 +247,10 @@ void MainWindow::setGui()
 void MainWindow::btn_clicked()
 {
     const QString cmd = sender()->property("cmd").toString();
+    if (cmd.trimmed().isEmpty()) {
+        QMessageBox::warning(this, tr("Execution Error"), tr("Command is empty. Cannot execute."));
+        return;
+    }
     // pkexec cannot take &, it would block the GUI that's why we need to hide it
     if (hideGUI || cmd.startsWith("pkexec")) {
         hide();
