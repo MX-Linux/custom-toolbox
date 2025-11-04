@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="pl">
 <context>
     <name>MainWindow</name>
     <message>
@@ -140,7 +138,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="569"/>
         <source>Could not open file: </source>
-        <translation>Nie można otworzyć&#xa0;pliku:</translation>
+        <translation>Nie można otworzyć pliku:</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="660"/>

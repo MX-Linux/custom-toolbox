@@ -1,3 +1,13 @@
+custom-toolbox (25.11) mx; urgency=medium
+
+  * Adjust the root-home detection in displayDoc() to compare the canonical path against /root, so the original HOME is restored when the app was launched as root.
+  * Clear icon_theme at the top of MainWindow::readFile() so theme settings don’t persist after removing the Theme= line in a .list
+  * Add an early guard to bail out when a button’s command string is empty so we don’t crash on QProcess::splitCommand
+  * Add file watcher to update UI when the .list file is changed
+  * Fix various issues from codebase review
+
+ -- Adrian <adrian@mxlinux.org>  Tue, 04 Nov 2025 14:29:15 -0500
+
 custom-toolbox (25.08.4) mx; urgency=medium
 
   * Fix Edit button: run edit command in a shell to process env variables

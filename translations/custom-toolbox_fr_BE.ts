@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="fr_BE">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="fr_BE">
 <context>
     <name>MainWindow</name>
     <message>
@@ -17,7 +15,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="66"/>
         <source>About...</source>
-        <translation>À propos&#xa0;…</translation>
+        <translation>À propos …</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="73"/>
@@ -155,7 +153,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="661"/>
         <source>Custom Toolbox is a tool used for creating a custom launcher</source>
-        <translation>La boîte à outils personnalisée «&#xa0;Custom Toolbox&#xa0;» est un outil utilisé pour créer un lanceur personnalisé</translation>
+        <translation>La boîte à outils personnalisée « Custom Toolbox » est un outil utilisé pour créer un lanceur personnalisé</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="661"/>
@@ -219,7 +217,7 @@
     <message>
         <location filename="../src/main.cpp" line="83"/>
         <source>Don&apos;t show &apos;show this dialog at startup&apos; checkbox</source>
-        <translation>Ne pas afficher la case à cocher «&#xa0;Afficher cette boîte de dialogue au démarrage&#xa0;»</translation>
+        <translation>Ne pas afficher la case à cocher « Afficher cette boîte de dialogue au démarrage »</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="85"/>

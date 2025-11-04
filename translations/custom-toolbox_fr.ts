@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="fr">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="fr">
 <context>
     <name>MainWindow</name>
     <message>
@@ -88,12 +86,12 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="250"/>
         <source>Failed to execute command: %1</source>
-        <translation>Impossible d’exécuter la commande&#xa0;: %1</translation>
+        <translation>Impossible d’exécuter la commande : %1</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="257"/>
         <source>Failed to start program: %1</source>
-        <translation>Impossible de démarrer le programme&#xa0;: %1</translation>
+        <translation>Impossible de démarrer le programme : %1</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="297"/>
@@ -125,7 +123,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="306"/>
         <source>Could not open file. Do you want to try again?</source>
-        <translation>Impossible d’ouvrir le fichier. Voulez-vous réessayer&#xa0;?</translation>
+        <translation>Impossible d’ouvrir le fichier. Voulez-vous réessayer ?</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="561"/>
@@ -140,12 +138,12 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="569"/>
         <source>Could not open file: </source>
-        <translation>Impossible d’ouvrir le fichier&#xa0;: </translation>
+        <translation>Impossible d’ouvrir le fichier : </translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="660"/>
         <source>Version:</source>
-        <translation>Version&#xa0;:</translation>
+        <translation>Version :</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="663"/>
@@ -155,7 +153,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="661"/>
         <source>Custom Toolbox is a tool used for creating a custom launcher</source>
-        <translation>La boîte à outils personnalisée «&#xa0;Custom Toolbox&#xa0;» est un outil utilisé pour créer un lanceur personnalisé</translation>
+        <translation>La boîte à outils personnalisée « Custom Toolbox » est un outil utilisé pour créer un lanceur personnalisé</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="661"/>
@@ -175,7 +173,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="722"/>
         <source>Could not write file: %1</source>
-        <translation>Impossible d’écrire le fichier&#xa0;: %1</translation>
+        <translation>Impossible d’écrire le fichier : %1</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="726"/>
@@ -185,7 +183,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="726"/>
         <source>Could not remove file: %1</source>
-        <translation>Impossible de supprimer le fichier&#xa0;: %1</translation>
+        <translation>Impossible de supprimer le fichier : %1</translation>
     </message>
 </context>
 <context>
@@ -214,12 +212,12 @@
     <message>
         <location filename="../src/main.cpp" line="80"/>
         <source>This app can be used to create custom launchers: box of buttons/icons</source>
-        <translation>Cette application peut être utilisée pour créer des lanceurs personnalisés&#xa0;: boîte de boutons ou icônes</translation>
+        <translation>Cette application peut être utilisée pour créer des lanceurs personnalisés : boîte de boutons ou icônes</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="83"/>
         <source>Don&apos;t show &apos;show this dialog at startup&apos; checkbox</source>
-        <translation>Ne pas afficher la case à cocher «&#xa0;Afficher cette boîte de dialogue au démarrage&#xa0;»</translation>
+        <translation>Ne pas afficher la case à cocher « Afficher cette boîte de dialogue au démarrage »</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="85"/>
