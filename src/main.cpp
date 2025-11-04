@@ -28,11 +28,13 @@
 #include <QIcon>
 #include <QLibraryInfo>
 #include <QLocale>
+#include <QMessageBox>
 #include <QProcess>
 #include <QTranslator>
 
 #include "common.h"
 #include "mainwindow.h"
+#include <cstdlib>
 #include <unistd.h>
 
 #ifndef VERSION

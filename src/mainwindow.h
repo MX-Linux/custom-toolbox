@@ -101,7 +101,6 @@ private:
     void addItemButton(const ItemInfo &item, int &row, int &col, int maxCols);
     void centerWindow();
     void clearGridLayout();
-    void prepareCommand(QString &cmd, const ItemInfo &item);
     void prepareCommand(const ItemInfo &item, QString &cmd);
     void processLine(const QString &line);
     void readFile(const QString &file_name);

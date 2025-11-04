@@ -172,9 +172,8 @@ QIcon MainWindow::findIcon(const QString &iconName)
     }
 
     // Fall back to the default icon if nothing else was found.
-    QIcon result = getDefaultIcon();
-    // iconCache[iconName] = result;
-    return result;
+    // Note: Default icons are not cached to allow future resolution of actual icons
+    return getDefaultIcon();
 }
 
 // Strip %f, %F, %U, etc. if exec expects a file name since it's called without an argument from this launcher.
@@ -736,7 +735,10 @@ void MainWindow::pushEdit_clicked()
                          : gui_editor;
 
     QStringList cmdList = buildEditorCommand(editor) << editor << file_name;
-    QProcess::execute("/bin/sh", {"-c", cmdList.join(' ')});
+    int exitCode = QProcess::execute("/bin/sh", {"-c", cmdList.join(' ')});
+    if (exitCode != 0) {
+        QMessageBox::warning(this, tr("Error"), tr("Editor command failed with code %1").arg(exitCode));
+    }
     readFile(file_name);
     setGui();
 }
@@ -745,7 +747,10 @@ QString MainWindow::getDefaultEditor()
 {
     QProcess proc;
     proc.start("xdg-mime", {"query", "default", "text/plain"});
-    proc.waitForFinished();
+    if (!proc.waitForFinished() || proc.exitCode() != 0) {
+        qWarning() << "xdg-mime failed to query default editor";
+        return "nano"; // Fallback to nano
+    }
     QString default_editor = proc.readAllStandardOutput().trimmed();
     QString desktop_file
         = QStandardPaths::locate(QStandardPaths::ApplicationsLocation, default_editor, QStandardPaths::LocateFile);

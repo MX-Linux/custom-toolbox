@@ -38,4 +38,7 @@ Makefile*
 # Transifex ignore
 .tx/
 
+# Build directory
+build/
+
 custom-toolbox
