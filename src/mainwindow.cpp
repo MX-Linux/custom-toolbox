@@ -27,7 +27,9 @@
 
 #include <QDebug>
 #include <QDirIterator>
+#include <QFile>
 #include <QFileDialog>
+#include <QFileInfo>
 #include <QProcess>
 #include <QRegularExpression>
 #include <QResizeEvent>
@@ -51,6 +53,8 @@ MainWindow::MainWindow(const QCommandLineParser &arg_parser, QWidget *parent)
 {
     ui->setupUi(this);
     setConnections();
+    connect(&fileWatcher, &QFileSystemWatcher::fileChanged, this, &MainWindow::handleFileChanged);
+    connect(&fileWatcher, &QFileSystemWatcher::directoryChanged, this, &MainWindow::handleDirectoryChanged);
 
     if (arg_parser.isSet("remove-checkbox")) {
         ui->checkBoxStartup->hide();
@@ -63,6 +67,7 @@ MainWindow::MainWindow(const QCommandLineParser &arg_parser, QWidget *parent)
     file_name = !argList.isEmpty() && QFile(argList.first()).exists() ? argList.first() : getFileName();
 
     readFile(file_name);
+    watchFile(file_name);
     setGui();
 }
 
@@ -739,8 +744,8 @@ void MainWindow::pushEdit_clicked()
     if (exitCode != 0) {
         QMessageBox::warning(this, tr("Error"), tr("Editor command failed with code %1").arg(exitCode));
     }
-    readFile(file_name);
-    setGui();
+    refreshIfFileChanged();
+    watchFile(file_name);
 }
 
 QString MainWindow::getDefaultEditor()
@@ -796,4 +801,63 @@ QStringList MainWindow::buildEditorCommand(const QString &editor)
     }
 
     return editorCommands;
+}
+
+void MainWindow::handleFileChanged(const QString &path)
+{
+    if (path != file_name) {
+        return;
+    }
+
+    refreshIfFileChanged();
+    watchFile(file_name);
+}
+
+void MainWindow::handleDirectoryChanged(const QString &path)
+{
+    const QString currentDirectory = QFileInfo(file_name).absolutePath();
+    if (path != currentDirectory) {
+        return;
+    }
+
+    refreshIfFileChanged();
+
+    if (QFile::exists(file_name)) {
+        watchFile(file_name);
+    }
+}
+
+void MainWindow::refreshIfFileChanged()
+{
+    QFileInfo info(file_name);
+    if (!info.exists()) {
+        return;
+    }
+
+    readFile(file_name);
+    setGui();
+}
+
+void MainWindow::watchFile(const QString &path)
+{
+    if (path.isEmpty()) {
+        return;
+    }
+
+    if (fileWatcher.files().contains(path)) {
+        fileWatcher.removePath(path);
+    }
+
+    if (QFile::exists(path)) {
+        if (!fileWatcher.addPath(path)) {
+            qWarning() << "Failed to add watch for file:" << path;
+        }
+    }
+
+    const QString directoryPath = QFileInfo(path).absolutePath();
+    if (!directoryPath.isEmpty() && !fileWatcher.directories().contains(directoryPath)) {
+        if (!fileWatcher.addPath(directoryPath)) {
+            qWarning() << "Failed to add watch for directory:" << directoryPath;
+        }
+    }
 }

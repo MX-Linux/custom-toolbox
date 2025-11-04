@@ -25,6 +25,7 @@
 
 #include <QCommandLineParser>
 #include <QDialog>
+#include <QFileSystemWatcher>
 #include <QLocale>
 #include <QMessageBox>
 #include <QMultiMap>
@@ -77,6 +78,7 @@ private:
     QLocale locale;
     QString lang = locale.name();
     QStringList categories;
+    QFileSystemWatcher fileWatcher;
     bool firstRun {true};
     bool hideGUI {};
     const QStringList defaultPath {qEnvironmentVariable("PATH").split(':') << "/usr/sbin"};
@@ -107,4 +109,8 @@ private:
     void setConnections();
     void setGui();
     void setup();
+    void handleDirectoryChanged(const QString &path);
+    void handleFileChanged(const QString &path);
+    void refreshIfFileChanged();
+    void watchFile(const QString &path);
 };
