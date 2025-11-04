@@ -44,16 +44,22 @@ void displayDoc(const QString &url, const QString &title)
     // Prefer mx-viewer otherwise use xdg-open (use runuser to run that as logname user)
     QString executablePath = QStandardPaths::findExecutable("mx-viewer");
     if (!executablePath.isEmpty()) {
-        QProcess::startDetached("mx-viewer", {url, title});
+        if (!QProcess::startDetached("mx-viewer", {url, title})) {
+            QMessageBox::warning(nullptr, QObject::tr("Error"), QObject::tr("Failed to start mx-viewer"));
+        }
     } else {
         if (getuid() != 0) {
-            QProcess::startDetached("xdg-open", {url});
+            if (!QProcess::startDetached("xdg-open", {url})) {
+                QMessageBox::warning(nullptr, QObject::tr("Error"), QObject::tr("Failed to start xdg-open"));
+            }
         } else {
             QProcess proc;
             proc.start("logname", {}, QIODevice::ReadOnly);
             proc.waitForFinished(3000);
             QString user = QString::fromUtf8(proc.readAllStandardOutput()).trimmed();
-            QProcess::startDetached("runuser", {"-u", user, "--", "xdg-open", url});
+            if (!QProcess::startDetached("runuser", {"-u", user, "--", "xdg-open", url})) {
+                QMessageBox::warning(nullptr, QObject::tr("Error"), QObject::tr("Failed to start runuser"));
+            }
         }
     }
     if (started_as_root) {
