@@ -26,12 +26,13 @@
 #include <QCommandLineParser>
 #include <QDialog>
 #include <QFileSystemWatcher>
+#include <QHash>
+#include <QIcon>
 #include <QLocale>
 #include <QMessageBox>
 #include <QMultiMap>
+#include <QRegularExpression>
 #include <QTimer>
-
-class QIcon;
 
 namespace Ui
 {
@@ -89,6 +90,11 @@ private:
     int max_elements {};
     int min_height {};
     int min_width {};
+
+    // Caches for performance optimization (mutable to allow caching in const methods)
+    mutable QHash<QString, QIcon> icon_cache;
+    mutable QHash<QString, QString> desktop_file_cache;
+    mutable QHash<QString, QRegularExpression> regex_cache;
 
     [[nodiscard]] ItemInfo get_desktop_file_info(const QString &file_name);
     [[nodiscard]] QIcon find_icon(const QString &icon_name);

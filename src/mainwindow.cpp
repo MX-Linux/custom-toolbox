@@ -84,9 +84,6 @@ MainWindow::~MainWindow()
 
 QIcon MainWindow::find_icon(const QString &icon_name)
 {
-    // Simple icon cache to avoid repeated filesystem lookups
-    static QHash<QString, QIcon> icon_cache;
-
     // Check cache first
     if (icon_cache.contains(icon_name)) {
         return icon_cache[icon_name];
@@ -330,9 +327,6 @@ QString MainWindow::get_file_name()
 // Find the .desktop file for the given app name
 QString MainWindow::get_desktop_file_name(const QString &app_name) const
 {
-    // Simple static cache to avoid repeated lookups
-    static QHash<QString, QString> desktop_file_cache;
-
     // Check cache first
     if (desktop_file_cache.contains(app_name)) {
         return desktop_file_cache[app_name];
@@ -621,9 +615,6 @@ void MainWindow::read_file(const QString &file_name)
 
 QString MainWindow::extract_pattern(const QString &text, const QString &key)
 {
-    // Cache regex patterns to avoid recompilation
-    static QHash<QString, QRegularExpression> regex_cache;
-
     const QString pattern = QStringLiteral("^%1\\[%2]=(.*)$").arg(key, lang);
     const QString fallback_pattern = QStringLiteral("^%1=(.*)$").arg(key);
     const QString lang_short_pattern = QStringLiteral("^%1\\[%2]=(.*)$").arg(key, lang.section('_', 0, 0));
