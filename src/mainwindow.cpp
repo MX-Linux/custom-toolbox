@@ -49,7 +49,8 @@
 MainWindow::MainWindow(const QCommandLineParser &arg_parser, QWidget *parent)
     : QDialog(parent),
       ui(new Ui::MainWindow),
-      file_location {"/etc/custom-toolbox"}
+      file_location {"/etc/custom-toolbox"},
+      lang(locale.name())
 {
     ui->setupUi(this);
     set_connections();

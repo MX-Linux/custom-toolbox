@@ -76,7 +76,7 @@ private:
     QString gui_editor;
     QString icon_theme;
     QLocale locale;
-    QString lang = locale.name();
+    QString lang;
     QStringList categories;
     QFileSystemWatcher file_watcher;
     bool first_run {true};
