@@ -29,6 +29,7 @@
 #include <QLocale>
 #include <QMessageBox>
 #include <QMultiMap>
+#include <QTimer>
 
 class QIcon;
 
@@ -79,6 +80,7 @@ private:
     QString lang;
     QStringList categories;
     QFileSystemWatcher file_watcher;
+    QTimer file_reload_timer;
     bool first_run {true};
     bool hide_gui {};
     const QStringList default_path {qEnvironmentVariable("PATH").split(':') << "/usr/sbin"};

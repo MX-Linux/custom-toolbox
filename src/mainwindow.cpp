@@ -57,6 +57,11 @@ MainWindow::MainWindow(const QCommandLineParser &arg_parser, QWidget *parent)
     connect(&file_watcher, &QFileSystemWatcher::fileChanged, this, &MainWindow::handle_file_changed);
     connect(&file_watcher, &QFileSystemWatcher::directoryChanged, this, &MainWindow::handle_directory_changed);
 
+    // Set up debounce timer for file change events
+    file_reload_timer.setSingleShot(true);
+    file_reload_timer.setInterval(200); // 200ms debounce delay
+    connect(&file_reload_timer, &QTimer::timeout, this, &MainWindow::refresh_if_file_changed);
+
     if (arg_parser.isSet("remove-checkbox")) {
         ui->checkBoxStartup->hide();
     }
@@ -751,6 +756,9 @@ void MainWindow::push_edit_clicked()
     if (exit_code != 0) {
         QMessageBox::warning(this, tr("Error"), tr("Editor command failed with code %1").arg(exit_code));
     }
+
+    // Stop any pending debounced refresh and refresh immediately for instant feedback
+    file_reload_timer.stop();
     refresh_if_file_changed();
     watch_file(file_name);
 }
@@ -816,8 +824,11 @@ void MainWindow::handle_file_changed(const QString &path)
         return;
     }
 
-    refresh_if_file_changed();
+    // Re-add watch immediately to avoid missing further changes
     watch_file(file_name);
+
+    // Debounce: restart timer on each change to avoid redundant reloads
+    file_reload_timer.start();
 }
 
 void MainWindow::handle_directory_changed(const QString &path)
@@ -827,11 +838,13 @@ void MainWindow::handle_directory_changed(const QString &path)
         return;
     }
 
-    refresh_if_file_changed();
-
+    // Re-add watch if file exists to avoid missing further changes
     if (QFile::exists(file_name)) {
         watch_file(file_name);
     }
+
+    // Debounce: restart timer on each change to avoid redundant reloads
+    file_reload_timer.start();
 }
 
 void MainWindow::refresh_if_file_changed()
