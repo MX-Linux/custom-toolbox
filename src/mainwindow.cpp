@@ -363,11 +363,16 @@ MainWindow::ItemInfo MainWindow::get_desktop_file_info(const QString &file_name)
 {
     ItemInfo item;
 
-    // If not a .desktop file
+    // If not a .desktop file, initialize all fields explicitly
     if (!file_name.endsWith(".desktop")) {
-        item.name = item.icon_name = item.exec = file_name;
-        item.root = item.user = false;
+        item.category.clear();
+        item.name = file_name;
+        item.comment.clear();
+        item.icon_name = file_name;
+        item.exec = file_name;
         item.terminal = true;
+        item.root = false;
+        item.user = false;
         return item;
     }
 
@@ -397,11 +402,14 @@ MainWindow::ItemInfo MainWindow::get_desktop_file_info(const QString &file_name)
         return value;
     };
 
+    item.category.clear(); // Will be set by caller in process_line()
     item.name = match_localized_field("Name").remove(QRegularExpression("^MX "));
     item.comment = match_localized_field("Comment");
-    item.exec = match_pattern("^Exec=(.*)$");
     item.icon_name = match_pattern("^Icon=(.*)$");
+    item.exec = match_pattern("^Exec=(.*)$");
     item.terminal = match_pattern("^Terminal=(.*)$").toLower() == "true";
+    item.root = false; // Will be set by caller based on keywords
+    item.user = false; // Will be set by caller based on keywords
 
     return item;
 }
