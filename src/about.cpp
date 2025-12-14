@@ -42,8 +42,8 @@ void displayDoc(const QString &url, const QString &title)
         qputenv("HOME", starting_home.toUtf8()); // Use original home for theming purposes
     }
     // Prefer mx-viewer otherwise use xdg-open (use runuser to run that as logname user)
-    QString executablePath = QStandardPaths::findExecutable("mx-viewer");
-    if (!executablePath.isEmpty()) {
+    const QString executable_path = QStandardPaths::findExecutable("mx-viewer");
+    if (!executable_path.isEmpty()) {
         if (!QProcess::startDetached("mx-viewer", {url, title})) {
             QMessageBox::warning(nullptr, QObject::tr("Error"), QObject::tr("Failed to start mx-viewer"));
         }
@@ -56,7 +56,7 @@ void displayDoc(const QString &url, const QString &title)
             QProcess proc;
             proc.start("logname", {}, QIODevice::ReadOnly);
             proc.waitForFinished(3000);
-            QString user = QString::fromUtf8(proc.readAllStandardOutput()).trimmed();
+            const QString user = QString::fromUtf8(proc.readAllStandardOutput()).trimmed();
             if (!QProcess::startDetached("runuser", {"-u", user, "--", "xdg-open", url})) {
                 QMessageBox::warning(nullptr, QObject::tr("Error"), QObject::tr("Failed to start runuser"));
             }
@@ -70,22 +70,22 @@ void displayDoc(const QString &url, const QString &title)
 void displayAboutMsgBox(const QString &title, const QString &message, const QString &licence_url,
                         const QString &license_title)
 {
-    const auto width = 600;
-    const auto height = 500;
+    constexpr int dialog_width = 600;
+    constexpr int dialog_height = 500;
     QMessageBox msgBox(QMessageBox::NoIcon, title, message);
-    auto *btnLicense = msgBox.addButton(QObject::tr("License"), QMessageBox::HelpRole);
-    auto *btnChangelog = msgBox.addButton(QObject::tr("Changelog"), QMessageBox::HelpRole);
-    auto *btnCancel = msgBox.addButton(QObject::tr("Cancel"), QMessageBox::NoRole);
-    btnCancel->setIcon(QIcon::fromTheme("window-close"));
+    auto *btn_license = msgBox.addButton(QObject::tr("License"), QMessageBox::HelpRole);
+    auto *btn_changelog = msgBox.addButton(QObject::tr("Changelog"), QMessageBox::HelpRole);
+    auto *btn_cancel = msgBox.addButton(QObject::tr("Cancel"), QMessageBox::NoRole);
+    btn_cancel->setIcon(QIcon::fromTheme("window-close"));
 
     msgBox.exec();
 
-    if (msgBox.clickedButton() == btnLicense) {
+    if (msgBox.clickedButton() == btn_license) {
         displayDoc(licence_url, license_title);
-    } else if (msgBox.clickedButton() == btnChangelog) {
+    } else if (msgBox.clickedButton() == btn_changelog) {
         QDialog changelog;
         changelog.setWindowTitle(QObject::tr("Changelog"));
-        changelog.resize(width, height);
+        changelog.resize(dialog_width, dialog_height);
 
         auto *text = new QTextEdit(&changelog);
         text->setReadOnly(true);
@@ -97,13 +97,13 @@ void displayAboutMsgBox(const QString &title, const QString &message, const QStr
         proc.waitForFinished(5000);
         text->setText(proc.readAllStandardOutput());
 
-        auto *btnClose = new QPushButton(QObject::tr("&Close"), &changelog);
-        btnClose->setIcon(QIcon::fromTheme("window-close"));
-        QObject::connect(btnClose, &QPushButton::clicked, &changelog, &QDialog::close);
+        auto *btn_close = new QPushButton(QObject::tr("&Close"), &changelog);
+        btn_close->setIcon(QIcon::fromTheme("window-close"));
+        QObject::connect(btn_close, &QPushButton::clicked, &changelog, &QDialog::close);
 
         auto *layout = new QVBoxLayout(&changelog);
         layout->addWidget(text);
-        layout->addWidget(btnClose);
+        layout->addWidget(btn_close);
         changelog.setLayout(layout);
         changelog.exec();
     }

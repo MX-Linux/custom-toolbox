@@ -64,20 +64,20 @@ int main(int argc, char *argv[])
     QApplication::setOrganizationName("MX-Linux");
     QApplication::setApplicationVersion(VERSION);
 
-    QTranslator qtTran;
-    if (qtTran.load("qt_" + QLocale::system().name(), QLibraryInfo::path(QLibraryInfo::TranslationsPath))) {
-        QApplication::installTranslator(&qtTran);
+    QTranslator qt_tran;
+    if (qt_tran.load("qt_" + QLocale::system().name(), QLibraryInfo::path(QLibraryInfo::TranslationsPath))) {
+        QApplication::installTranslator(&qt_tran);
     }
 
-    QTranslator qtBaseTran;
-    if (qtBaseTran.load("qtbase_" + QLocale::system().name(), QLibraryInfo::path(QLibraryInfo::TranslationsPath))) {
-        QApplication::installTranslator(&qtBaseTran);
+    QTranslator qtbase_tran;
+    if (qtbase_tran.load("qtbase_" + QLocale::system().name(), QLibraryInfo::path(QLibraryInfo::TranslationsPath))) {
+        QApplication::installTranslator(&qtbase_tran);
     }
 
-    QTranslator appTran;
-    if (appTran.load(QApplication::applicationName() + '_' + QLocale::system().name(),
+    QTranslator app_tran;
+    if (app_tran.load(QApplication::applicationName() + '_' + QLocale::system().name(),
                      "/usr/share/" + QApplication::applicationName() + "/locale")) {
-        QApplication::installTranslator(&appTran);
+        QApplication::installTranslator(&app_tran);
     }
 
     QCommandLineParser parser;
@@ -91,11 +91,11 @@ int main(int argc, char *argv[])
     parser.process(app);
 
     // Root guard
-    QFile loginUidFile {"/proc/self/loginuid"};
-    if (loginUidFile.open(QIODevice::ReadOnly)) {
-        QString loginUid = QString(loginUidFile.readAll()).trimmed();
-        loginUidFile.close();
-        if (loginUid == "0") {
+    QFile login_uid_file {"/proc/self/loginuid"};
+    if (login_uid_file.open(QIODevice::ReadOnly)) {
+        const QString login_uid = QString(login_uid_file.readAll()).trimmed();
+        login_uid_file.close();
+        if (login_uid == "0") {
             QMessageBox::critical(
                 nullptr, QObject::tr("Error"),
                 QObject::tr(
