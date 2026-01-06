@@ -45,10 +45,17 @@ sudo apt install qt6-base-dev qt6-tools-dev cmake ninja-build build-essential
 sudo dnf install qt6-qtbase-devel qt6-qttools-devel cmake ninja-build gcc-c++
 ```
 
+**Arch/Manjaro:**
+```bash
+sudo pacman -S --needed base-devel cmake ninja qt6-base qt6-tools
+makepkg -si  # builds using the included PKGBUILD
+```
+
 **For Clang (optional):**
 ```bash
 sudo apt install clang  # Ubuntu/Debian
 sudo dnf install clang  # Fedora
+sudo pacman -S clang    # Arch/Manjaro
 ```
 
 #### Build with CMake + Ninja (Recommended)
@@ -101,7 +108,7 @@ cmake --build build --parallel
 - **Ninja Build System**: Fast parallel builds
 - **Colored Output**: Automatic colored diagnostics
 - **Compile Commands**: `compile_commands.json` for IDE support
-- **Automatic Version**: Version extracted from CMakeLists.txt
+- **Automatic Version**: Derived from `debian/changelog` or `PROJECT_VERSION_OVERRIDE` (useful for Arch PKGBUILD)
 
 ## Usage
 
