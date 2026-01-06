@@ -760,8 +760,18 @@ void MainWindow::push_edit_clicked()
               ? get_default_editor()
               : gui_editor;
 
-    const QStringList cmd_list = build_editor_command(editor) << editor << file_name;
-    const int exit_code = QProcess::execute("/bin/sh", {"-c", cmd_list.join(' ')});
+    // Helper to shell-quote arguments that may contain spaces or special characters
+    auto shell_quote = [](const QString &arg) -> QString {
+        QString quoted = arg;
+        quoted.replace('\\', "\\\\");  // Escape backslashes first
+        quoted.replace('\'', "'\\''"); // Escape single quotes
+        return "'" + quoted + "'";
+    };
+
+    QStringList cmd_parts = build_editor_command(editor);
+    cmd_parts << shell_quote(editor) << shell_quote(file_name);
+
+    const int exit_code = QProcess::execute("/bin/sh", {"-c", cmd_parts.join(' ')});
     if (exit_code != 0) {
         QMessageBox::warning(this, tr("Error"), tr("Editor command failed with code %1").arg(exit_code));
     }
