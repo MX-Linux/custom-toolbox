@@ -1,3 +1,11 @@
+custom-toolbox (26.01) mx; urgency=medium
+
+  * Don't freeze or hide interface (unless requested) when running programs that require elevation
+  * Show empty results on search miss
+  * Ensure autostart dir exists
+
+ -- Adrian <adrian@mxlinux.org>  Tue, 06 Jan 2026 11:22:27 -0500
+
 custom-toolbox (25.11) mx; urgency=medium
 
   * Adjust the root-home detection in displayDoc() to compare the canonical path against /root, so the original HOME is restored when the app was launched as root.
