@@ -719,9 +719,17 @@ void MainWindow::text_search_text_changed(const QString &search_text)
 // Add a .desktop file to the ~/.config/autostart
 void MainWindow::checkbox_startup_clicked(bool checked)
 {
-    const QString file_name
-        = QDir::homePath() + "/.config/autostart/" + custom_name + ".desktop"; // Same name as .list file
+    const QString autostart_dir = QDir::homePath() + "/.config/autostart/";
+    const QString file_name = autostart_dir + custom_name + ".desktop"; // Same name as .list file
     if (checked) {
+        // Ensure the autostart directory exists
+        if (!QDir(autostart_dir).exists() && !QDir().mkpath(autostart_dir)) {
+            QMessageBox::critical(this, tr("Directory Creation Error"),
+                                  tr("Could not create directory: %1").arg(autostart_dir));
+            ui->checkBoxStartup->setChecked(false);
+            return;
+        }
+
         if (QFile file(file_name); file.open(QFile::WriteOnly | QFile::Text)) {
             QTextStream out(&file);
             out << "[Desktop Entry]\n"
@@ -735,6 +743,7 @@ void MainWindow::checkbox_startup_clicked(bool checked)
                 << "StartupNotify=false";
         } else {
             QMessageBox::critical(this, tr("File Open Error"), tr("Could not write file: %1").arg(file_name));
+            ui->checkBoxStartup->setChecked(false);
         }
     } else {
         if (!QFile::remove(file_name)) {
