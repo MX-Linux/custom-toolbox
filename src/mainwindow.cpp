@@ -422,7 +422,7 @@ void MainWindow::add_buttons(const QMultiMap<QString, ItemInfo> &map)
     const int max_cols = fixed_number_col != 0 ? fixed_number_col : width() / 200;
 
     for (const auto &category : map.uniqueKeys()) {
-        if (!category_map.values(category).isEmpty()) {
+        if (!map.values(category).isEmpty()) {
             add_category_label(category, row, col);
 
             for (const auto &item : map.values(category)) {
