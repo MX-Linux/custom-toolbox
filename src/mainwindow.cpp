@@ -288,7 +288,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     const int item_size = 200; // Determined through trial and error
     const int new_count = width() / item_size;
 
-    if (new_count == col_count || (new_count >= max_elements && col_count == max_elements)) {
+    if (new_count == col_count) {
         return;
     }
 

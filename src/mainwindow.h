@@ -87,7 +87,6 @@ private:
     const QStringList default_path {qEnvironmentVariable("PATH").split(':') << "/usr/sbin"};
     int col_count {};
     int fixed_number_col {};
-    int max_elements {};
     int min_height {};
     int min_width {};
 
