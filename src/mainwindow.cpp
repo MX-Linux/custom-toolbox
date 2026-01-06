@@ -59,7 +59,7 @@ MainWindow::MainWindow(const QCommandLineParser &arg_parser, QWidget *parent)
 
     // Set up debounce timer for file change events
     file_reload_timer.setSingleShot(true);
-    file_reload_timer.setInterval(200); // 200ms debounce delay
+    file_reload_timer.setInterval(200);
     connect(&file_reload_timer, &QTimer::timeout, this, &MainWindow::refresh_if_file_changed);
 
     if (arg_parser.isSet("remove-checkbox")) {
@@ -179,9 +179,10 @@ QIcon MainWindow::find_icon(const QString &icon_name)
         }
     }
 
-    // Fall back to the default icon if nothing else was found.
-    // Note: Default icons are not cached to allow future resolution of actual icons
-    return get_default_icon();
+    // Fall back to the default icon if nothing else was found
+    QIcon default_icon = get_default_icon();
+    icon_cache[icon_name] = default_icon;
+    return default_icon;
 }
 
 // Strip %f, %F, %U, etc. if exec expects a file name since it's called without an argument from this launcher.
