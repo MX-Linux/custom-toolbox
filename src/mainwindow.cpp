@@ -255,15 +255,49 @@ void MainWindow::btn_clicked()
         QMessageBox::warning(this, tr("Execution Error"), tr("Command is empty. Cannot execute."));
         return;
     }
-    // pkexec cannot take &, it would block the GUI that's why we need to hide it
-    if (hide_gui || cmd.startsWith("pkexec")) {
-        hide();
-        const int exit_code = system(cmd.toUtf8());
-        if (exit_code != 0) {
+
+    // pkexec requires shell for variable expansion and synchronous execution
+    if (cmd.startsWith("pkexec")) {
+        if (hide_gui) {
+            hide();
+        }
+
+        QProcess proc;
+        proc.start("/bin/sh", {"-c", cmd});
+
+        // Wait for process to finish while keeping event loop responsive
+        while (!proc.waitForFinished(100)) {
+            QApplication::processEvents();
+        }
+
+        if (proc.exitCode() != 0) {
             QMessageBox::warning(this, tr("Execution Error"), tr("Failed to execute command: %1").arg(cmd));
         }
+
+        if (hide_gui) {
+            show();
+        }
+    } else if (hide_gui) {
+        // Non-pkexec commands with hide_gui need synchronous execution
+        hide();
+
+        QProcess proc;
+        QStringList arguments = QProcess::splitCommand(cmd);
+        const QString program = arguments.takeFirst();
+        proc.start(program, arguments);
+
+        // Wait for process to finish while keeping event loop responsive
+        while (!proc.waitForFinished(100)) {
+            QApplication::processEvents();
+        }
+
+        if (proc.exitCode() != 0) {
+            QMessageBox::warning(this, tr("Execution Error"), tr("Failed to execute command: %1").arg(cmd));
+        }
+
         show();
     } else {
+        // Non-pkexec commands without hide_gui can be run detached
         QStringList arguments = QProcess::splitCommand(cmd);
         const QString program = arguments.takeFirst();
         if (!QProcess::startDetached(program, arguments)) {
