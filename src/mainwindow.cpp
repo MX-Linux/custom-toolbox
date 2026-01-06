@@ -712,8 +712,8 @@ void MainWindow::text_search_text_changed(const QString &search_text)
         }
     }
 
-    // Update the buttons with the filtered map or the original map if no matches found
-    add_buttons(filtered_map.isEmpty() ? category_map : filtered_map);
+    // Update the buttons with the filtered map (empty map shows no results)
+    add_buttons(filtered_map);
 }
 
 // Add a .desktop file to the ~/.config/autostart
