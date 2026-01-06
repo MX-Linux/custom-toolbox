@@ -57,7 +57,10 @@ void displayDoc(const QString &url, const QString &title)
             proc.start("logname", {}, QIODevice::ReadOnly);
             proc.waitForFinished(3000);
             const QString user = QString::fromUtf8(proc.readAllStandardOutput()).trimmed();
-            if (!QProcess::startDetached("runuser", {"-u", user, "--", "xdg-open", url})) {
+            if (proc.exitCode() != 0 || user.isEmpty()) {
+                QMessageBox::warning(nullptr, QObject::tr("Error"),
+                                     QObject::tr("Failed to determine user name. Cannot open document."));
+            } else if (!QProcess::startDetached("runuser", {"-u", user, "--", "xdg-open", url})) {
                 QMessageBox::warning(nullptr, QObject::tr("Error"), QObject::tr("Failed to start runuser"));
             }
         }
