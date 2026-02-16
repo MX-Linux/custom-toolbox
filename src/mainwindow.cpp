@@ -848,7 +848,7 @@ QString MainWindow::get_default_editor()
         if (line.startsWith("Exec=")) {
             // Extract the command from the Exec line and remove common desktop file parameters
             static const QRegularExpression execPrefixPattern("^Exec=");
-            static const QRegularExpression paramPattern("(%[a-zA-Z]|%[a-zA-Z]{1,2}|-{1,2}[a-zA-Z-]+)\\b");
+            static const QRegularExpression paramPattern(" %[a-zA-Z]");
             return line.remove(execPrefixPattern).remove(paramPattern).trimmed();
         }
     }
