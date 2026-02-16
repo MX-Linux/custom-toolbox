@@ -48,8 +48,6 @@ public:
     ~MainWindow() override;
 
 private slots:
-    void closeEvent(QCloseEvent * /*unused*/) override;
-    void resizeEvent(QResizeEvent *event) override;
     void btn_clicked();
     void push_about_clicked();
     void push_edit_clicked();
@@ -58,6 +56,8 @@ private slots:
     void text_search_text_changed(const QString &text);
 
 private:
+    void closeEvent(QCloseEvent * /*unused*/) override;
+    void resizeEvent(QResizeEvent *event) override;
     struct ItemInfo {
         QString category {};
         QString name {};

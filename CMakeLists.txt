@@ -166,7 +166,6 @@ endif()
 # Set compile definitions
 target_compile_definitions(custom-toolbox PRIVATE
     QT_DEPRECATED_WARNINGS
-    QT_DISABLE_DEPRECATED_BEFORE=0x060000
     VERSION="${PROJECT_VERSION}"
 )
 
