@@ -456,15 +456,24 @@ void MainWindow::add_buttons(const QMultiMap<QString, ItemInfo> &map)
     int row = 0;
     const int max_cols = fixed_number_col != 0 ? fixed_number_col : width() / 200;
 
-    for (const auto &category : map.uniqueKeys()) {
-        if (!map.values(category).isEmpty()) {
-            add_category_label(category, row, col);
+    QString prev_category;
+    for (auto it = map.constBegin(); it != map.constEnd();) {
+        const QString &category = it.key();
 
-            for (const auto &item : map.values(category)) {
-                add_item_button(item, row, col, max_cols);
+        // Add category label on first encounter
+        if (category != prev_category) {
+            if (!prev_category.isEmpty()) {
+                add_empty_row_if_needed(prev_category, map, row, col);
             }
+            add_category_label(category, row, col);
+            prev_category = category;
         }
-        add_empty_row_if_needed(category, map, row, col);
+
+        add_item_button(it.value(), row, col, max_cols);
+        ++it;
+    }
+    if (!prev_category.isEmpty()) {
+        add_empty_row_if_needed(prev_category, map, row, col);
     }
     ui->gridLayout_btn->setRowStretch(row, 1);
 }
