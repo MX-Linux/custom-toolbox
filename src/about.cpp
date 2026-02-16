@@ -39,7 +39,7 @@ void displayDoc(const QString &url, const QString &title)
     bool started_as_root = false;
     if (QFileInfo(qEnvironmentVariable("HOME")).canonicalFilePath() == "/root") {
         started_as_root = true;
-        qputenv("HOME", starting_home.toUtf8()); // Use original home for theming purposes
+        qputenv("HOME", starting_home().toUtf8()); // Use original home for theming purposes
     }
     // Prefer mx-viewer otherwise use xdg-open (use runuser to run that as logname user)
     const QString executable_path = QStandardPaths::findExecutable("mx-viewer");
