@@ -153,10 +153,6 @@ QIcon MainWindow::find_icon(const QString &icon_name)
     QString name_no_ext = icon_name;
     name_no_ext.remove(re);
 
-    if (!icon_theme.isEmpty()) {
-        QIcon::setThemeName(icon_theme);
-    }
-
     QIcon icon = QIcon::fromTheme(name_no_ext);
     if (!icon.isNull()) {
         icon_cache[icon_name] = icon;
@@ -427,9 +423,11 @@ MainWindow::ItemInfo MainWindow::get_desktop_file_info(const QString &file_name)
     file.close();
 
     // Helper lambda to search for a pattern and extract the first capture group
-    auto match_pattern = [&text](const QString &pattern) -> QString {
-        QRegularExpression re(pattern, QRegularExpression::MultilineOption);
-        const auto match = re.match(text);
+    auto match_pattern = [this, &text](const QString &pattern) -> QString {
+        if (!regex_cache.contains(pattern)) {
+            regex_cache[pattern] = QRegularExpression(pattern, QRegularExpression::MultilineOption);
+        }
+        const auto match = regex_cache[pattern].match(text);
         return match.hasMatch() ? match.captured(1) : QString();
     };
 
@@ -671,6 +669,10 @@ void MainWindow::read_file(const QString &file_name)
         }
 
         pos = endPos + 1;
+    }
+
+    if (!icon_theme.isEmpty()) {
+        QIcon::setThemeName(icon_theme);
     }
 }
 

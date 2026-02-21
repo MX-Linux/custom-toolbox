@@ -87,11 +87,6 @@ if(CMAKE_GENERATOR STREQUAL "Ninja")
     endif()
 endif()
 
-# Option to use clang for testing builds
-if(USE_CLANG)
-    set(CMAKE_CXX_COMPILER_ID "Clang")
-endif()
-
 # Find Qt6 components
 find_package(Qt6 REQUIRED COMPONENTS
     Core
