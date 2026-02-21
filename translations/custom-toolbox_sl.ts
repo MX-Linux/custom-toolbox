@@ -3,7 +3,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../src/mainwindow.ui" line="20"/>
-        <location filename="../src/mainwindow.cpp" line="203"/>
+        <location filename="../src/mainwindow.cpp" line="207"/>
         <source>Custom Toolbox</source>
         <translation>Prilagojena orodjarna</translation>
     </message>
@@ -78,126 +78,138 @@
         <translation>iskanje</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="251"/>
-        <location filename="../src/mainwindow.cpp" line="259"/>
-        <location filename="../src/mainwindow.cpp" line="266"/>
+        <location filename="../src/mainwindow.cpp" line="255"/>
+        <location filename="../src/mainwindow.cpp" line="274"/>
+        <location filename="../src/mainwindow.cpp" line="295"/>
+        <location filename="../src/mainwindow.cpp" line="304"/>
         <source>Execution Error</source>
         <translation>Napaka pri izvajanju</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="251"/>
+        <location filename="../src/mainwindow.cpp" line="255"/>
         <source>Command is empty. Cannot execute.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="259"/>
+        <location filename="../src/mainwindow.cpp" line="274"/>
+        <location filename="../src/mainwindow.cpp" line="295"/>
         <source>Failed to execute command: %1</source>
         <translation>Napaka pri izvajanju ukaza: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="266"/>
+        <location filename="../src/mainwindow.cpp" line="304"/>
         <source>Failed to start program: %1</source>
         <translation>Napaka pri zagonu programa: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="306"/>
+        <location filename="../src/mainwindow.cpp" line="344"/>
         <source>Open List File</source>
         <translation>Odpri zadnjo datoteko</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="306"/>
+        <location filename="../src/mainwindow.cpp" line="344"/>
         <source>List Files (*.list)</source>
         <translation>Datoteke seznamov (*.list)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="308"/>
+        <location filename="../src/mainwindow.cpp" line="346"/>
         <source>File Selection Error</source>
         <translation>Napaka pri izbiri datoteke</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="308"/>
+        <location filename="../src/mainwindow.cpp" line="346"/>
         <source>No file selected. Application will now exit.</source>
         <translation>Nobena datoteka ni izbrana. Program se bo zaprl.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="314"/>
-        <location filename="../src/mainwindow.cpp" line="579"/>
-        <location filename="../src/mainwindow.cpp" line="732"/>
+        <location filename="../src/mainwindow.cpp" line="352"/>
+        <location filename="../src/mainwindow.cpp" line="622"/>
+        <location filename="../src/mainwindow.cpp" line="780"/>
         <source>File Open Error</source>
         <translation>Napaka pri odpiranju datoteke</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="315"/>
+        <location filename="../src/mainwindow.cpp" line="353"/>
         <source>Could not open file. Do you want to try again?</source>
         <translation>Datoteke ni bilo mogoče odpreti. Ponovni poskus?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="571"/>
+        <location filename="../src/mainwindow.cpp" line="614"/>
         <source>File Not Found</source>
         <translation>Datoteka ni bila najdena</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="571"/>
+        <location filename="../src/mainwindow.cpp" line="614"/>
         <source>The file %1 does not exist.</source>
         <translation>Datoteka %1 ne obstaja.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="579"/>
+        <location filename="../src/mainwindow.cpp" line="622"/>
         <source>Could not open file: </source>
         <translation>Datoteke ni bilo mogoče odpreti:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="670"/>
+        <location filename="../src/mainwindow.cpp" line="710"/>
         <source>Version:</source>
         <translation>Različica:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="673"/>
+        <location filename="../src/mainwindow.cpp" line="713"/>
         <source>About %1</source>
         <translation>O %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="750"/>
+        <location filename="../src/mainwindow.cpp" line="762"/>
+        <source>Directory Creation Error</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="763"/>
+        <source>Could not create directory: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="810"/>
         <source>Error</source>
         <translation>Napaka</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="750"/>
+        <location filename="../src/mainwindow.cpp" line="810"/>
         <source>Editor command failed with code %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="671"/>
+        <location filename="../src/mainwindow.cpp" line="711"/>
         <source>Custom Toolbox is a tool used for creating a custom launcher</source>
         <translation>Orodjarna je orodje za ustvarjanje zaganjalnikov po meri</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="671"/>
+        <location filename="../src/mainwindow.cpp" line="711"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Avtorska zaščita (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="674"/>
+        <location filename="../src/mainwindow.cpp" line="714"/>
         <source>%1 License</source>
         <translation>%1 licenca</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="681"/>
+        <location filename="../src/mainwindow.cpp" line="721"/>
         <source>%1 Help</source>
         <translation>%1 pomoč</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="732"/>
+        <location filename="../src/mainwindow.cpp" line="780"/>
         <source>Could not write file: %1</source>
         <translation>Ni bilo mogoče pisati v datoteko: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="736"/>
+        <location filename="../src/mainwindow.cpp" line="785"/>
         <source>File Removal Error</source>
         <translation>Napaka pri odstranjevanju datoteke</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="736"/>
+        <location filename="../src/mainwindow.cpp" line="785"/>
         <source>Could not remove file: %1</source>
         <translation>Ni bilo mogoče odstraniti datoteke: %1</translation>
     </message>
@@ -215,28 +227,33 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="61"/>
+        <location filename="../src/about.cpp" line="62"/>
+        <source>Failed to determine user name. Cannot open document.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/about.cpp" line="64"/>
         <source>Failed to start runuser</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="76"/>
+        <location filename="../src/about.cpp" line="79"/>
         <source>License</source>
         <translation>Licenca</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="77"/>
-        <location filename="../src/about.cpp" line="87"/>
+        <location filename="../src/about.cpp" line="80"/>
+        <location filename="../src/about.cpp" line="90"/>
         <source>Changelog</source>
         <translation>Dnevnik sprememb</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="78"/>
+        <location filename="../src/about.cpp" line="81"/>
         <source>Cancel</source>
         <translation>Prekliči</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="100"/>
+        <location filename="../src/about.cpp" line="103"/>
         <source>&amp;Close</source>
         <translation>&amp;Zapri</translation>
     </message>
@@ -256,10 +273,11 @@
         <translation>Celotna pot in ime .list datoteke, ki jo želite naložiti za nastavitev aplikacije</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="100"/>
         <location filename="../src/about.cpp" line="48"/>
         <location filename="../src/about.cpp" line="53"/>
         <location filename="../src/about.cpp" line="61"/>
+        <location filename="../src/about.cpp" line="64"/>
+        <location filename="../src/main.cpp" line="100"/>
         <source>Error</source>
         <translation>Napaka</translation>
     </message>

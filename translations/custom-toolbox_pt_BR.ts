@@ -3,7 +3,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../src/mainwindow.ui" line="20"/>
-        <location filename="../src/mainwindow.cpp" line="203"/>
+        <location filename="../src/mainwindow.cpp" line="207"/>
         <source>Custom Toolbox</source>
         <translation>Personalizador da Caixa de Ferramentas</translation>
     </message>
@@ -78,126 +78,138 @@
         <translation>Digite aqui para pesquisar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="251"/>
-        <location filename="../src/mainwindow.cpp" line="259"/>
-        <location filename="../src/mainwindow.cpp" line="266"/>
+        <location filename="../src/mainwindow.cpp" line="255"/>
+        <location filename="../src/mainwindow.cpp" line="274"/>
+        <location filename="../src/mainwindow.cpp" line="295"/>
+        <location filename="../src/mainwindow.cpp" line="304"/>
         <source>Execution Error</source>
         <translation>Ocorreu um erro na execução</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="251"/>
+        <location filename="../src/mainwindow.cpp" line="255"/>
         <source>Command is empty. Cannot execute.</source>
         <translation>Não foi possível executar porque o comando está vazio.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="259"/>
+        <location filename="../src/mainwindow.cpp" line="274"/>
+        <location filename="../src/mainwindow.cpp" line="295"/>
         <source>Failed to execute command: %1</source>
         <translation>Ocorreu uma falha ao executar o comando %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="266"/>
+        <location filename="../src/mainwindow.cpp" line="304"/>
         <source>Failed to start program: %1</source>
         <translation>Ocorreu uma falha ao executar o programa %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="306"/>
+        <location filename="../src/mainwindow.cpp" line="344"/>
         <source>Open List File</source>
         <translation>Abrir um Arquivo da Lista</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="306"/>
+        <location filename="../src/mainwindow.cpp" line="344"/>
         <source>List Files (*.list)</source>
         <translation>Arquivo da Lista (*.list)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="308"/>
+        <location filename="../src/mainwindow.cpp" line="346"/>
         <source>File Selection Error</source>
         <translation>Ocorreu um erro ao selecionar o arquivo</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="308"/>
+        <location filename="../src/mainwindow.cpp" line="346"/>
         <source>No file selected. Application will now exit.</source>
         <translation>Nenhum arquivo foi selecionado. O programa será finalizado agora.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="314"/>
-        <location filename="../src/mainwindow.cpp" line="579"/>
-        <location filename="../src/mainwindow.cpp" line="732"/>
+        <location filename="../src/mainwindow.cpp" line="352"/>
+        <location filename="../src/mainwindow.cpp" line="622"/>
+        <location filename="../src/mainwindow.cpp" line="780"/>
         <source>File Open Error</source>
         <translation>Ocorreu um erro ao abrir o arquivo</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="315"/>
+        <location filename="../src/mainwindow.cpp" line="353"/>
         <source>Could not open file. Do you want to try again?</source>
         <translation>Não foi possível abrir o arquivo. Você quer tentar novamente?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="571"/>
+        <location filename="../src/mainwindow.cpp" line="614"/>
         <source>File Not Found</source>
         <translation>O arquivo não foi encontrado</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="571"/>
+        <location filename="../src/mainwindow.cpp" line="614"/>
         <source>The file %1 does not exist.</source>
         <translation>O arquivo %1 não existe.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="579"/>
+        <location filename="../src/mainwindow.cpp" line="622"/>
         <source>Could not open file: </source>
         <translation>Não foi possível abrir o arquivo</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="670"/>
+        <location filename="../src/mainwindow.cpp" line="710"/>
         <source>Version:</source>
         <translation>Versão:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="673"/>
+        <location filename="../src/mainwindow.cpp" line="713"/>
         <source>About %1</source>
         <translation>Sobre o %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="750"/>
+        <location filename="../src/mainwindow.cpp" line="762"/>
+        <source>Directory Creation Error</source>
+        <translation>Ocorreu um erro ao criar o diretório</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="763"/>
+        <source>Could not create directory: %1</source>
+        <translation>Não foi possível criar o diretório: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="810"/>
         <source>Error</source>
         <translation>Ocorreu um erro</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="750"/>
+        <location filename="../src/mainwindow.cpp" line="810"/>
         <source>Editor command failed with code %1</source>
         <translation>O editor de comando falhou com código de erro %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="671"/>
+        <location filename="../src/mainwindow.cpp" line="711"/>
         <source>Custom Toolbox is a tool used for creating a custom launcher</source>
         <translation>O ‘Personalizador da Caixa de Ferramentas’ ou ‘Custom Toolbox’ é uma ferramenta utilizada para criar um iniciador ou um lançador ou um ícone de atalho personalizado para os programas</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="671"/>
+        <location filename="../src/mainwindow.cpp" line="711"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Direitos reservados ao (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="674"/>
+        <location filename="../src/mainwindow.cpp" line="714"/>
         <source>%1 License</source>
         <translation>Licença do %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="681"/>
+        <location filename="../src/mainwindow.cpp" line="721"/>
         <source>%1 Help</source>
         <translation>Ajuda do %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="732"/>
+        <location filename="../src/mainwindow.cpp" line="780"/>
         <source>Could not write file: %1</source>
         <translation>Não foi possível gravar o arquivo %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="736"/>
+        <location filename="../src/mainwindow.cpp" line="785"/>
         <source>File Removal Error</source>
         <translation>Ocorreu um erro ao remover o arquivo</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="736"/>
+        <location filename="../src/mainwindow.cpp" line="785"/>
         <source>Could not remove file: %1</source>
         <translation>Não foi possível remover o arquivo %1</translation>
     </message>
@@ -215,28 +227,33 @@
         <translation>Ocorreu um erro ao iniciar o abrir o comando ‘xdg-open’</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="61"/>
+        <location filename="../src/about.cpp" line="62"/>
+        <source>Failed to determine user name. Cannot open document.</source>
+        <translation>Não foi possível determinar o nome de usuário. Não é possível abrir o documento.</translation>
+    </message>
+    <message>
+        <location filename="../src/about.cpp" line="64"/>
         <source>Failed to start runuser</source>
         <translation>Ocorreu um erro ao iniciar o comando ‘runuser’</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="76"/>
+        <location filename="../src/about.cpp" line="79"/>
         <source>License</source>
         <translation>Licença</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="77"/>
-        <location filename="../src/about.cpp" line="87"/>
+        <location filename="../src/about.cpp" line="80"/>
+        <location filename="../src/about.cpp" line="90"/>
         <source>Changelog</source>
         <translation>Relatório de alterações</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="78"/>
+        <location filename="../src/about.cpp" line="81"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="100"/>
+        <location filename="../src/about.cpp" line="103"/>
         <source>&amp;Close</source>
         <translation>&amp;Fechar</translation>
     </message>
@@ -256,10 +273,11 @@
         <translation>O caminho completo e o nome do arquivo ‘.list’ que você quer carregar para configurar o programa</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="100"/>
         <location filename="../src/about.cpp" line="48"/>
         <location filename="../src/about.cpp" line="53"/>
         <location filename="../src/about.cpp" line="61"/>
+        <location filename="../src/about.cpp" line="64"/>
+        <location filename="../src/main.cpp" line="100"/>
         <source>Error</source>
         <translation>Ocorreu um erro</translation>
     </message>

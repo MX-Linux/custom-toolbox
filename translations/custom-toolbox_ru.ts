@@ -3,7 +3,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../src/mainwindow.ui" line="20"/>
-        <location filename="../src/mainwindow.cpp" line="203"/>
+        <location filename="../src/mainwindow.cpp" line="207"/>
         <source>Custom Toolbox</source>
         <translation>Пользовательский набор инструментов</translation>
     </message>
@@ -25,7 +25,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="88"/>
         <source>Customize launcher</source>
-        <translation type="unfinished"/>
+        <translation>Настроить лаунчер</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="91"/>
@@ -65,7 +65,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="303"/>
         <source>This is a custom launcher</source>
-        <translation type="unfinished"/>
+        <translation>Это настраиваемый лаунчер</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="319"/>
@@ -78,128 +78,140 @@
         <translation>поиск</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="251"/>
-        <location filename="../src/mainwindow.cpp" line="259"/>
-        <location filename="../src/mainwindow.cpp" line="266"/>
+        <location filename="../src/mainwindow.cpp" line="255"/>
+        <location filename="../src/mainwindow.cpp" line="274"/>
+        <location filename="../src/mainwindow.cpp" line="295"/>
+        <location filename="../src/mainwindow.cpp" line="304"/>
         <source>Execution Error</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка выполнения</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="251"/>
+        <location filename="../src/mainwindow.cpp" line="255"/>
         <source>Command is empty. Cannot execute.</source>
-        <translation type="unfinished"/>
+        <translation>Команда пуста. Невозможно выполнить.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="259"/>
+        <location filename="../src/mainwindow.cpp" line="274"/>
+        <location filename="../src/mainwindow.cpp" line="295"/>
         <source>Failed to execute command: %1</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось выполнить команду: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="266"/>
+        <location filename="../src/mainwindow.cpp" line="304"/>
         <source>Failed to start program: %1</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось запустить программу: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="306"/>
+        <location filename="../src/mainwindow.cpp" line="344"/>
         <source>Open List File</source>
         <translation>Открыть файл списка</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="306"/>
+        <location filename="../src/mainwindow.cpp" line="344"/>
         <source>List Files (*.list)</source>
         <translation>Файлы списка (*.list)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="308"/>
+        <location filename="../src/mainwindow.cpp" line="346"/>
         <source>File Selection Error</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка выбора файла</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="308"/>
+        <location filename="../src/mainwindow.cpp" line="346"/>
         <source>No file selected. Application will now exit.</source>
-        <translation type="unfinished"/>
+        <translation>Не выбран файл. Приложение будет закрыто.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="314"/>
-        <location filename="../src/mainwindow.cpp" line="579"/>
-        <location filename="../src/mainwindow.cpp" line="732"/>
+        <location filename="../src/mainwindow.cpp" line="352"/>
+        <location filename="../src/mainwindow.cpp" line="622"/>
+        <location filename="../src/mainwindow.cpp" line="780"/>
         <source>File Open Error</source>
         <translation>Ошибка открытия файла</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="315"/>
+        <location filename="../src/mainwindow.cpp" line="353"/>
         <source>Could not open file. Do you want to try again?</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось открыть файл. Хотите попробовать снова?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="571"/>
+        <location filename="../src/mainwindow.cpp" line="614"/>
         <source>File Not Found</source>
-        <translation type="unfinished"/>
+        <translation>Файл не найден</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="571"/>
+        <location filename="../src/mainwindow.cpp" line="614"/>
         <source>The file %1 does not exist.</source>
-        <translation type="unfinished"/>
+        <translation>Файл %1 не существует.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="579"/>
+        <location filename="../src/mainwindow.cpp" line="622"/>
         <source>Could not open file: </source>
         <translation>Не удалось открыть файл:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="670"/>
+        <location filename="../src/mainwindow.cpp" line="710"/>
         <source>Version:</source>
         <translation>Версия:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="673"/>
+        <location filename="../src/mainwindow.cpp" line="713"/>
         <source>About %1</source>
         <translation>О %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="750"/>
+        <location filename="../src/mainwindow.cpp" line="762"/>
+        <source>Directory Creation Error</source>
+        <translation>Ошибка при создании каталога</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="763"/>
+        <source>Could not create directory: %1</source>
+        <translation>Не удалось создать каталог: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="810"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="750"/>
+        <location filename="../src/mainwindow.cpp" line="810"/>
         <source>Editor command failed with code %1</source>
-        <translation type="unfinished"/>
+        <translation>Команда редактора не выполнена с кодом %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="671"/>
+        <location filename="../src/mainwindow.cpp" line="711"/>
         <source>Custom Toolbox is a tool used for creating a custom launcher</source>
-        <translation type="unfinished"/>
+        <translation>Custom Toolbox - это утилита для создания пользовательского лаунчера</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="671"/>
+        <location filename="../src/mainwindow.cpp" line="711"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Copyright (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="674"/>
+        <location filename="../src/mainwindow.cpp" line="714"/>
         <source>%1 License</source>
         <translation>%1 Лицензия</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="681"/>
+        <location filename="../src/mainwindow.cpp" line="721"/>
         <source>%1 Help</source>
         <translation>%1 Справка</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="732"/>
+        <location filename="../src/mainwindow.cpp" line="780"/>
         <source>Could not write file: %1</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось записать файл: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="736"/>
+        <location filename="../src/mainwindow.cpp" line="785"/>
         <source>File Removal Error</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка удаления файла</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="736"/>
+        <location filename="../src/mainwindow.cpp" line="785"/>
         <source>Could not remove file: %1</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось удалить файл: %1</translation>
     </message>
 </context>
 <context>
@@ -207,66 +219,72 @@
     <message>
         <location filename="../src/about.cpp" line="48"/>
         <source>Failed to start mx-viewer</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось запустить mx-viewer</translation>
     </message>
     <message>
         <location filename="../src/about.cpp" line="53"/>
         <source>Failed to start xdg-open</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось запустить xdg-open</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="61"/>
+        <location filename="../src/about.cpp" line="62"/>
+        <source>Failed to determine user name. Cannot open document.</source>
+        <translation>Не удалось определить имя пользователя. Невозможно открыть документ.</translation>
+    </message>
+    <message>
+        <location filename="../src/about.cpp" line="64"/>
         <source>Failed to start runuser</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось запустить runuser</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="76"/>
+        <location filename="../src/about.cpp" line="79"/>
         <source>License</source>
         <translation>Лицензия</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="77"/>
-        <location filename="../src/about.cpp" line="87"/>
+        <location filename="../src/about.cpp" line="80"/>
+        <location filename="../src/about.cpp" line="90"/>
         <source>Changelog</source>
         <translation>Список изменений</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="78"/>
+        <location filename="../src/about.cpp" line="81"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="100"/>
+        <location filename="../src/about.cpp" line="103"/>
         <source>&amp;Close</source>
         <translation>Закрыть</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="85"/>
         <source>This app can be used to create custom launchers: box of buttons/icons</source>
-        <translation type="unfinished"/>
+        <translation>Это приложение позволяет создавать персонализированные лаунчеры: бокс состоящий из кнопок/значков</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="88"/>
         <source>Don&apos;t show &apos;show this dialog at startup&apos; checkbox</source>
-        <translation type="unfinished"/>
+        <translation>Не показывать чекбокс &quot;показывать этот диалог при запуске&quot;</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="90"/>
         <source>Full path and name of the .list file you want to load to set up the application</source>
-        <translation type="unfinished"/>
+        <translation>Полный путь и имя файла .list, который вы хотите загрузить для настройки приложения</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="100"/>
         <location filename="../src/about.cpp" line="48"/>
         <location filename="../src/about.cpp" line="53"/>
         <location filename="../src/about.cpp" line="61"/>
+        <location filename="../src/about.cpp" line="64"/>
+        <location filename="../src/main.cpp" line="100"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="101"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
-        <translation>Программа запущена суперпользователем. Для использования программы войдите в систему как обычный пользователь.</translation>
+        <translation>Программа запущена суперпользователем root. Для использования программы войдите в систему как обычный пользователь.</translation>
     </message>
 </context>
 </TS>

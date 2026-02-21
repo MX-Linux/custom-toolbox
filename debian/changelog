@@ -1,3 +1,17 @@
+custom-toolbox (26.02) mx; urgency=medium
+
+  * Preserve default editor command flags when launching Edit
+  * Improve default editor detection for terminal and self-elevating editors
+  * Preserve the original HOME when opening docs from root sessions
+  * Fix About -> Changelog so compressed changelog text displays correctly
+  * Keep at least one button column in very narrow windows
+  * Clear cached desktop entry lookups when reloading a .list file
+  * Show clearer errors when commands fail to start
+  * Apply the configured icon theme after loading each .list file
+  * Fix FlatButton hover styling
+
+ -- Adrian <adrian@mxlinux.org>  Sat, 21 Feb 2026 16:05:00 -0500
+
 custom-toolbox (26.01) mx; urgency=medium
 
   * Don't freeze or hide interface (unless requested) when running programs that require elevation
@@ -318,4 +332,3 @@ custom-toolbox (0.17.1) mx; urgency=medium
   * initial release
 
  -- Adrian <adrian@mxlinux.org>  Wed, 18 Jan 2017 19:44:43 -0500
-
