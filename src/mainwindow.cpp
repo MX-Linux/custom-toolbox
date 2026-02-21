@@ -265,13 +265,17 @@ void MainWindow::btn_clicked()
         QProcess proc;
         proc.start("/bin/sh", {"-c", cmd});
 
-        // Wait for process to finish while keeping event loop responsive
-        while (!proc.waitForFinished(100)) {
-            QApplication::processEvents();
-        }
+        if (!proc.waitForStarted()) {
+            QMessageBox::warning(this, tr("Execution Error"), tr("Failed to start command: %1").arg(cmd));
+        } else {
+            // Wait for process to finish while keeping event loop responsive
+            while (!proc.waitForFinished(100)) {
+                QApplication::processEvents();
+            }
 
-        if (proc.exitCode() != 0) {
-            QMessageBox::warning(this, tr("Execution Error"), tr("Failed to execute command: %1").arg(cmd));
+            if (proc.exitCode() != 0) {
+                QMessageBox::warning(this, tr("Execution Error"), tr("Failed to execute command: %1").arg(cmd));
+            }
         }
 
         if (hide_gui) {
@@ -286,13 +290,17 @@ void MainWindow::btn_clicked()
         const QString program = arguments.takeFirst();
         proc.start(program, arguments);
 
-        // Wait for process to finish while keeping event loop responsive
-        while (!proc.waitForFinished(100)) {
-            QApplication::processEvents();
-        }
+        if (!proc.waitForStarted()) {
+            QMessageBox::warning(this, tr("Execution Error"), tr("Failed to start program: %1").arg(program));
+        } else {
+            // Wait for process to finish while keeping event loop responsive
+            while (!proc.waitForFinished(100)) {
+                QApplication::processEvents();
+            }
 
-        if (proc.exitCode() != 0) {
-            QMessageBox::warning(this, tr("Execution Error"), tr("Failed to execute command: %1").arg(cmd));
+            if (proc.exitCode() != 0) {
+                QMessageBox::warning(this, tr("Execution Error"), tr("Failed to execute command: %1").arg(cmd));
+            }
         }
 
         show();
