@@ -48,7 +48,7 @@ void FlatButton::leaveEvent(QEvent *e)
 void FlatButton::enterEvent(QEnterEvent *e)
 {
     static const QString enter_style
-        = QStringLiteral("QPushButton { text-align:left; text-decoration:underline}; QToolTip { text-decoration: none; }");
+        = QStringLiteral("QPushButton { text-align:left; text-decoration:underline} QToolTip { text-decoration: none; }");
     setStyleSheet(enter_style);
     QPushButton::enterEvent(e);
 }
