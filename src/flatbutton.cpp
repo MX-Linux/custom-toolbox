@@ -22,26 +22,25 @@
 
 #include "flatbutton.h"
 
+static const QString base_style = QStringLiteral("text-align:left");
+
 FlatButton::FlatButton(QWidget *parent)
     : QPushButton(parent)
 {
     setFlat(true);
-    static const QString default_style = QStringLiteral("text-align:left");
-    setStyleSheet(default_style);
+    setStyleSheet(base_style);
 }
 
 FlatButton::FlatButton(const QString &name, QWidget *parent)
     : QPushButton(name, parent)
 {
     setFlat(true);
-    static const QString named_style = QStringLiteral("text-align:left");
-    setStyleSheet(named_style);
+    setStyleSheet(base_style);
 }
 
 void FlatButton::leaveEvent(QEvent *e)
 {
-    static const QString leave_style = QStringLiteral("text-align:left; text-decoration:none");
-    setStyleSheet(leave_style);
+    setStyleSheet(base_style);
     QPushButton::leaveEvent(e);
 }
 
@@ -56,9 +55,4 @@ void FlatButton::enterEvent(QEnterEvent *e)
 void FlatButton::setIconSize(int x, int y)
 {
     QPushButton::setIconSize(QSize(x, y));
-}
-
-void FlatButton::setIconSize(QSize size)
-{
-    QPushButton::setIconSize(size);
 }
