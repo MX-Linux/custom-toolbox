@@ -617,6 +617,7 @@ void MainWindow::read_file(const QString &file_name)
     categories.reserve(20); // Reserve space for typical number of categories
     category_map.clear();
     icon_theme.clear();
+    desktop_file_cache.clear();
 
     QFile file(file_name);
     if (!file.exists()) {
