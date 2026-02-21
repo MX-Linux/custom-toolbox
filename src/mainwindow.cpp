@@ -321,7 +321,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     }
 
     const int item_size = 200; // Determined through trial and error
-    const int new_count = width() / item_size;
+    const int new_count = qMax(1, width() / item_size);
 
     if (new_count == col_count) {
         return;
@@ -454,7 +454,7 @@ void MainWindow::add_buttons(const QMultiMap<QString, ItemInfo> &map)
     clear_grid_layout();
     int col = 0;
     int row = 0;
-    const int max_cols = fixed_number_col != 0 ? fixed_number_col : width() / 200;
+    const int max_cols = fixed_number_col != 0 ? fixed_number_col : qMax(1, width() / 200);
 
     QString prev_category;
     for (auto it = map.constBegin(); it != map.constEnd();) {
