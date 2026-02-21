@@ -246,7 +246,11 @@ void MainWindow::set_gui()
 
 void MainWindow::btn_clicked()
 {
-    const QString cmd = sender()->property("cmd").toString();
+    const auto *button = sender();
+    if (!button) {
+        return;
+    }
+    const QString cmd = button->property("cmd").toString();
     if (cmd.trimmed().isEmpty()) {
         QMessageBox::warning(this, tr("Execution Error"), tr("Command is empty. Cannot execute."));
         return;
