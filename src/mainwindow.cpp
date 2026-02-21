@@ -859,8 +859,8 @@ QString MainWindow::get_default_editor()
 QStringList MainWindow::build_editor_command(const QString &editor)
 {
     const bool is_root = getuid() == 0;
-    static const QRegularExpression elevates_pattern(R"((kate|kwrite|featherpad|code|codium)$)");
-    static const QRegularExpression cli_pattern(R"(nano|vi|vim|nvim|micro|emacs)");
+    static const QRegularExpression elevates_pattern(R"(\b(kate|kwrite|featherpad|code|codium)$)");
+    static const QRegularExpression cli_pattern(R"(\b(nano|vi|vim|nvim|micro|emacs)\b)");
     const bool is_editor_that_elevates = elevates_pattern.match(editor).hasMatch();
     const bool is_cli_editor = cli_pattern.match(editor).hasMatch();
 
