@@ -626,6 +626,7 @@ void MainWindow::read_file(const QString &file_name)
     categories.clear();
     categories.reserve(20); // Reserve space for typical number of categories
     category_map.clear();
+    icon_cache.clear();
     icon_theme.clear();
     desktop_file_cache.clear();
 
@@ -675,9 +676,7 @@ void MainWindow::read_file(const QString &file_name)
         pos = endPos + 1;
     }
 
-    if (!icon_theme.isEmpty()) {
-        QIcon::setThemeName(icon_theme);
-    }
+    QIcon::setThemeName(icon_theme);
 }
 
 QString MainWindow::extract_pattern(const QString &text, const QString &key)
