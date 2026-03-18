@@ -22,52 +22,67 @@
 #include "about.h"
 
 #include <QApplication>
+#include <QDialog>
+#include <QFile>
 #include <QFileInfo>
+#include <QIcon>
 #include <QMessageBox>
 #include <QProcess>
 #include <QPushButton>
-#include <QStandardPaths>
+#include <QTextBrowser>
 #include <QTextEdit>
+#include <QUrl>
 #include <QVBoxLayout>
 
-#include "common.h"
-#include <unistd.h>
-
-// Display doc as normal user when run as root
-void displayDoc(const QString &url, const QString &title)
+namespace
 {
-    bool started_as_root = false;
-    if (QFileInfo(qEnvironmentVariable("HOME")).canonicalFilePath() == "/root") {
-        started_as_root = true;
-        qputenv("HOME", starting_home().toUtf8()); // Use original home for theming purposes
-    }
-    // Prefer mx-viewer otherwise use xdg-open (use runuser to run that as logname user)
-    const QString executable_path = QStandardPaths::findExecutable("mx-viewer");
-    if (!executable_path.isEmpty()) {
-        if (!QProcess::startDetached("mx-viewer", {url, title})) {
-            QMessageBox::warning(nullptr, QObject::tr("Error"), QObject::tr("Failed to start mx-viewer"));
-        }
+void setupDocDialog(QDialog &dialog, QTextBrowser *browser, const QString &title, bool largeWindow)
+{
+    dialog.setWindowTitle(title);
+    if (largeWindow) {
+        dialog.setWindowFlags(Qt::Window);
+        dialog.resize(1000, 800);
     } else {
-        if (getuid() != 0) {
-            if (!QProcess::startDetached("xdg-open", {url})) {
-                QMessageBox::warning(nullptr, QObject::tr("Error"), QObject::tr("Failed to start xdg-open"));
-            }
-        } else {
-            QProcess proc;
-            proc.start("logname", {}, QIODevice::ReadOnly);
-            proc.waitForFinished(3000);
-            const QString user = QString::fromUtf8(proc.readAllStandardOutput()).trimmed();
-            if (proc.exitCode() != 0 || user.isEmpty()) {
-                QMessageBox::warning(nullptr, QObject::tr("Error"),
-                                     QObject::tr("Failed to determine user name. Cannot open document."));
-            } else if (!QProcess::startDetached("runuser", {"-u", user, "--", "xdg-open", url})) {
-                QMessageBox::warning(nullptr, QObject::tr("Error"), QObject::tr("Failed to start runuser"));
-            }
-        }
+        dialog.resize(700, 600);
     }
-    if (started_as_root) {
-        qputenv("HOME", "/root");
+
+    browser->setOpenExternalLinks(true);
+
+    auto *btn_close = new QPushButton(QObject::tr("&Close"), &dialog);
+    btn_close->setIcon(QIcon::fromTheme(QStringLiteral("window-close")));
+    QObject::connect(btn_close, &QPushButton::clicked, &dialog, &QDialog::close);
+
+    auto *layout = new QVBoxLayout(&dialog);
+    layout->addWidget(browser);
+    layout->addWidget(btn_close);
+}
+
+void showHtmlDoc(const QString &url, const QString &title, bool largeWindow)
+{
+    QDialog dialog;
+    auto *browser = new QTextBrowser(&dialog);
+    setupDocDialog(dialog, browser, title, largeWindow);
+
+    const QUrl source_url = QUrl::fromUserInput(url);
+    const QString local_path = source_url.isLocalFile() ? source_url.toLocalFile() : url;
+    if (source_url.isLocalFile() ? QFileInfo::exists(local_path) : QFileInfo::exists(url)) {
+        browser->setSource(source_url.isLocalFile() ? source_url : QUrl::fromLocalFile(url));
+    } else {
+        browser->setText(QObject::tr("Could not load %1").arg(url));
     }
+
+    dialog.exec();
+}
+} // namespace
+
+void displayDoc(const QString &url, const QString &title, bool largeWindow)
+{
+    showHtmlDoc(url, title, largeWindow);
+}
+
+void displayHelpDoc(const QString &path, const QString &title)
+{
+    showHtmlDoc(path, title, true);
 }
 
 void displayAboutMsgBox(const QString &title, const QString &message, const QString &licence_url,
@@ -93,12 +108,14 @@ void displayAboutMsgBox(const QString &title, const QString &message, const QStr
         auto *text = new QTextEdit(&changelog);
         text->setReadOnly(true);
         QProcess proc;
-        proc.start(
-            "zcat",
-            {"/usr/share/doc/" + QFileInfo(QCoreApplication::applicationFilePath()).fileName() + "/changelog.gz"},
-            QIODevice::ReadOnly);
-        proc.waitForFinished(5000);
-        text->setText(proc.readAllStandardOutput());
+        const QString app_name = QFileInfo(QCoreApplication::applicationFilePath()).fileName();
+        const QString changelog_path = QStringLiteral("/usr/share/doc/") + app_name + QStringLiteral("/changelog.gz");
+        proc.start(QStringLiteral("zcat"), {changelog_path}, QIODevice::ReadOnly);
+        if (proc.waitForStarted(3000) && proc.waitForFinished(3000)) {
+            text->setText(proc.readAllStandardOutput());
+        } else {
+            text->setText(QObject::tr("Could not load changelog."));
+        }
 
         auto *btn_close = new QPushButton(QObject::tr("&Close"), &changelog);
         btn_close->setIcon(QIcon::fromTheme("window-close"));

@@ -741,7 +741,7 @@ void MainWindow::push_about_clicked()
 void MainWindow::push_help_clicked()
 {
     const QString url = "/usr/share/doc/custom-toolbox/help.html";
-    displayDoc(url, tr("%1 Help").arg(windowTitle()));
+    displayHelpDoc(url, tr("%1 Help").arg(windowTitle()));
 }
 
 void MainWindow::text_search_text_changed(const QString &search_text)

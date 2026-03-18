@@ -1,37 +1,48 @@
-Custom Toolbox is a utility used for building custom launchers (toolboxes) by editing a simple text file (.list extension).
-The default location of the .list files is /etc/custom-toolbox but the files can be placed in any folder. 
-You can build multiple launchers using different .list files.
-<p>
-<b>Structure of .list file</b> (you can find an example in /etc/custom-toolbox)<br>
-----------------------------------------<br>
-# Comments that start with # are ignored<br>
-# Simple text file containing Name= Comment= Category= keywords<br>
-# with the list of app names under each coresponding category<br>
-# optional "root" flag can follow app name to indicate how to run the app<br>
-<p>
-Name=Name of the Launcher<br>
-Comment=This is a comment/description for the launcher<br>
-<p>
-Category=Name of the category<br>
-app1<br>
-app2 root<br>
-app3<br>
-<p>
-Category=Second category<br>
-app4 root<br>
-app5<br>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Custom Toolbox Help</title>
+    <link href="custom.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>Custom Toolbox Help</h1>
 
-----------------------------------------<br>
-<p>
-In this example app2 and app4 run as root, the other are launched as normal user. 
-<b>Only apps that have a corresponding .desktop file show up in the custom launcher.</b>
-<p>
-You can launch the app directly with the "custom-toolbox filename.list" command or you can browse the .list file 
-from the application.
-<p>
-You can select "Show this dialog at startup" checkbox to display the custom launcher at startup. That will place a .desktop file in ~/.custom/autostart with the name that appears in Name= field in the .list file. 
-You can manualy copy that .desktop file to /usr/share/applications if you want to place it in your menu. 
-In Xfce, in order to see the change, you need to run the command "xfce4-panel -r" as normal user.
+<p>Custom Toolbox is a utility used for building custom launchers (toolboxes) by editing a simple text file with the <code>.list</code> extension.</p>
 
+<p>The default location of the <code>.list</code> files is <code>/etc/custom-toolbox</code>, but the files can be placed in any folder. You can build multiple launchers using different <code>.list</code> files.</p>
 
+<h2>Structure of a <code>.list</code> file</h2>
 
+<p>You can find an example in <code>/etc/custom-toolbox</code>.</p>
+
+<pre># Comments that start with # are ignored
+# Simple text file containing Name= Comment= Category= keywords
+# with the list of app names under each corresponding category
+# optional "root" flag can follow app name to indicate how to run the app
+
+Name=Name of the Launcher
+Comment=This is a comment/description for the launcher
+
+Category=Name of the category
+app1
+app2 root
+app3
+
+Category=Second category
+app4 root
+app5</pre>
+
+<p>In this example, <code>app2</code> and <code>app4</code> run as root. The other applications are launched as the normal user.</p>
+
+<p><strong>Only applications that have a corresponding <code>.desktop</code> file appear in the custom launcher.</strong></p>
+
+<p>You can launch the app directly with the command <code>custom-toolbox filename.list</code>, or browse to the <code>.list</code> file from the application.</p>
+
+<p>If you select the <em>Show this dialog at startup</em> checkbox, the application places a <code>.desktop</code> file in <code>~/.config/autostart</code> using the name from the <code>Name=</code> field in the <code>.list</code> file.</p>
+
+<p>You can also copy that <code>.desktop</code> file to <code>/usr/share/applications</code> if you want to place it in your menu.</p>
+
+<p>In Xfce, run <code>xfce4-panel -r</code> as the normal user to refresh the panel after menu changes.</p>
+</body>
+</html>
