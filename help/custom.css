@@ -1,0 +1,26 @@
+body {
+    margin: 18px;
+    line-height: 1.45;
+}
+
+h1,
+h2 {
+    margin-top: 0.8em;
+}
+
+img {
+    display: block;
+    margin: 0;
+    max-width: 100%;
+    height: auto;
+}
+
+pre {
+    white-space: pre-wrap;
+    padding: 0.8em;
+    border: 1px solid #999999;
+}
+
+.footer {
+    margin-top: 1.5em;
+}
