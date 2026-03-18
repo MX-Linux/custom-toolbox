@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="fa">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="id">
 <context>
     <name>MainWindow</name>
     <message>
@@ -10,17 +10,17 @@
     <message>
         <location filename="../src/mainwindow.ui" line="63"/>
         <source>About this application</source>
-        <translation>درباره این نرم افزار</translation>
+        <translation>Tentang aplikasi ini</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="66"/>
         <source>About...</source>
-        <translation>درباره...</translation>
+        <translation>Tentang</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="72"/>
         <source>Alt+A</source>
-        <translation>Alt+A</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="88"/>
@@ -30,7 +30,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="91"/>
         <source>Edit</source>
-        <translation type="unfinished"/>
+        <translation>Edit</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="97"/>
@@ -40,7 +40,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="161"/>
         <source>Help</source>
-        <translation>راهنما </translation>
+        <translation>Bantuan</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="167"/>
@@ -55,7 +55,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="183"/>
         <source>Close</source>
-        <translation>بستن</translation>
+        <translation>Tutup</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="189"/>
@@ -70,7 +70,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="319"/>
         <source>Show this dialog at start up</source>
-        <translation>این صفحه را هنگام شروع سیستم به من نشان بده</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="341"/>
@@ -159,12 +159,12 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="734"/>
         <source>Version:</source>
-        <translation type="unfinished"/>
+        <translation>Versi:</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="737"/>
         <source>About %1</source>
-        <translation>درباره 1%</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="786"/>
@@ -179,7 +179,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="834"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Galat</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="834"/>
@@ -199,12 +199,12 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="738"/>
         <source>%1 License</source>
-        <translation>مجوز 1%</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="745"/>
         <source>%1 Help</source>
-        <translation>راهنمای 1%</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="804"/>
@@ -247,23 +247,23 @@
     <message>
         <location filename="../src/about.cpp" line="79"/>
         <source>License</source>
-        <translation>لایسنس</translation>
+        <translation>Lisensi</translation>
     </message>
     <message>
         <location filename="../src/about.cpp" line="80"/>
         <location filename="../src/about.cpp" line="90"/>
         <source>Changelog</source>
-        <translation>لیست موارد بهبود یافته</translation>
+        <translation>Changelog</translation>
     </message>
     <message>
         <location filename="../src/about.cpp" line="81"/>
         <source>Cancel</source>
-        <translation>لغو</translation>
+        <translation>Batal</translation>
     </message>
     <message>
         <location filename="../src/about.cpp" line="103"/>
         <source>&amp;Close</source>
-        <translation>و بستن</translation>
+        <translation>&amp;Tutup</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="86"/>
@@ -287,7 +287,7 @@
         <location filename="../src/about.cpp" line="64"/>
         <location filename="../src/main.cpp" line="101"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Galat</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="102"/>

@@ -3,7 +3,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../src/mainwindow.ui" line="20"/>
-        <location filename="../src/mainwindow.cpp" line="207"/>
+        <location filename="../src/mainwindow.cpp" line="203"/>
         <source>Custom Toolbox</source>
         <translation>Mukautettu työkalulaatikko</translation>
     </message>
@@ -79,9 +79,11 @@
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="255"/>
-        <location filename="../src/mainwindow.cpp" line="274"/>
-        <location filename="../src/mainwindow.cpp" line="295"/>
-        <location filename="../src/mainwindow.cpp" line="304"/>
+        <location filename="../src/mainwindow.cpp" line="269"/>
+        <location filename="../src/mainwindow.cpp" line="277"/>
+        <location filename="../src/mainwindow.cpp" line="294"/>
+        <location filename="../src/mainwindow.cpp" line="302"/>
+        <location filename="../src/mainwindow.cpp" line="312"/>
         <source>Execution Error</source>
         <translation>Suoritusvirhe</translation>
     </message>
@@ -91,125 +93,131 @@
         <translation>Komento on tyhjä. Ei voi suorittaa.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="274"/>
-        <location filename="../src/mainwindow.cpp" line="295"/>
+        <location filename="../src/mainwindow.cpp" line="269"/>
+        <source>Failed to start command: %1</source>
+        <translation>Komentoa ei voitu suorittaa: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="277"/>
+        <location filename="../src/mainwindow.cpp" line="302"/>
         <source>Failed to execute command: %1</source>
         <translation>Komentoa ei voitu suorittaa: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="304"/>
+        <location filename="../src/mainwindow.cpp" line="294"/>
+        <location filename="../src/mainwindow.cpp" line="312"/>
         <source>Failed to start program: %1</source>
         <translation>Ohjelmaa ei voitu suorittaa: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="344"/>
+        <location filename="../src/mainwindow.cpp" line="352"/>
         <source>Open List File</source>
         <translation>Avaa luettelotiedosto</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="344"/>
+        <location filename="../src/mainwindow.cpp" line="352"/>
         <source>List Files (*.list)</source>
         <translation>Listaa tiedostot (*.list)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="346"/>
+        <location filename="../src/mainwindow.cpp" line="354"/>
         <source>File Selection Error</source>
         <translation>Tiedoston valintavirhe</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="346"/>
+        <location filename="../src/mainwindow.cpp" line="354"/>
         <source>No file selected. Application will now exit.</source>
         <translation>Ei valittua tiedostoa. Sovellus suljetaan.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="352"/>
-        <location filename="../src/mainwindow.cpp" line="622"/>
-        <location filename="../src/mainwindow.cpp" line="780"/>
+        <location filename="../src/mainwindow.cpp" line="360"/>
+        <location filename="../src/mainwindow.cpp" line="642"/>
+        <location filename="../src/mainwindow.cpp" line="804"/>
         <source>File Open Error</source>
         <translation>Tiedoston avaamisvirhe</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="353"/>
+        <location filename="../src/mainwindow.cpp" line="361"/>
         <source>Could not open file. Do you want to try again?</source>
         <translation>Tiedostoa ei voitu avata. Haluatko yrittää uudelleen?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="614"/>
+        <location filename="../src/mainwindow.cpp" line="634"/>
         <source>File Not Found</source>
         <translation>Tiedostoa ei löytynyt</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="614"/>
+        <location filename="../src/mainwindow.cpp" line="634"/>
         <source>The file %1 does not exist.</source>
         <translation>Tiedostoa %1 ei ole olemassa.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="622"/>
+        <location filename="../src/mainwindow.cpp" line="642"/>
         <source>Could not open file: </source>
         <translation>Tiedostoa ei voitu avata:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="710"/>
+        <location filename="../src/mainwindow.cpp" line="734"/>
         <source>Version:</source>
         <translation>Versio: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="713"/>
+        <location filename="../src/mainwindow.cpp" line="737"/>
         <source>About %1</source>
         <translation>%1 lisätietoja</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="762"/>
+        <location filename="../src/mainwindow.cpp" line="786"/>
         <source>Directory Creation Error</source>
         <translation>Hakemiston luontivirhe</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="763"/>
+        <location filename="../src/mainwindow.cpp" line="787"/>
         <source>Could not create directory: %1</source>
         <translation>Ei voitu luoda hakemistoa: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="810"/>
+        <location filename="../src/mainwindow.cpp" line="834"/>
         <source>Error</source>
         <translation>Virhe</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="810"/>
+        <location filename="../src/mainwindow.cpp" line="834"/>
         <source>Editor command failed with code %1</source>
         <translation>Editorikomento epäonnistui koodilla %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="711"/>
+        <location filename="../src/mainwindow.cpp" line="735"/>
         <source>Custom Toolbox is a tool used for creating a custom launcher</source>
         <translation>Custom Toolbox on työkalu, jota käytetään mukautetun käynnistysohjelman luomiseen</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="711"/>
+        <location filename="../src/mainwindow.cpp" line="735"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Copyright (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="714"/>
+        <location filename="../src/mainwindow.cpp" line="738"/>
         <source>%1 License</source>
         <translation>%1 lupa</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="721"/>
+        <location filename="../src/mainwindow.cpp" line="745"/>
         <source>%1 Help</source>
         <translation>%1 Apuopas</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="780"/>
+        <location filename="../src/mainwindow.cpp" line="804"/>
         <source>Could not write file: %1</source>
         <translation>Tiedostoa ei voitu kirjoittaa: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="785"/>
+        <location filename="../src/mainwindow.cpp" line="809"/>
         <source>File Removal Error</source>
         <translation>Tiedoston poistovirhe</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="785"/>
+        <location filename="../src/mainwindow.cpp" line="809"/>
         <source>Could not remove file: %1</source>
         <translation>Tiedostoa ei voitu poistaa: %1</translation>
     </message>
@@ -258,17 +266,17 @@
         <translation>&amp;Sulje</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="85"/>
+        <location filename="../src/main.cpp" line="86"/>
         <source>This app can be used to create custom launchers: box of buttons/icons</source>
         <translation>Tätä sovellusta voidaan käyttää mukautettujen käynnistimien luomiseen: painike-/kuvakelaatikko</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="88"/>
+        <location filename="../src/main.cpp" line="89"/>
         <source>Don&apos;t show &apos;show this dialog at startup&apos; checkbox</source>
         <translation>Älä näytä &quot;näytä tämä valintaikkuna käynnistettäessä&quot; -valintaruutua</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="90"/>
+        <location filename="../src/main.cpp" line="91"/>
         <source>Full path and name of the .list file you want to load to set up the application</source>
         <translation>Sen .list-tiedoston koko polku ja nimi, jonka haluat ladata sovelluksen määrittämistä varten</translation>
     </message>
@@ -277,12 +285,12 @@
         <location filename="../src/about.cpp" line="53"/>
         <location filename="../src/about.cpp" line="61"/>
         <location filename="../src/about.cpp" line="64"/>
-        <location filename="../src/main.cpp" line="100"/>
+        <location filename="../src/main.cpp" line="101"/>
         <source>Error</source>
         <translation>Virhe</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="101"/>
+        <location filename="../src/main.cpp" line="102"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
         <translation>Olet kirjautunut sisään pääkäyttäjänä. Kirjaudu sisään normaalina käyttäjänä käyttääksesi tätä ohjelmaa.</translation>
     </message>

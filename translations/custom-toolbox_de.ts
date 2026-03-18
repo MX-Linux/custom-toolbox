@@ -3,7 +3,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../src/mainwindow.ui" line="20"/>
-        <location filename="../src/mainwindow.cpp" line="207"/>
+        <location filename="../src/mainwindow.cpp" line="203"/>
         <source>Custom Toolbox</source>
         <translation>Benutzerdefinierte Werkzeuge</translation>
     </message>
@@ -79,137 +79,145 @@
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="255"/>
-        <location filename="../src/mainwindow.cpp" line="274"/>
-        <location filename="../src/mainwindow.cpp" line="295"/>
-        <location filename="../src/mainwindow.cpp" line="304"/>
+        <location filename="../src/mainwindow.cpp" line="269"/>
+        <location filename="../src/mainwindow.cpp" line="277"/>
+        <location filename="../src/mainwindow.cpp" line="294"/>
+        <location filename="../src/mainwindow.cpp" line="302"/>
+        <location filename="../src/mainwindow.cpp" line="312"/>
         <source>Execution Error</source>
-        <translation type="unfinished"/>
+        <translation>Fehler bei Ausführung</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="255"/>
         <source>Command is empty. Cannot execute.</source>
-        <translation type="unfinished"/>
+        <translation>Befehl ist leer. Nicht ausführbar.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="274"/>
-        <location filename="../src/mainwindow.cpp" line="295"/>
+        <location filename="../src/mainwindow.cpp" line="269"/>
+        <source>Failed to start command: %1</source>
+        <translation>Befehl konnte nicht gestartet werden: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="277"/>
+        <location filename="../src/mainwindow.cpp" line="302"/>
         <source>Failed to execute command: %1</source>
-        <translation type="unfinished"/>
+        <translation>Befehl konnte nicht ausgeführt werden: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="304"/>
+        <location filename="../src/mainwindow.cpp" line="294"/>
+        <location filename="../src/mainwindow.cpp" line="312"/>
         <source>Failed to start program: %1</source>
-        <translation type="unfinished"/>
+        <translation>Programm konnte nicht gestartet werden: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="344"/>
+        <location filename="../src/mainwindow.cpp" line="352"/>
         <source>Open List File</source>
         <translation>Eine List-Datei öffnen</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="344"/>
+        <location filename="../src/mainwindow.cpp" line="352"/>
         <source>List Files (*.list)</source>
         <translation>List-Dateien (*.list)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="346"/>
+        <location filename="../src/mainwindow.cpp" line="354"/>
         <source>File Selection Error</source>
         <translation>Fehler bei der Dateiauswahl</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="346"/>
+        <location filename="../src/mainwindow.cpp" line="354"/>
         <source>No file selected. Application will now exit.</source>
         <translation>Keine Datei ausgewählt. Die Anwendung wird nun beendet.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="352"/>
-        <location filename="../src/mainwindow.cpp" line="622"/>
-        <location filename="../src/mainwindow.cpp" line="780"/>
+        <location filename="../src/mainwindow.cpp" line="360"/>
+        <location filename="../src/mainwindow.cpp" line="642"/>
+        <location filename="../src/mainwindow.cpp" line="804"/>
         <source>File Open Error</source>
         <translation>Fehler beim Öffnen der Datei</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="353"/>
+        <location filename="../src/mainwindow.cpp" line="361"/>
         <source>Could not open file. Do you want to try again?</source>
         <translation>Konnte Datei nicht öffnen, möchten Sie es erneut versuchen?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="614"/>
+        <location filename="../src/mainwindow.cpp" line="634"/>
         <source>File Not Found</source>
         <translation>Datei nicht gefunden</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="614"/>
+        <location filename="../src/mainwindow.cpp" line="634"/>
         <source>The file %1 does not exist.</source>
         <translation>Die Datei %1 existiert nicht.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="622"/>
+        <location filename="../src/mainwindow.cpp" line="642"/>
         <source>Could not open file: </source>
         <translation>Konnte Datei nicht öffnen:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="710"/>
+        <location filename="../src/mainwindow.cpp" line="734"/>
         <source>Version:</source>
         <translation>Version:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="713"/>
+        <location filename="../src/mainwindow.cpp" line="737"/>
         <source>About %1</source>
         <translation>Über %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="762"/>
+        <location filename="../src/mainwindow.cpp" line="786"/>
         <source>Directory Creation Error</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Erzeugen des Verzeichnisses</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="763"/>
+        <location filename="../src/mainwindow.cpp" line="787"/>
         <source>Could not create directory: %1</source>
-        <translation type="unfinished"/>
+        <translation>Verzeichnis konnte nicht angelegt werden: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="810"/>
+        <location filename="../src/mainwindow.cpp" line="834"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="810"/>
+        <location filename="../src/mainwindow.cpp" line="834"/>
         <source>Editor command failed with code %1</source>
-        <translation type="unfinished"/>
+        <translation>Editorbefehl gescheitert mit Code %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="711"/>
+        <location filename="../src/mainwindow.cpp" line="735"/>
         <source>Custom Toolbox is a tool used for creating a custom launcher</source>
         <translation>Custom Toolbox ist ein Werkzeug, mit dem ein eigener Programmstarter erstellt werden kann</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="711"/>
+        <location filename="../src/mainwindow.cpp" line="735"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Copyright (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="714"/>
+        <location filename="../src/mainwindow.cpp" line="738"/>
         <source>%1 License</source>
         <translation>%1 Lizenz</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="721"/>
+        <location filename="../src/mainwindow.cpp" line="745"/>
         <source>%1 Help</source>
         <translation>%1 Hilfe</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="780"/>
+        <location filename="../src/mainwindow.cpp" line="804"/>
         <source>Could not write file: %1</source>
         <translation>Die Datei konnte nicht geschrieben werden: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="785"/>
+        <location filename="../src/mainwindow.cpp" line="809"/>
         <source>File Removal Error</source>
         <translation>Fehler beim Entfernen der Datei</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="785"/>
+        <location filename="../src/mainwindow.cpp" line="809"/>
         <source>Could not remove file: %1</source>
         <translation>Die Datei konnte nicht entfernt werden: %1</translation>
     </message>
@@ -219,22 +227,22 @@
     <message>
         <location filename="../src/about.cpp" line="48"/>
         <source>Failed to start mx-viewer</source>
-        <translation type="unfinished"/>
+        <translation>MX-Viewer konnte nicht gestartet werden</translation>
     </message>
     <message>
         <location filename="../src/about.cpp" line="53"/>
         <source>Failed to start xdg-open</source>
-        <translation type="unfinished"/>
+        <translation>xdg-open konnte nicht gestartet werden</translation>
     </message>
     <message>
         <location filename="../src/about.cpp" line="62"/>
         <source>Failed to determine user name. Cannot open document.</source>
-        <translation type="unfinished"/>
+        <translation>Benutzername konnte nicht bestimmt werden. Dokument ist nicht zu öffnen.</translation>
     </message>
     <message>
         <location filename="../src/about.cpp" line="64"/>
         <source>Failed to start runuser</source>
-        <translation type="unfinished"/>
+        <translation>runuser konnte nicht gestartet werden</translation>
     </message>
     <message>
         <location filename="../src/about.cpp" line="79"/>
@@ -258,17 +266,17 @@
         <translation>&amp;Schließen</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="85"/>
+        <location filename="../src/main.cpp" line="86"/>
         <source>This app can be used to create custom launchers: box of buttons/icons</source>
         <translation>Diese Anwendung kann verwendet werden, um benutzerdefinierte Programmstarter zu erstellen: Box mit Schaltflächen/Symbolen</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="88"/>
+        <location filename="../src/main.cpp" line="89"/>
         <source>Don&apos;t show &apos;show this dialog at startup&apos; checkbox</source>
         <translation>Das Kontrollkästchen &quot;Diesen Dialog beim Startvorgang zeigen&quot; nicht anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="90"/>
+        <location filename="../src/main.cpp" line="91"/>
         <source>Full path and name of the .list file you want to load to set up the application</source>
         <translation>Vollständiger Pfad und Name der .list-Datei, die zum Einrichten der Anwendung geladen werden soll</translation>
     </message>
@@ -277,12 +285,12 @@
         <location filename="../src/about.cpp" line="53"/>
         <location filename="../src/about.cpp" line="61"/>
         <location filename="../src/about.cpp" line="64"/>
-        <location filename="../src/main.cpp" line="100"/>
+        <location filename="../src/main.cpp" line="101"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="101"/>
+        <location filename="../src/main.cpp" line="102"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
         <translation>Sie sind als Administrator am System angemeldet. Bitte melden Sie sich ab und dann als normaler Benutzer wieder an, um dieses Programm zu verwenden.</translation>
     </message>
