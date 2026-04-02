@@ -77,6 +77,7 @@ private:
     QString file_name;
     QString gui_editor;
     QString icon_theme;
+    const QString default_icon_theme {QIcon::themeName()};
     QLocale locale;
     QString lang;
     QStringList categories;
@@ -112,6 +113,7 @@ private:
     void center_window();
     void clear_grid_layout();
     void prepare_command(const ItemInfo &item, QString &cmd);
+    void run_synchronous(const QString &cmd, bool use_shell);
     void process_line(const QString &line);
     void read_file(const QString &file_name);
     void set_connections();

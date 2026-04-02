@@ -143,7 +143,8 @@ QIcon MainWindow::find_icon(const QString &icon_name)
     }
 
     // Handle absolute paths
-    if (QFileInfo::exists(icon_name) && QFileInfo(icon_name).isAbsolute()) {
+    const QFileInfo icon_info(icon_name);
+    if (icon_info.isAbsolute() && icon_info.exists()) {
         QIcon result(icon_name);
         icon_cache[icon_name] = result;
         return result;
@@ -244,6 +245,37 @@ void MainWindow::set_gui()
     ui->pushCancel->setDefault(false);
 }
 
+void MainWindow::run_synchronous(const QString &cmd, bool use_shell)
+{
+    if (hide_gui) {
+        hide();
+    }
+
+    QProcess proc;
+    if (use_shell) {
+        proc.start("/bin/sh", {"-c", cmd});
+    } else {
+        QStringList arguments = QProcess::splitCommand(cmd);
+        const QString program = arguments.takeFirst();
+        proc.start(program, arguments);
+    }
+
+    if (!proc.waitForStarted()) {
+        QMessageBox::warning(this, tr("Execution Error"), tr("Failed to start command: %1").arg(cmd));
+    } else {
+        while (!proc.waitForFinished(100)) {
+            QApplication::processEvents();
+        }
+        if (proc.exitCode() != 0) {
+            QMessageBox::warning(this, tr("Execution Error"), tr("Failed to execute command: %1").arg(cmd));
+        }
+    }
+
+    if (hide_gui) {
+        show();
+    }
+}
+
 void MainWindow::btn_clicked()
 {
     const auto *button = sender();
@@ -256,56 +288,10 @@ void MainWindow::btn_clicked()
         return;
     }
 
-    // pkexec requires shell for variable expansion and synchronous execution
-    if (cmd.startsWith("pkexec")) {
-        if (hide_gui) {
-            hide();
-        }
-
-        QProcess proc;
-        proc.start("/bin/sh", {"-c", cmd});
-
-        if (!proc.waitForStarted()) {
-            QMessageBox::warning(this, tr("Execution Error"), tr("Failed to start command: %1").arg(cmd));
-        } else {
-            // Wait for process to finish while keeping event loop responsive
-            while (!proc.waitForFinished(100)) {
-                QApplication::processEvents();
-            }
-
-            if (proc.exitCode() != 0) {
-                QMessageBox::warning(this, tr("Execution Error"), tr("Failed to execute command: %1").arg(cmd));
-            }
-        }
-
-        if (hide_gui) {
-            show();
-        }
-    } else if (hide_gui) {
-        // Non-pkexec commands with hide_gui need synchronous execution
-        hide();
-
-        QProcess proc;
-        QStringList arguments = QProcess::splitCommand(cmd);
-        const QString program = arguments.takeFirst();
-        proc.start(program, arguments);
-
-        if (!proc.waitForStarted()) {
-            QMessageBox::warning(this, tr("Execution Error"), tr("Failed to start program: %1").arg(program));
-        } else {
-            // Wait for process to finish while keeping event loop responsive
-            while (!proc.waitForFinished(100)) {
-                QApplication::processEvents();
-            }
-
-            if (proc.exitCode() != 0) {
-                QMessageBox::warning(this, tr("Execution Error"), tr("Failed to execute command: %1").arg(cmd));
-            }
-        }
-
-        show();
+    // pkexec requires shell for variable expansion; hide_gui requires synchronous execution
+    if (cmd.startsWith("pkexec") || hide_gui) {
+        run_synchronous(cmd, cmd.startsWith("pkexec"));
     } else {
-        // Non-pkexec commands without hide_gui can be run detached
         QStringList arguments = QProcess::splitCommand(cmd);
         const QString program = arguments.takeFirst();
         if (!QProcess::startDetached(program, arguments)) {
@@ -426,33 +412,13 @@ MainWindow::ItemInfo MainWindow::get_desktop_file_info(const QString &file_name)
     const QString text = file.readAll();
     file.close();
 
-    // Helper lambda to search for a pattern and extract the first capture group
-    auto match_pattern = [this, &text](const QString &pattern) -> QString {
-        if (!regex_cache.contains(pattern)) {
-            regex_cache[pattern] = QRegularExpression(pattern, QRegularExpression::MultilineOption);
-        }
-        const auto match = regex_cache[pattern].match(text);
-        return match.hasMatch() ? match.captured(1) : QString();
-    };
-
-    // Function to attempt matching localized fields first, then fall back to non-localized
-    auto match_localized_field = [&](const QString &field) -> QString {
-        QString value = match_pattern("^" + field + "\\[" + lang + "\\]=(.*)$");
-        if (value.isEmpty()) {
-            value = match_pattern("^" + field + "\\[" + lang.section('_', 0, 0) + "\\]=(.*)$");
-        }
-        if (value.isEmpty()) {
-            value = match_pattern("^" + field + "=(.*)$");
-        }
-        return value;
-    };
-
     item.category.clear(); // Will be set by caller in process_line()
-    item.name = match_localized_field("Name").remove(QRegularExpression("^MX "));
-    item.comment = match_localized_field("Comment");
-    item.icon_name = match_pattern("^Icon=(.*)$");
-    item.exec = match_pattern("^Exec=(.*)$");
-    item.terminal = match_pattern("^Terminal=(.*)$").toLower() == "true";
+    static const QRegularExpression mx_prefix("^MX ");
+    item.name = extract_pattern(text, "Name").remove(mx_prefix);
+    item.comment = extract_pattern(text, "Comment");
+    item.icon_name = extract_pattern(text, "Icon");
+    item.exec = extract_pattern(text, "Exec");
+    item.terminal = extract_pattern(text, "Terminal").toLower() == "true";
     item.root = false; // Will be set by caller based on keywords
     item.user = false; // Will be set by caller based on keywords
 
@@ -636,8 +602,9 @@ void MainWindow::read_file(const QString &file_name)
         return;
     }
 
-    custom_name = QFileInfo(file_name).baseName();
-    file_location = QFileInfo(file_name).path();
+    const QFileInfo file_info(file_name);
+    custom_name = file_info.baseName();
+    file_location = file_info.path();
 
     if (!file.open(QFile::ReadOnly | QFile::Text)) {
         QMessageBox::critical(this, tr("File Open Error"), tr("Could not open file: ") + file_name);
@@ -676,7 +643,7 @@ void MainWindow::read_file(const QString &file_name)
         pos = endPos + 1;
     }
 
-    QIcon::setThemeName(icon_theme);
+    QIcon::setThemeName(icon_theme.isEmpty() ? default_icon_theme : icon_theme);
 }
 
 QString MainWindow::extract_pattern(const QString &text, const QString &key)

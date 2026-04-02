@@ -52,7 +52,3 @@ void FlatButton::enterEvent(QEnterEvent *e)
     QPushButton::enterEvent(e);
 }
 
-void FlatButton::setIconSize(int x, int y)
-{
-    QPushButton::setIconSize(QSize(x, y));
-}

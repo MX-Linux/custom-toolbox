@@ -33,9 +33,6 @@ class FlatButton : public QPushButton
 public:
     explicit FlatButton(QWidget *parent = nullptr);
     explicit FlatButton(const QString &name, QWidget *parent = nullptr);
-    using QPushButton::setIconSize;
-    void setIconSize(int, int);
-
 protected:
     void enterEvent(QEnterEvent *e) override;
     void leaveEvent(QEvent *e) override;
