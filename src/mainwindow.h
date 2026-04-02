@@ -98,11 +98,11 @@ private:
 
     [[nodiscard]] ItemInfo get_desktop_file_info(const QString &file_name);
     [[nodiscard]] QIcon find_icon(const QString &icon_name);
-    [[nodiscard]] QString extract_pattern(const QString &text, const QString &key);
+    [[nodiscard]] QString extract_localized_value(const QString &text, const QString &key) const;
     [[nodiscard]] QString get_default_editor();
     [[nodiscard]] QString get_desktop_file_name(const QString &app_name) const;
     [[nodiscard]] QString get_file_name();
-    [[nodiscard]] QStringList build_editor_command(const QString &editor);
+    [[nodiscard]] QStringList build_editor_prefix(const QString &editor);
     static void fix_exec_item(QString *item);
     static void fix_name_item(QString *item);
     void add_buttons(const QMultiMap<QString, ItemInfo> &map);

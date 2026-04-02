@@ -25,8 +25,6 @@
 #include <QEvent>
 #include <QPushButton>
 
-class QEvent;
-
 class FlatButton : public QPushButton
 {
     Q_OBJECT

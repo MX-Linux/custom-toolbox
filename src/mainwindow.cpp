@@ -26,7 +26,6 @@
 #include "ui_mainwindow.h"
 
 #include <QDebug>
-#include <QDirIterator>
 #include <QFile>
 #include <QFileDialog>
 #include <QFileInfo>
@@ -34,11 +33,9 @@
 #include <QRegularExpression>
 #include <QResizeEvent>
 #include <QScreen>
-#include <QScrollBar>
 #include <QSettings>
 #include <QStandardPaths>
 #include <QStringView>
-#include <QTextEdit>
 
 #include "about.h"
 #include "flatbutton.h"
@@ -224,7 +221,7 @@ void MainWindow::set_gui()
     setMinimumSize(min_width, min_height);
 
     QSettings settings(QApplication::organizationName(),
-                       QApplication::applicationName() + '_' + QFileInfo(file_name).baseName());
+                       QApplication::applicationName() + '_' + custom_name);
     const QSize old_size = size();
     if (settings.contains("geometry")) {
         restoreGeometry(settings.value("geometry").toByteArray());
@@ -303,7 +300,7 @@ void MainWindow::btn_clicked()
 void MainWindow::closeEvent(QCloseEvent * /*unused*/)
 {
     QSettings settings(QApplication::organizationName(),
-                       QApplication::applicationName() + "_" + QFileInfo(file_name).baseName());
+                       QApplication::applicationName() + '_' + custom_name);
     settings.setValue("geometry", saveGeometry());
 }
 
@@ -414,11 +411,11 @@ MainWindow::ItemInfo MainWindow::get_desktop_file_info(const QString &file_name)
 
     item.category.clear(); // Will be set by caller in process_line()
     static const QRegularExpression mx_prefix("^MX ");
-    item.name = extract_pattern(text, "Name").remove(mx_prefix);
-    item.comment = extract_pattern(text, "Comment");
-    item.icon_name = extract_pattern(text, "Icon");
-    item.exec = extract_pattern(text, "Exec");
-    item.terminal = extract_pattern(text, "Terminal").toLower() == "true";
+    item.name = extract_localized_value(text, "Name").remove(mx_prefix);
+    item.comment = extract_localized_value(text, "Comment");
+    item.icon_name = extract_localized_value(text, "Icon");
+    item.exec = extract_localized_value(text, "Exec");
+    item.terminal = extract_localized_value(text, "Terminal").toLower() == "true";
     item.root = false; // Will be set by caller based on keywords
     item.user = false; // Will be set by caller based on keywords
 
@@ -553,10 +550,6 @@ void MainWindow::process_line(const QString &line)
         icon_theme = value;
     } else {
         const QStringList key_tokens = key.split(' ');
-        if (key_tokens.isEmpty()) {
-            return;
-        }
-
         const QString desktop_file = get_desktop_file_name(key_tokens.first());
         if (!desktop_file.isEmpty()) {
             ItemInfo info = get_desktop_file_info(desktop_file);
@@ -614,8 +607,8 @@ void MainWindow::read_file(const QString &file_name)
     const QString text = file.readAll();
     file.close();
 
-    const QString name = extract_pattern(text, "Name");
-    const QString comment = extract_pattern(text, "Comment");
+    const QString name = extract_localized_value(text, "Name");
+    const QString comment = extract_localized_value(text, "Comment");
 
     setWindowTitle(name);
     ui->commentLabel->setText(comment);
@@ -646,7 +639,7 @@ void MainWindow::read_file(const QString &file_name)
     QIcon::setThemeName(icon_theme.isEmpty() ? default_icon_theme : icon_theme);
 }
 
-QString MainWindow::extract_pattern(const QString &text, const QString &key)
+QString MainWindow::extract_localized_value(const QString &text, const QString &key) const
 {
     const QString pattern = QStringLiteral("^%1\\[%2]=(.*)$").arg(key, lang);
     const QString fallback_pattern = QStringLiteral("^%1=(.*)$").arg(key);
@@ -792,7 +785,7 @@ void MainWindow::push_edit_clicked()
         return "'" + quoted + "'";
     };
 
-    QStringList cmd_parts = build_editor_command(editor);
+    QStringList cmd_parts = build_editor_prefix(editor);
     cmd_parts << shell_quote(editor) << shell_quote(file_name);
 
     const int exit_code = QProcess::execute("/bin/sh", {"-c", cmd_parts.join(' ')});
@@ -837,7 +830,7 @@ QString MainWindow::get_default_editor()
     return "nano"; // Fallback to nano
 }
 
-QStringList MainWindow::build_editor_command(const QString &editor)
+QStringList MainWindow::build_editor_prefix(const QString &editor)
 {
     const bool is_root = getuid() == 0;
     static const QRegularExpression elevates_pattern(R"(\b(kate|kwrite|featherpad|code|codium)$)");
@@ -845,20 +838,20 @@ QStringList MainWindow::build_editor_command(const QString &editor)
     const bool is_editor_that_elevates = elevates_pattern.match(editor).hasMatch();
     const bool is_cli_editor = cli_pattern.match(editor).hasMatch();
 
-    QStringList editor_commands;
+    QStringList prefix;
     if (is_root && is_editor_that_elevates) {
-        editor_commands << "pkexec --user $(logname)";
+        prefix << "pkexec --user $(logname)";
     } else if (!QFileInfo(file_name).isWritable() && !is_editor_that_elevates) {
-        editor_commands << "pkexec";
+        prefix << "pkexec";
     }
 
-    editor_commands << "env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY";
+    prefix << "env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY";
 
     if (is_cli_editor) {
-        editor_commands << "x-terminal-emulator -e";
+        prefix << "x-terminal-emulator -e";
     }
 
-    return editor_commands;
+    return prefix;
 }
 
 void MainWindow::handle_file_changed(const QString &path)
@@ -876,8 +869,7 @@ void MainWindow::handle_file_changed(const QString &path)
 
 void MainWindow::handle_directory_changed(const QString &path)
 {
-    const QString current_directory = QFileInfo(file_name).absolutePath();
-    if (path != current_directory) {
+    if (path != file_location) {
         return;
     }
 
@@ -892,8 +884,7 @@ void MainWindow::handle_directory_changed(const QString &path)
 
 void MainWindow::refresh_if_file_changed()
 {
-    const QFileInfo info(file_name);
-    if (!info.exists()) {
+    if (!QFile::exists(file_name)) {
         return;
     }
 
@@ -917,10 +908,9 @@ void MainWindow::watch_file(const QString &path)
         }
     }
 
-    const QString directory_path = QFileInfo(path).absolutePath();
-    if (!directory_path.isEmpty() && !file_watcher.directories().contains(directory_path)) {
-        if (!file_watcher.addPath(directory_path)) {
-            qWarning() << "Failed to add watch for directory:" << directory_path;
+    if (!file_location.isEmpty() && !file_watcher.directories().contains(file_location)) {
+        if (!file_watcher.addPath(file_location)) {
+            qWarning() << "Failed to add watch for directory:" << file_location;
         }
     }
 }
