@@ -47,7 +47,8 @@ MainWindow::MainWindow(const QCommandLineParser &arg_parser, QWidget *parent)
     : QDialog(parent),
       ui(new Ui::MainWindow),
       file_location {"/etc/custom-toolbox"},
-      lang(locale.name())
+      lang(locale.name()),
+      remove_startup_checkbox {arg_parser.isSet("remove-checkbox")}
 {
     ui->setupUi(this);
     set_connections();
@@ -59,7 +60,7 @@ MainWindow::MainWindow(const QCommandLineParser &arg_parser, QWidget *parent)
     file_reload_timer.setInterval(200);
     connect(&file_reload_timer, &QTimer::timeout, this, &MainWindow::refresh_if_file_changed);
 
-    if (arg_parser.isSet("remove-checkbox")) {
+    if (remove_startup_checkbox) {
         ui->checkBoxStartup->hide();
     }
 
@@ -233,7 +234,8 @@ void MainWindow::set_gui()
     add_buttons(category_map);
 
     // Check if .desktop file is in autostart; same custom_name as .list file
-    if (QFile::exists(QDir::homePath() + "/.config/autostart/" + custom_name + ".desktop")) {
+    if (!remove_startup_checkbox
+        && QFile::exists(QDir::homePath() + "/.config/autostart/" + custom_name + ".desktop")) {
         ui->checkBoxStartup->show();
         ui->checkBoxStartup->setChecked(true);
     }

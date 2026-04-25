@@ -85,6 +85,7 @@ private:
     QTimer file_reload_timer;
     bool first_run {true};
     bool hide_gui {};
+    bool remove_startup_checkbox {};
     const QStringList default_path {qEnvironmentVariable("PATH").split(':') << "/usr/sbin"};
     int col_count {};
     int fixed_number_col {};
