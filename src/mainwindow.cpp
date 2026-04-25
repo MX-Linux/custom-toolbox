@@ -776,10 +776,15 @@ void MainWindow::checkbox_startup_clicked(bool checked)
 
 void MainWindow::push_edit_clicked()
 {
-    const QString editor
-        = gui_editor.isEmpty() || QStandardPaths::findExecutable(gui_editor, {default_path}).isEmpty()
-              ? get_default_editor()
-              : gui_editor;
+    const QString gui_editor_program = QProcess::splitCommand(gui_editor).value(0);
+    const bool use_default_editor = gui_editor.isEmpty() || gui_editor_program.isEmpty()
+                                    || QStandardPaths::findExecutable(gui_editor_program, {default_path}).isEmpty();
+    const QString editor = use_default_editor ? get_default_editor() : gui_editor;
+    const QStringList editor_parts = QProcess::splitCommand(editor);
+    if (editor_parts.isEmpty()) {
+        QMessageBox::warning(this, tr("Error"), tr("Editor command is empty."));
+        return;
+    }
 
     // Helper to shell-quote arguments that may contain spaces or special characters
     auto shell_quote = [](const QString &arg) -> QString {
@@ -790,7 +795,10 @@ void MainWindow::push_edit_clicked()
     };
 
     QStringList cmd_parts = build_editor_prefix(editor);
-    cmd_parts << shell_quote(editor) << shell_quote(file_name);
+    for (const auto &part : editor_parts) {
+        cmd_parts << shell_quote(part);
+    }
+    cmd_parts << shell_quote(file_name);
 
     const int exit_code = QProcess::execute("/bin/sh", {"-c", cmd_parts.join(' ')});
     if (exit_code != 0) {
@@ -839,8 +847,10 @@ QStringList MainWindow::build_editor_prefix(const QString &editor)
     const bool is_root = getuid() == 0;
     static const QRegularExpression elevates_pattern(R"(\b(kate|kwrite|featherpad|code|codium)$)");
     static const QRegularExpression cli_pattern(R"(\b(nano|vi|vim|nvim|micro|emacs)\b)");
-    const bool is_editor_that_elevates = elevates_pattern.match(editor).hasMatch();
-    const bool is_cli_editor = cli_pattern.match(editor).hasMatch();
+    const QString editor_program = QProcess::splitCommand(editor).value(0);
+    const QString editor_name = QFileInfo(editor_program).baseName();
+    const bool is_editor_that_elevates = elevates_pattern.match(editor_name).hasMatch();
+    const bool is_cli_editor = cli_pattern.match(editor_name).hasMatch();
 
     QStringList prefix;
     if (is_root && is_editor_that_elevates) {
