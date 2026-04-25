@@ -237,7 +237,7 @@ hideGUI=false
 
 # Set GUI minimum size (pixels)
 min_height=500
-min_width=0
+min_width=300
 
 # Set icon size (pixels)
 icon_size=40
@@ -250,7 +250,7 @@ gui_editor=/usr/bin/featherpad
 #### Configuration Options
 
 - **hideGUI**: Hide or minimize the launcher window when starting an application
-- **min_height/min_width**: Set minimum window dimensions
+- **min_height/min_width**: Set minimum window dimensions, clamped to at least 300 pixels
 - **icon_size**: Size of application icons in pixels
 - **gui_editor**: Default text editor for editing configuration files
 
