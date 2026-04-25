@@ -428,6 +428,7 @@ void MainWindow::add_buttons(const QMultiMap<QString, ItemInfo> &map)
     int col = 0;
     int row = 0;
     const int max_cols = fixed_number_col != 0 ? fixed_number_col : qMax(1, width() / 200);
+    col_count = max_cols;
 
     QString prev_category;
     for (auto it = map.constBegin(); it != map.constEnd();) {
@@ -464,7 +465,6 @@ void MainWindow::add_category_label(const QString &category, int &row, int &col)
 
 void MainWindow::add_item_button(const ItemInfo &item, int &row, int &col, int max_cols)
 {
-    col_count = std::max(col_count, col + 1);
     QString name = item.name;
     QString cmd = item.exec;
     fix_name_item(&name);
