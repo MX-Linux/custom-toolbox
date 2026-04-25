@@ -154,6 +154,7 @@ blender
 - `Category=CategoryName` - Defines a new category tab
 - Following lines list application names (one per line)
 - Applications are launched using their desktop file names or executable names
+- Categories and applications are displayed in the order they appear in the `.list` file
 
 **Application Flags:**
 - `appname root` - Launch application with root privileges
