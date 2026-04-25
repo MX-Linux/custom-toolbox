@@ -68,7 +68,14 @@ MainWindow::MainWindow(const QCommandLineParser &arg_parser, QWidget *parent)
     setup();
 
     const QStringList arg_list = arg_parser.positionalArguments();
-    file_name = !arg_list.isEmpty() && QFile(arg_list.first()).exists() ? arg_list.first() : get_file_name();
+    if (arg_list.isEmpty()) {
+        file_name = get_file_name();
+    } else if (QFile::exists(arg_list.first())) {
+        file_name = arg_list.first();
+    } else {
+        QMessageBox::critical(this, tr("File Not Found"), tr("The file %1 does not exist.").arg(arg_list.first()));
+        exit(EXIT_FAILURE);
+    }
 
     read_file(file_name);
     watch_file(file_name);
