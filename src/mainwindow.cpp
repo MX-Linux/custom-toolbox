@@ -557,9 +557,11 @@ void MainWindow::process_line(const QString &line)
                 const bool has_root = key_tokens.contains("root");
                 const bool has_user = key_tokens.contains("user");
                 const bool has_alias = key_tokens.contains("alias");
+                const bool has_terminal = key_tokens.contains("terminal");
 
                 info.root = has_root;
                 info.user = has_user;
+                info.terminal = info.terminal || has_terminal;
 
                 if (has_alias) {
                     const int alias_index = key_tokens.indexOf("alias");
