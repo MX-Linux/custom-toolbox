@@ -84,6 +84,7 @@ private:
     QFileSystemWatcher file_watcher;
     QTimer file_reload_timer;
     bool first_run {true};
+    bool geometry_restored {};
     bool hide_gui {};
     bool remove_startup_checkbox {};
     const QStringList default_path {qEnvironmentVariable("PATH").split(':') << "/usr/sbin"};

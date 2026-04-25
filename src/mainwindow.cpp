@@ -224,11 +224,14 @@ void MainWindow::set_gui()
     QSettings settings(QApplication::organizationName(),
                        QApplication::applicationName() + '_' + custom_name);
     const QSize old_size = size();
-    if (settings.contains("geometry")) {
-        restoreGeometry(settings.value("geometry").toByteArray());
-        if (isMaximized()) { // Add option to resize if maximized
-            resize(old_size);
-            center_window();
+    if (!geometry_restored) {
+        geometry_restored = true;
+        if (settings.contains("geometry")) {
+            restoreGeometry(settings.value("geometry").toByteArray());
+            if (isMaximized()) { // Add option to resize if maximized
+                resize(old_size);
+                center_window();
+            }
         }
     }
     add_buttons(category_map);
