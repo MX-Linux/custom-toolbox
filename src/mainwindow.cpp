@@ -596,13 +596,6 @@ void MainWindow::process_line(const QString &line)
 // Open the .list file and process it
 void MainWindow::read_file(const QString &file_name)
 {
-    categories.clear();
-    categories.reserve(20); // Reserve space for typical number of categories
-    category_map.clear();
-    icon_cache.clear();
-    icon_theme.clear();
-    desktop_file_cache.clear();
-
     QFile file(file_name);
     if (!file.exists()) {
         QMessageBox::critical(this, tr("File Not Found"), tr("The file %1 does not exist.").arg(file_name));
@@ -617,6 +610,13 @@ void MainWindow::read_file(const QString &file_name)
         QMessageBox::critical(this, tr("File Open Error"), tr("Could not open file: ") + file_name);
         return;
     }
+
+    categories.clear();
+    categories.reserve(20); // Reserve space for typical number of categories
+    category_map.clear();
+    icon_cache.clear();
+    icon_theme.clear();
+    desktop_file_cache.clear();
 
     const QString text = file.readAll();
     file.close();
