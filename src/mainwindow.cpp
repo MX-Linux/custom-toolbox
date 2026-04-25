@@ -763,11 +763,27 @@ void MainWindow::checkbox_startup_clicked(bool checked)
         }
 
         if (QFile file(file_name); file.open(QFile::WriteOnly | QFile::Text)) {
+            auto escape_desktop_string = [](QString value) {
+                value.replace('\\', "\\\\");
+                value.replace('\n', "\\n");
+                value.replace('\r', "\\r");
+                value.replace('\t', "\\t");
+                return value;
+            };
+            auto quote_exec_arg = [](QString value) {
+                value.replace('\\', "\\\\");
+                value.replace('"', "\\\"");
+                value.replace('$', "\\$");
+                value.replace('`', "\\`");
+                return '"' + value + '"';
+            };
+
+            const QString list_path = QDir(file_location).filePath(custom_name + ".list");
             QTextStream out(&file);
             out << "[Desktop Entry]\n"
-                << "Name=" << windowTitle() << '\n'
-                << "Comment=" << ui->commentLabel->text() << '\n'
-                << "Exec=custom-toolbox \"" << file_location << '/' << custom_name << ".list\"\n"
+                << "Name=" << escape_desktop_string(windowTitle()) << '\n'
+                << "Comment=" << escape_desktop_string(ui->commentLabel->text()) << '\n'
+                << "Exec=custom-toolbox " << quote_exec_arg(list_path) << '\n'
                 << "Terminal=false\n"
                 << "Type=Application\n"
                 << "Icon=custom-toolbox\n"
