@@ -4,11 +4,11 @@ Comment=This is the INI version of the launcher
 IconTheme=Adwaita
 
 [Categories]
-# List categories to define their order
+; List categories to define their order
 list=Live, Maintenance, Utilities
 
 [Live]
-# Items can be simple names or include flags like :root, :user, :terminal, or :alias="..."
+; Items can be simple names or include flags like :root, :user, :terminal, or :alias="..."
 items=live-usb-maker-gui, mx-snapshot:root
 
 [Maintenance]

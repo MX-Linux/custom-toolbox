@@ -4,6 +4,8 @@
 #include <QString>
 #include <QStringList>
 
+class QSettings;
+
 class LauncherParser
 {
 public:
@@ -25,6 +27,6 @@ public:
     };
 
     static ParseResult parse(const QString &text, const QString &lang);
-    static ParseResult parse_ini(const QString &file_path, const QString &lang);
+    static ParseResult parse_ini(QSettings &settings, const QString &lang);
     static QString extract_localized_value(const QString &text, const QString &key, const QString &lang);
 };

@@ -138,15 +138,12 @@ LauncherParser::ParseResult LauncherParser::parse(const QString &text, const QSt
     return result;
 }
 
-LauncherParser::ParseResult LauncherParser::parse_ini(const QString &file_path, const QString &lang)
+LauncherParser::ParseResult LauncherParser::parse_ini(QSettings &settings, const QString &lang)
 {
     ParseResult result;
-    QSettings settings(file_path, QSettings::IniFormat);
 
-    auto get_localized = [&](const QString &group, const QString &key) -> QString {
-        if (!group.isEmpty()) {
-            settings.beginGroup(group);
-        }
+    // Keys under [General] are stored at root scope by QSettings.
+    auto get_localized = [&](const QString &key) -> QString {
         QString val = settings.value(QStringLiteral("%1[%2]").arg(key, lang)).toString();
         if (val.isEmpty()) {
             val = settings.value(QStringLiteral("%1[%2]").arg(key, lang.section('_', 0, 0))).toString();
@@ -154,15 +151,12 @@ LauncherParser::ParseResult LauncherParser::parse_ini(const QString &file_path, 
         if (val.isEmpty()) {
             val = settings.value(key).toString();
         }
-        if (!group.isEmpty()) {
-            settings.endGroup();
-        }
         return val;
     };
 
-    result.name = get_localized(QStringLiteral("General"), QStringLiteral("Name"));
-    result.comment = get_localized(QStringLiteral("General"), QStringLiteral("Comment"));
-    result.icon_theme = settings.value(QStringLiteral("General/IconTheme")).toString();
+    result.name = get_localized(QStringLiteral("Name"));
+    result.comment = get_localized(QStringLiteral("Comment"));
+    result.icon_theme = settings.value(QStringLiteral("IconTheme")).toString();
 
     const QStringList category_list = settings.value(QStringLiteral("Categories/list")).toStringList();
     for (const QString &cat_name : category_list) {
@@ -186,15 +180,7 @@ LauncherParser::ParseResult LauncherParser::parse_ini(const QString &file_path, 
             item.category = trimmed_cat;
 
             // Handle flags: item:root:terminal:alias="My Name"
-            // Simple split by ':' but need to respect quotes for alias
-            QString name_part;
-            QString remaining = trimmed_item;
-
-            // Basic parsing for flags
-            const QStringList tokens = remaining.split(QLatin1Char(':'));
-            if (tokens.isEmpty()) {
-                continue;
-            }
+            const QStringList tokens = trimmed_item.split(QLatin1Char(':'));
             item.app_name = tokens.first();
 
             for (int i = 1; i < tokens.size(); ++i) {

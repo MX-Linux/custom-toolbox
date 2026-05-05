@@ -32,14 +32,14 @@ app4 user</pre>
 <p>Keywords like <code>root</code>, <code>user</code>, <code>terminal</code>, and <code>alias="..."</code> can follow the application name.</p>
 
 <h3>2. INI Format</h3>
-<p>The program automatically detects this format if a <code>[General]</code> section is present.</p>
+<p>The program automatically detects this format if a <code>[Categories]</code> section is present. Comments use <code>;</code> (the standard INI comment marker).</p>
 <pre>[General]
 Name=Name of the Launcher
 Comment=This is a comment
 IconTheme=Adwaita
 
 [Categories]
-# List categories to define their order
+; List categories to define their order
 list=First Category, Second Category
 
 [First Category]

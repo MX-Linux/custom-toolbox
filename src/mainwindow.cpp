@@ -536,19 +536,15 @@ void MainWindow::read_file(const QString &file_name)
     desktop_file_index.clear();
     desktop_file_index_built = false;
 
-    // Try loading as INI first
-    bool is_ini = false;
-    {
-        QSettings settings(file_name, QSettings::IniFormat);
-        if (settings.childGroups().contains(QStringLiteral("General"))
-            || settings.contains(QStringLiteral("General/Name"))) {
-            is_ini = true;
-        }
-    }
+    // Detect INI format. QSettings puts [General] keys at root scope, so we
+    // identify the new format by the presence of the [Categories] section.
+    QSettings ini_settings(file_name, QSettings::IniFormat);
+    const bool is_ini = ini_settings.status() == QSettings::NoError
+                        && ini_settings.contains(QStringLiteral("Categories/list"));
 
     LauncherParser::ParseResult parsed;
     if (is_ini) {
-        parsed = LauncherParser::parse_ini(file_name, lang);
+        parsed = LauncherParser::parse_ini(ini_settings, lang);
     } else {
         QFile file(file_name);
         if (file.open(QFile::ReadOnly | QFile::Text)) {

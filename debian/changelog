@@ -1,3 +1,12 @@
+custom-toolbox (26.05.1) mx; urgency=medium
+
+  * INI detection — switched to ini_settings.contains("Categories/list") (the [General] test was a no-op since QSettings folds [General] into root scope).
+  * parse_ini reads from wrong scope — Name/Comment/IconTheme now read at root, not under a General group.
+  * Reopening the file — parse_ini now takes QSettings &; read_file() constructs one instance and reuses it for both detection and parsing. Signature in launcherparser.h updated.
+  * Comment marker — example-ini.list and help/help.html now use ; (QSettings INI format does not strip #-prefixed lines). Help text also corrected from "detects on [General]" to "detects on [Categories]".
+
+ -- Adrian <adrian@mxlinux.org>  Tue, 05 May 2026 08:58:39 -0400
+
 custom-toolbox (26.05) mx; urgency=medium
 
   * Add support for INI format in .list files with automatic detection
