@@ -1,5 +1,7 @@
 custom-toolbox (26.05) mx; urgency=medium
 
+  * Add support for INI format in .list files with automatic detection
+  * Fix GUI resizing unexpectedly during file reloads
   * Find applications more reliably, including those installed in non-standard locations
   * Honor the terminal flag in .list files so terminal apps open in a terminal again
   * Fix column layout not adjusting correctly when resizing the window

@@ -14,28 +14,41 @@
 
 <h2>Structure of a <code>.list</code> file</h2>
 
-<p>You can find an example in <code>/etc/custom-toolbox</code>.</p>
+<p>You can find examples in <code>/etc/custom-toolbox</code>. The application supports two formats: <b>Custom</b> (Key=Value) and <b>INI</b>.</p>
 
+<h3>1. Custom Format</h3>
 <pre># Comments that start with # are ignored
-# Simple text file containing Name= Comment= Category= keywords
-# with the list of app names under each corresponding category
-# optional "root" flag can follow app name to indicate how to run the app
-
 Name=Name of the Launcher
-Comment=This is a comment/description for the launcher
+Comment=This is a comment/description
 
 Category=Name of the category
 app1
 app2 root
-app3
+app3 terminal alias="My App"
 
 Category=Second category
-app4 root
-app5</pre>
+app4 user</pre>
 
-<p>In this example, <code>app2</code> and <code>app4</code> run as root. The other applications are launched as the normal user.</p>
+<p>Keywords like <code>root</code>, <code>user</code>, <code>terminal</code>, and <code>alias="..."</code> can follow the application name.</p>
 
-<p>Categories and applications are displayed in the order they appear in the <code>.list</code> file.</p>
+<h3>2. INI Format</h3>
+<p>The program automatically detects this format if a <code>[General]</code> section is present.</p>
+<pre>[General]
+Name=Name of the Launcher
+Comment=This is a comment
+IconTheme=Adwaita
+
+[Categories]
+# List categories to define their order
+list=First Category, Second Category
+
+[First Category]
+items=app1, app2:root, app3:terminal:alias="My App"
+
+[Second Category]
+items=app4:user</pre>
+
+<p>In the INI format, flags are separated by colons (<code>:</code>). Localization is supported using brackets, e.g., <code>Name[fr]=Nom</code>.</p>
 
 <p><strong>Only applications that have a corresponding <code>.desktop</code> file appear in the custom launcher.</strong></p>
 

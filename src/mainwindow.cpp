@@ -133,8 +133,6 @@ void MainWindow::setup()
 // Add buttons and resize GUI
 void MainWindow::set_gui()
 {
-    clear_grid_layout();
-    adjustSize();
     setMinimumSize(min_width, min_height);
 
     QSettings settings(QApplication::organizationName(),
@@ -522,8 +520,7 @@ void MainWindow::clear_grid_layout()
 // Open the .list file and process it
 void MainWindow::read_file(const QString &file_name)
 {
-    QFile file(file_name);
-    if (!file.exists()) {
+    if (!QFile::exists(file_name)) {
         QMessageBox::critical(this, tr("File Not Found"), tr("The file %1 does not exist.").arg(file_name));
         return;
     }
@@ -532,14 +529,6 @@ void MainWindow::read_file(const QString &file_name)
     custom_name = file_info.baseName();
     file_location = file_info.path();
 
-    if (!file.open(QFile::ReadOnly | QFile::Text)) {
-        QMessageBox::critical(this, tr("File Open Error"), tr("Could not open file: ") + file_name);
-        return;
-    }
-
-    const QString text = file.readAll();
-    file.close();
-
     category_map.clear();
     IconLoader::clearCache();
     icon_theme.clear();
@@ -547,9 +536,31 @@ void MainWindow::read_file(const QString &file_name)
     desktop_file_index.clear();
     desktop_file_index_built = false;
 
-    const auto parsed = LauncherParser::parse(text, lang);
-    icon_theme = parsed.icon_theme;
+    // Try loading as INI first
+    bool is_ini = false;
+    {
+        QSettings settings(file_name, QSettings::IniFormat);
+        if (settings.childGroups().contains(QStringLiteral("General"))
+            || settings.contains(QStringLiteral("General/Name"))) {
+            is_ini = true;
+        }
+    }
 
+    LauncherParser::ParseResult parsed;
+    if (is_ini) {
+        parsed = LauncherParser::parse_ini(file_name, lang);
+    } else {
+        QFile file(file_name);
+        if (file.open(QFile::ReadOnly | QFile::Text)) {
+            parsed = LauncherParser::parse(file.readAll(), lang);
+            file.close();
+        } else {
+            QMessageBox::critical(this, tr("File Open Error"), tr("Could not open file: ") + file_name);
+            return;
+        }
+    }
+
+    icon_theme = parsed.icon_theme;
     setWindowTitle(parsed.name);
     ui->commentLabel->setText(parsed.comment);
 

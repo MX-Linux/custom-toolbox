@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QHash>
 #include <QRegularExpression>
+#include <QSettings>
 #include <QStringView>
 
 namespace
@@ -132,6 +133,89 @@ LauncherParser::ParseResult LauncherParser::parse(const QString &text, const QSt
         }
 
         result.items.append(item);
+    }
+
+    return result;
+}
+
+LauncherParser::ParseResult LauncherParser::parse_ini(const QString &file_path, const QString &lang)
+{
+    ParseResult result;
+    QSettings settings(file_path, QSettings::IniFormat);
+
+    auto get_localized = [&](const QString &group, const QString &key) -> QString {
+        if (!group.isEmpty()) {
+            settings.beginGroup(group);
+        }
+        QString val = settings.value(QStringLiteral("%1[%2]").arg(key, lang)).toString();
+        if (val.isEmpty()) {
+            val = settings.value(QStringLiteral("%1[%2]").arg(key, lang.section('_', 0, 0))).toString();
+        }
+        if (val.isEmpty()) {
+            val = settings.value(key).toString();
+        }
+        if (!group.isEmpty()) {
+            settings.endGroup();
+        }
+        return val;
+    };
+
+    result.name = get_localized(QStringLiteral("General"), QStringLiteral("Name"));
+    result.comment = get_localized(QStringLiteral("General"), QStringLiteral("Comment"));
+    result.icon_theme = settings.value(QStringLiteral("General/IconTheme")).toString();
+
+    const QStringList category_list = settings.value(QStringLiteral("Categories/list")).toStringList();
+    for (const QString &cat_name : category_list) {
+        const QString trimmed_cat = cat_name.trimmed();
+        if (trimmed_cat.isEmpty()) {
+            continue;
+        }
+        result.categories.append(trimmed_cat);
+
+        settings.beginGroup(trimmed_cat);
+        const QStringList raw_items = settings.value(QStringLiteral("items")).toStringList();
+        settings.endGroup();
+
+        for (const QString &raw_item : raw_items) {
+            const QString trimmed_item = raw_item.trimmed();
+            if (trimmed_item.isEmpty()) {
+                continue;
+            }
+
+            ParsedItem item;
+            item.category = trimmed_cat;
+
+            // Handle flags: item:root:terminal:alias="My Name"
+            // Simple split by ':' but need to respect quotes for alias
+            QString name_part;
+            QString remaining = trimmed_item;
+
+            // Basic parsing for flags
+            const QStringList tokens = remaining.split(QLatin1Char(':'));
+            if (tokens.isEmpty()) {
+                continue;
+            }
+            item.app_name = tokens.first();
+
+            for (int i = 1; i < tokens.size(); ++i) {
+                const QString token = tokens.at(i);
+                if (token == QLatin1String("root")) {
+                    item.root = true;
+                } else if (token == QLatin1String("user")) {
+                    item.user = true;
+                } else if (token == QLatin1String("terminal")) {
+                    item.terminal = true;
+                } else if (token.startsWith(QLatin1String("alias="))) {
+                    QString alias = token.mid(6);
+                    if ((alias.startsWith(QLatin1Char('"')) && alias.endsWith(QLatin1Char('"')))
+                        || (alias.startsWith(QLatin1Char('\'')) && alias.endsWith(QLatin1Char('\'')))) {
+                        alias = alias.mid(1, alias.size() - 2);
+                    }
+                    item.alias = alias;
+                }
+            }
+            result.items.append(item);
+        }
     }
 
     return result;
