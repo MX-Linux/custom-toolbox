@@ -1,3 +1,15 @@
+custom-toolbox (26.05) mx; urgency=medium
+
+  * Find applications more reliably, including those installed in non-standard locations
+  * Honor the terminal flag in .list files so terminal apps open in a terminal again
+  * Fix column layout not adjusting correctly when resizing the window
+  * Keep current launcher contents visible if a .list file fails to reload
+  * Restore window size and position correctly between sessions
+  * Hide the startup checkbox when no autostart entry is applicable
+  * Fix autostart entries containing special characters in names or commands
+
+ -- Adrian <adrian@mxlinux.org>  Mon, 04 May 2026 23:58:10 -0400
+
 custom-toolbox (26.03) mx; urgency=medium
 
   * Show Help/License in app
