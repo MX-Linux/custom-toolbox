@@ -26,6 +26,7 @@
 #include "ui_mainwindow.h"
 
 #include <QDebug>
+#include <QDirIterator>
 #include <QFile>
 #include <QFileDialog>
 #include <QFileInfo>
@@ -388,14 +389,24 @@ QString MainWindow::get_desktop_file_name(const QString &app_name) const
     QString result;
 
     for (const QString &searchPath : searchPaths) {
-        const QString full_path = QDir(searchPath).absoluteFilePath(desktop_file_name);
-        if (QFile::exists(full_path)) {
-            result = full_path;
+        QDirIterator it(searchPath, {desktop_file_name}, QDir::Files, QDirIterator::Subdirectories);
+        if (it.hasNext()) {
+            result = it.next();
             break;
         }
     }
 
-    // If .desktop file not found, fallback to finding the executable
+    // Fallback: enumerate /usr/share/applications and match by Exec= first token
+    // or reverse-DNS suffix (e.g. "ghex" -> "org.gnome.GHex.desktop").
+    if (result.isEmpty()) {
+        build_desktop_file_index();
+        const auto it = desktop_file_index.constFind(app_name.toLower());
+        if (it != desktop_file_index.constEnd()) {
+            result = it.value();
+        }
+    }
+
+    // If still not found, fallback to finding the executable
     if (result.isEmpty()) {
         const QString executable_path = QStandardPaths::findExecutable(app_name, {default_path});
         result = !executable_path.isEmpty() ? QFileInfo(executable_path).fileName() : QString();
@@ -404,6 +415,68 @@ QString MainWindow::get_desktop_file_name(const QString &app_name) const
     // Cache the result (even if empty to avoid repeated failed lookups)
     desktop_file_cache[app_name] = result;
     return result;
+}
+
+// Build a lazy fallback index of .desktop files keyed by short names.
+// Priority (highest wins): Exec= first token > reverse-DNS suffix.
+// Used when an exact "<name>.desktop" match fails so that .list entries like
+// "ghex" still resolve to "org.gnome.GHex.desktop".
+void MainWindow::build_desktop_file_index() const
+{
+    if (desktop_file_index_built) {
+        return;
+    }
+    desktop_file_index_built = true;
+
+    static const QRegularExpression exec_re(QStringLiteral(R"(^Exec=(.*)$)"),
+                                            QRegularExpression::MultilineOption);
+
+    QHash<QString, QString> by_suffix;
+    QHash<QString, QString> by_exec;
+
+    const QStringList searchPaths = QStandardPaths::standardLocations(QStandardPaths::ApplicationsLocation);
+    for (const QString &dir : searchPaths) {
+        QDirIterator it(dir, {"*.desktop"}, QDir::Files, QDirIterator::Subdirectories);
+        while (it.hasNext()) {
+            it.next();
+            const QFileInfo fi = it.fileInfo();
+            const QString basename = fi.completeBaseName(); // e.g. "org.gnome.GHex"
+            const QString full_path = fi.absoluteFilePath();
+
+            // Reverse-DNS suffix: "org.gnome.GHex" -> "ghex"
+            const int dot = basename.lastIndexOf('.');
+            if (dot >= 0 && dot + 1 < basename.size()) {
+                const QString suffix = basename.mid(dot + 1).toLower();
+                if (!suffix.isEmpty() && !by_suffix.contains(suffix)) {
+                    by_suffix.insert(suffix, full_path);
+                }
+            }
+
+            // Exec= first token (basename of any path), e.g. "wireshark %f" -> "wireshark"
+            QFile f(full_path);
+            if (f.open(QFile::ReadOnly | QFile::Text)) {
+                const QString text = QString::fromUtf8(f.readAll());
+                f.close();
+                const auto match = exec_re.match(text);
+                if (match.hasMatch()) {
+                    QString first = match.captured(1).trimmed().section(' ', 0, 0);
+                    if (first.startsWith('"') && first.endsWith('"') && first.size() >= 2) {
+                        first = first.mid(1, first.size() - 2);
+                    }
+                    first = QFileInfo(first).fileName().toLower();
+                    if (!first.isEmpty() && !by_exec.contains(first)) {
+                        by_exec.insert(first, full_path);
+                    }
+                }
+            }
+        }
+    }
+
+    // Apply lowest priority first; higher priority overwrites.
+    desktop_file_index = std::move(by_suffix);
+    for (auto it = by_exec.constBegin(); it != by_exec.constEnd(); ++it) {
+        desktop_file_index.insert(it.key(), it.value());
+    }
 }
 
 // Return the app info needed for the button
@@ -649,6 +722,8 @@ void MainWindow::read_file(const QString &file_name)
     icon_cache.clear();
     icon_theme.clear();
     desktop_file_cache.clear();
+    desktop_file_index.clear();
+    desktop_file_index_built = false;
 
     const QString text = file.readAll();
     file.close();

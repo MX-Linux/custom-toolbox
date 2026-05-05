@@ -96,8 +96,11 @@ private:
     // Caches for performance optimization (mutable to allow caching in const methods)
     mutable QHash<QString, QIcon> icon_cache;
     mutable QHash<QString, QString> desktop_file_cache;
+    mutable QHash<QString, QString> desktop_file_index;
+    mutable bool desktop_file_index_built {false};
     mutable QHash<QString, QRegularExpression> regex_cache;
 
+    void build_desktop_file_index() const;
     [[nodiscard]] ItemInfo get_desktop_file_info(const QString &file_name) const;
     [[nodiscard]] QIcon find_icon(const QString &icon_name) const;
     [[nodiscard]] QString extract_localized_value(const QString &text, const QString &key) const;
