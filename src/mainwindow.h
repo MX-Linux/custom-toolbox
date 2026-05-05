@@ -1,7 +1,7 @@
 /**********************************************************************
  *  customtoolbox.h
  **********************************************************************
- * Copyright (C) 2017-2025 MX Authors
+ * Copyright (C) 2017-2026 MX Authors
  *
  * Authors: Adrian
  *          MX Linux <http://mxlinux.org>
@@ -31,6 +31,7 @@
 #include <QLocale>
 #include <QMessageBox>
 #include <QMultiMap>
+#include <QMutex>
 #include <QTimer>
 
 #include "iteminfo.h"
@@ -87,6 +88,7 @@ private:
     mutable QHash<QString, QString> desktop_file_cache;
     mutable QHash<QString, QString> desktop_file_index;
     mutable bool desktop_file_index_built {false};
+    mutable QMutex desktop_file_index_mutex;
 
     void build_desktop_file_index() const;
     [[nodiscard]] ItemInfo get_desktop_file_info(const QString &file_name) const;

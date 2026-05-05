@@ -1,7 +1,7 @@
 /**********************************************************************
  *  MainWindow.cpp
  **********************************************************************
- * Copyright (C) 2017-2025 MX Authors
+ * Copyright (C) 2017-2026 MX Authors
  *
  * Authors: Adrian
  *          MX Linux <http://mxlinux.org>
@@ -321,6 +321,7 @@ QString MainWindow::get_desktop_file_name(const QString &app_name) const
 // "ghex" still resolve to "org.gnome.GHex.desktop".
 void MainWindow::build_desktop_file_index() const
 {
+    QMutexLocker locker(&desktop_file_index_mutex);
     if (desktop_file_index_built) {
         return;
     }
