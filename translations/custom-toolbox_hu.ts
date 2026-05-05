@@ -131,8 +131,8 @@
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="360"/>
-        <location filename="../src/mainwindow.cpp" line="642"/>
-        <location filename="../src/mainwindow.cpp" line="804"/>
+        <location filename="../src/mainwindow.cpp" line="643"/>
+        <location filename="../src/mainwindow.cpp" line="803"/>
         <source>File Open Error</source>
         <translation>Hiba a fájl megnyitásakor</translation>
     </message>
@@ -142,82 +142,82 @@
         <translation>A fájl megnyitása nem sikerült. Megpróbálja ismét?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="634"/>
+        <location filename="../src/mainwindow.cpp" line="635"/>
         <source>File Not Found</source>
         <translation>A fájl nem található</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="634"/>
+        <location filename="../src/mainwindow.cpp" line="635"/>
         <source>The file %1 does not exist.</source>
         <translation>A fájl nem létezik: %1.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="642"/>
+        <location filename="../src/mainwindow.cpp" line="643"/>
         <source>Could not open file: </source>
         <translation>Fájl megnyitása nem sikerült:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="734"/>
+        <location filename="../src/mainwindow.cpp" line="733"/>
         <source>Version:</source>
         <translation>Verzió:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="737"/>
+        <location filename="../src/mainwindow.cpp" line="736"/>
         <source>About %1</source>
         <translation>%1 névjegye</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="786"/>
+        <location filename="../src/mainwindow.cpp" line="785"/>
         <source>Directory Creation Error</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="787"/>
+        <location filename="../src/mainwindow.cpp" line="786"/>
         <source>Could not create directory: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="834"/>
+        <location filename="../src/mainwindow.cpp" line="833"/>
         <source>Error</source>
         <translation>Hiba</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="834"/>
+        <location filename="../src/mainwindow.cpp" line="833"/>
         <source>Editor command failed with code %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="735"/>
+        <location filename="../src/mainwindow.cpp" line="734"/>
         <source>Custom Toolbox is a tool used for creating a custom launcher</source>
         <translation>Az Saját eszköztár egy segédeszköz saját indító létrehozására</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="735"/>
+        <location filename="../src/mainwindow.cpp" line="734"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Copyright (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="738"/>
+        <location filename="../src/mainwindow.cpp" line="737"/>
         <source>%1 License</source>
         <translation>%1 licenc</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="745"/>
+        <location filename="../src/mainwindow.cpp" line="744"/>
         <source>%1 Help</source>
         <translation>%1 súgó</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="804"/>
+        <location filename="../src/mainwindow.cpp" line="803"/>
         <source>Could not write file: %1</source>
         <translation>A fájl írása nem sikerült: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="809"/>
+        <location filename="../src/mainwindow.cpp" line="808"/>
         <source>File Removal Error</source>
         <translation>Hiba a fájl eltávolításakor</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="809"/>
+        <location filename="../src/mainwindow.cpp" line="808"/>
         <source>Could not remove file: %1</source>
         <translation>A fájl eltávolítása nem sikerült: %1</translation>
     </message>
@@ -225,43 +225,34 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/about.cpp" line="48"/>
-        <source>Failed to start mx-viewer</source>
+        <location filename="../src/about.cpp" line="71"/>
+        <source>Could not load %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="53"/>
-        <source>Failed to start xdg-open</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/about.cpp" line="62"/>
-        <source>Failed to determine user name. Cannot open document.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/about.cpp" line="64"/>
-        <source>Failed to start runuser</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/about.cpp" line="79"/>
+        <location filename="../src/about.cpp" line="94"/>
         <source>License</source>
         <translation>Licenc</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="80"/>
-        <location filename="../src/about.cpp" line="90"/>
+        <location filename="../src/about.cpp" line="95"/>
+        <location filename="../src/about.cpp" line="105"/>
         <source>Changelog</source>
         <translation>Változások listája</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="81"/>
+        <location filename="../src/about.cpp" line="96"/>
         <source>Cancel</source>
         <translation>Mégsem</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="103"/>
+        <location filename="../src/about.cpp" line="117"/>
+        <source>Could not load changelog.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/about.cpp" line="51"/>
+        <location filename="../src/about.cpp" line="120"/>
         <source>&amp;Close</source>
         <translation>&amp;Bezárás</translation>
     </message>
@@ -281,10 +272,6 @@
         <translation>Az alkalmazás beállításához betölteni kívánt .list fájl teljes útvonala és neve</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="48"/>
-        <location filename="../src/about.cpp" line="53"/>
-        <location filename="../src/about.cpp" line="61"/>
-        <location filename="../src/about.cpp" line="64"/>
         <location filename="../src/main.cpp" line="101"/>
         <source>Error</source>
         <translation>Hiba</translation>

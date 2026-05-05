@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="hr">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ko">
 <context>
     <name>MainWindow</name>
     <message>
@@ -10,17 +10,17 @@
     <message>
         <location filename="../src/mainwindow.ui" line="63"/>
         <source>About this application</source>
-        <translation>O ovoj aplikaciji</translation>
+        <translation>이 애플리케이션 정보</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="66"/>
         <source>About...</source>
-        <translation>O programu...</translation>
+        <translation>About...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="72"/>
         <source>Alt+A</source>
-        <translation>Alt+A</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="88"/>
@@ -40,7 +40,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="161"/>
         <source>Help</source>
-        <translation>Pomoć</translation>
+        <translation>도움말</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="167"/>
@@ -55,7 +55,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="183"/>
         <source>Close</source>
-        <translation>Zatvori</translation>
+        <translation>닫기</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="189"/>
@@ -75,7 +75,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="341"/>
         <source>search</source>
-        <translation>traži</translation>
+        <translation>검색</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="255"/>
@@ -164,7 +164,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="736"/>
         <source>About %1</source>
-        <translation>O programu %1</translation>
+        <translation>%1 정보</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="785"/>
@@ -179,7 +179,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="833"/>
         <source>Error</source>
-        <translation>Greška</translation>
+        <translation>에러</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="833"/>
@@ -194,17 +194,17 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="734"/>
         <source>Copyright (c) MX Linux</source>
-        <translation>Autorska prava (c) MX Linux</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="737"/>
         <source>%1 License</source>
-        <translation>%1 Licenca</translation>
+        <translation>%1 라이센스</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="744"/>
         <source>%1 Help</source>
-        <translation>%1 Pomoć</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="803"/>
@@ -227,34 +227,34 @@
     <message>
         <location filename="../src/about.cpp" line="71"/>
         <source>Could not load %1</source>
-        <translation type="unfinished"/>
+        <translation>로드 불가 %1</translation>
     </message>
     <message>
         <location filename="../src/about.cpp" line="94"/>
         <source>License</source>
-        <translation>Licenca</translation>
+        <translation>라이센스</translation>
     </message>
     <message>
         <location filename="../src/about.cpp" line="95"/>
         <location filename="../src/about.cpp" line="105"/>
         <source>Changelog</source>
-        <translation type="unfinished"/>
+        <translation>변경 로그</translation>
     </message>
     <message>
         <location filename="../src/about.cpp" line="96"/>
         <source>Cancel</source>
-        <translation>Otkaži</translation>
+        <translation>취소</translation>
     </message>
     <message>
         <location filename="../src/about.cpp" line="117"/>
         <source>Could not load changelog.</source>
-        <translation type="unfinished"/>
+        <translation>변경 로그를 불러올 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../src/about.cpp" line="51"/>
         <location filename="../src/about.cpp" line="120"/>
         <source>&amp;Close</source>
-        <translation>&amp;Zatvori</translation>
+        <translation>닫기(&amp;C)</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="86"/>
@@ -274,12 +274,12 @@
     <message>
         <location filename="../src/main.cpp" line="101"/>
         <source>Error</source>
-        <translation>Greška</translation>
+        <translation>에러</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="102"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
-        <translation type="unfinished"/>
+        <translation>루트 권한으로 로그인한 상태로 보입니다. 이 프로그램을 사용하시려면 로그아웃 후 일반 사용자로 로그인해 주세요.</translation>
     </message>
 </context>
 </TS>

@@ -20,7 +20,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="72"/>
         <source>Alt+A</source>
-        <translation>Alt+D</translation>
+        <translation>Alt+M</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="88"/>
@@ -35,7 +35,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="97"/>
         <source>Alt+E</source>
-        <translation>Alt+E</translation>
+        <translation>Alt+P</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="161"/>
@@ -60,7 +60,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="189"/>
         <source>Alt+C</source>
-        <translation>Alt+C</translation>
+        <translation>Alt+B</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="303"/>
@@ -131,8 +131,8 @@
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="360"/>
-        <location filename="../src/mainwindow.cpp" line="642"/>
-        <location filename="../src/mainwindow.cpp" line="804"/>
+        <location filename="../src/mainwindow.cpp" line="643"/>
+        <location filename="../src/mainwindow.cpp" line="803"/>
         <source>File Open Error</source>
         <translation>Gabim Hapje Kartele</translation>
     </message>
@@ -142,82 +142,82 @@
         <translation>S’u hap dot kartelë. Doni të riprovohet?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="634"/>
+        <location filename="../src/mainwindow.cpp" line="635"/>
         <source>File Not Found</source>
         <translation>Kartela S’u Gjet</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="634"/>
+        <location filename="../src/mainwindow.cpp" line="635"/>
         <source>The file %1 does not exist.</source>
         <translation>Kartela %1 s’ekziston.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="642"/>
+        <location filename="../src/mainwindow.cpp" line="643"/>
         <source>Could not open file: </source>
         <translation>S’u hap dot kartelë:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="734"/>
+        <location filename="../src/mainwindow.cpp" line="733"/>
         <source>Version:</source>
         <translation>Version:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="737"/>
+        <location filename="../src/mainwindow.cpp" line="736"/>
         <source>About %1</source>
         <translation>Mbi %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="786"/>
+        <location filename="../src/mainwindow.cpp" line="785"/>
         <source>Directory Creation Error</source>
         <translation>Gabim Krijimi Drejtorie</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="787"/>
+        <location filename="../src/mainwindow.cpp" line="786"/>
         <source>Could not create directory: %1</source>
         <translation>S’u krijua dot drejtori: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="834"/>
+        <location filename="../src/mainwindow.cpp" line="833"/>
         <source>Error</source>
         <translation>Gabim</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="834"/>
+        <location filename="../src/mainwindow.cpp" line="833"/>
         <source>Editor command failed with code %1</source>
         <translation>Urdhri i përpunuesit dështoi me kod %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="735"/>
+        <location filename="../src/mainwindow.cpp" line="734"/>
         <source>Custom Toolbox is a tool used for creating a custom launcher</source>
         <translation>Grupi Vetjak i Mjeteve është një mjet i përdorur për të krijuar nisës vetjakë</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="735"/>
+        <location filename="../src/mainwindow.cpp" line="734"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Të drejta kopjimi (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="738"/>
+        <location filename="../src/mainwindow.cpp" line="737"/>
         <source>%1 License</source>
         <translation>Licencë %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="745"/>
+        <location filename="../src/mainwindow.cpp" line="744"/>
         <source>%1 Help</source>
         <translation>Ndihmë për %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="804"/>
+        <location filename="../src/mainwindow.cpp" line="803"/>
         <source>Could not write file: %1</source>
         <translation>S’u shkrua dot kartelë: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="809"/>
+        <location filename="../src/mainwindow.cpp" line="808"/>
         <source>File Removal Error</source>
         <translation>Gabim Heqjeje Kartele</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="809"/>
+        <location filename="../src/mainwindow.cpp" line="808"/>
         <source>Could not remove file: %1</source>
         <translation>S’u hoq dot kartelë: %1</translation>
     </message>
@@ -225,43 +225,34 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/about.cpp" line="48"/>
-        <source>Failed to start mx-viewer</source>
-        <translation>S’u arrit të hapej mx-viewer</translation>
+        <location filename="../src/about.cpp" line="71"/>
+        <source>Could not load %1</source>
+        <translation>S’u ngarkua dot %1</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="53"/>
-        <source>Failed to start xdg-open</source>
-        <translation>S’u arrit të hapej xdg-open</translation>
-    </message>
-    <message>
-        <location filename="../src/about.cpp" line="62"/>
-        <source>Failed to determine user name. Cannot open document.</source>
-        <translation>S’u arrit të përcaktohej emër përdoruesi. S’mund të hapet dokumenti.</translation>
-    </message>
-    <message>
-        <location filename="../src/about.cpp" line="64"/>
-        <source>Failed to start runuser</source>
-        <translation>S’u arrit të hapej runuser</translation>
-    </message>
-    <message>
-        <location filename="../src/about.cpp" line="79"/>
+        <location filename="../src/about.cpp" line="94"/>
         <source>License</source>
         <translation>Licencë</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="80"/>
-        <location filename="../src/about.cpp" line="90"/>
+        <location filename="../src/about.cpp" line="95"/>
+        <location filename="../src/about.cpp" line="105"/>
         <source>Changelog</source>
         <translation>Regjistër ndryshimesh</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="81"/>
+        <location filename="../src/about.cpp" line="96"/>
         <source>Cancel</source>
         <translation>Anuloje</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="103"/>
+        <location filename="../src/about.cpp" line="117"/>
+        <source>Could not load changelog.</source>
+        <translation>S’u ngarkua dot regjistër ndryshimesh.</translation>
+    </message>
+    <message>
+        <location filename="../src/about.cpp" line="51"/>
+        <location filename="../src/about.cpp" line="120"/>
         <source>&amp;Close</source>
         <translation>&amp;Mbylle</translation>
     </message>
@@ -281,10 +272,6 @@
         <translation>Shteg i plotë dhe emër i kartelës listë që dëshironi të ngarkohet për të ujdisur aplikacionin</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="48"/>
-        <location filename="../src/about.cpp" line="53"/>
-        <location filename="../src/about.cpp" line="61"/>
-        <location filename="../src/about.cpp" line="64"/>
         <location filename="../src/main.cpp" line="101"/>
         <source>Error</source>
         <translation>Gabim</translation>

@@ -13,20 +13,20 @@ Build-Depends: debhelper-compat (= 12), cmake (>= 3.16), ninja-build, qt6-base-d
 Package-List:
  custom-toolbox deb admin optional arch=any
 Checksums-Sha1:
- c612ab784b4ad5853ad85b381b7e839530dd13f3 102128 custom-toolbox_26.05.tar.xz
+ 6cb15778bc2a1653903425ec5041562336858857 102496 custom-toolbox_26.05.tar.xz
 Checksums-Sha256:
- 2d054918148ee3034514b0d0cd84c35bef20b0f99df16c9cb857311c1e9b5df4 102128 custom-toolbox_26.05.tar.xz
+ cd06a5793a3925605ecbc07e0254aa8acd98096c3a4e145652eee336c0aedac5 102496 custom-toolbox_26.05.tar.xz
 Files:
- b278da2f4f71956fdb9883a2291e0e8e 102128 custom-toolbox_26.05.tar.xz
+ e13e0cd927f4cdc444ca696bfceb43b6 102496 custom-toolbox_26.05.tar.xz
 
 -----BEGIN PGP SIGNATURE-----
 
-iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmn5hdgTHGFkcmlhbkBt
-eGxpbnV4Lm9yZwAKCRBwk4x4BnnumLB7CADXHlTlH9wcHiP/rtFYQdTxQydOvGVy
-n3MEvPejZgSOm6Ebofj8jxR7yx9Zk42rOdZp7yP3wuJRu4PPWhCnRyEa6RwDI1oJ
-GYUrLOrLVQRn/0mcHWP0uXuuvLDtsk/kIQ2OkebwqklinGe8LrybSrg5VbzZSIZI
-oEmXyL4gss2sUWDucqglr8RtOzZlspZz6yG1wOg4wsbAEr8iPPe5wLcpyEyARdDF
-YqcKTyw3hOTPna0K6RMGlFYdDndJ9vd03z5b+f5blnaRmOwXRJpyrWSTl45M49NI
-cHJzmUJ+iBwkhzU7Pp63Evd645Mm8dctZeV47lJ9GS5btVnjk56Zg3+t
-=jfPv
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmn5hrYTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumLCRCADQxSmSIi7lyIMHAIxmvTpFjCiHChX7
+Cdu8kxijwU6lf6K/SLOzwj8Go1IggW/oMuisr0JT+ZgRJAHj2dUUGtu1xtstYEqp
+nt/R9uHFvIs8Wr/3tBIDEjX0aHptgyDzIBC1MdPlf9cy3D8ycCQjGnt0+aNr95mF
+HOlGBqTz66mJoBa8PKokGRALG/9ozRORt/oL7cqk5KRAoSyXujSvriZZ12GalRNs
+rkpWHE98A4m+yrHCuczrXQY+smg9rnnF1e0weKl+Nqm+TYbVbCpMEibxmz41+8Nu
+vgD1CyPFYPEjWPiA3tSuX3ZQTw41ISrTJyGScy4fcKAbEMPrNEco2gu+
+=TTmz
 -----END PGP SIGNATURE-----
