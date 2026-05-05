@@ -107,6 +107,7 @@ set(SOURCES
     src/flatbutton.cpp
     src/about.cpp
     src/launcherparser.cpp
+    src/iconloader.cpp
 )
 
 set(HEADERS
@@ -116,6 +117,7 @@ set(HEADERS
     src/common.h
     src/iteminfo.h
     src/launcherparser.h
+    src/iconloader.h
 )
 
 set(UI_FILES

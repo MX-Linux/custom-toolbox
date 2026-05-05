@@ -23,6 +23,8 @@
  **********************************************************************/
 
 #include "mainwindow.h"
+#include "launcherparser.h"
+#include "iconloader.h"
 #include "ui_mainwindow.h"
 
 #include <QDebug>
@@ -90,112 +92,7 @@ MainWindow::~MainWindow()
 
 QIcon MainWindow::find_icon(const QString &icon_name) const
 {
-    // Check cache first
-    if (icon_cache.contains(icon_name)) {
-        return icon_cache[icon_name];
-    }
-
-    static const QRegularExpression re(R"(\.(png|svg|xpm)$)");
-    static const QStringList extensions {".png", ".svg", ".xpm"};
-
-    // Use QStandardPaths for more robust search path discovery
-    static const QStringList search_paths = []() {
-        QStringList paths = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation);
-        for (auto &path : paths) {
-            path = QDir(path).filePath("icons");
-        }
-        paths << "/usr/share/pixmaps"; // Still useful as a fallback
-        return paths;
-    }();
-
-    // Helper function to search for icon in all paths
-    static const auto search_in_paths = [](const QString &name) -> QIcon {
-        for (const auto &path : search_paths) {
-            const QDir dir(path);
-            if (!dir.exists()) {
-                continue;
-            }
-
-            // Search recursively in icon directories if needed, or just top-level
-            // For pixmaps and simple layouts, top-level is often enough
-            const QString full_path = dir.filePath(name);
-            if (QFile::exists(full_path)) {
-                QIcon icon(full_path);
-                if (!icon.isNull()) {
-                    return icon;
-                }
-            }
-        }
-        return QIcon();
-    };
-
-    // Initialize default terminal icon once when needed
-    static const auto get_default_icon = []() {
-        static QIcon default_icon;
-        if (!default_icon.isNull()) {
-            return default_icon;
-        }
-
-        const QString default_icon_name = "utilities-terminal";
-        default_icon = QIcon::fromTheme(default_icon_name);
-        if (!default_icon.isNull()) {
-            return default_icon;
-        }
-
-        for (const auto &ext : extensions) {
-            default_icon = search_in_paths(default_icon_name + ext);
-            if (!default_icon.isNull()) {
-                return default_icon;
-            }
-        }
-        return QIcon();
-    };
-
-    // Handle empty or default icon name
-    if (icon_name.isEmpty() || icon_name == "utilities-terminal") {
-        QIcon result = get_default_icon();
-        icon_cache[icon_name] = result;
-        return result;
-    }
-
-    // Handle absolute paths
-    const QFileInfo icon_info(icon_name);
-    if (icon_info.isAbsolute() && icon_info.exists()) {
-        QIcon result(icon_name);
-        icon_cache[icon_name] = result;
-        return result;
-    }
-
-    // Try themed icon first
-    QString name_no_ext = icon_name;
-    name_no_ext.remove(re);
-
-    QIcon icon = QIcon::fromTheme(name_no_ext);
-    if (!icon.isNull()) {
-        icon_cache[icon_name] = icon;
-        return icon;
-    }
-
-    // Try original name
-    icon = search_in_paths(icon_name);
-    if (!icon.isNull()) {
-        icon_cache[icon_name] = icon;
-        return icon;
-    }
-
-    // Try with each extension
-    for (const auto &ext : extensions) {
-        icon = search_in_paths(name_no_ext + ext);
-        if (!icon.isNull()) {
-            icon_cache[icon_name] = icon;
-            return icon;
-        }
-    }
-
-    // Fall back to the default icon if nothing else was found
-    QIcon default_icon = get_default_icon();
-    icon_cache[icon_name] = default_icon;
-    return default_icon;
+    return IconLoader::loadIcon(icon_name);
 }
 
 // Strip %f, %F, %U, etc. if exec expects a file name since it's called without an argument from this launcher.
@@ -480,20 +377,16 @@ void MainWindow::build_desktop_file_index() const
 }
 
 // Return the app info needed for the button
-MainWindow::ItemInfo MainWindow::get_desktop_file_info(const QString &file_name) const
+ItemInfo MainWindow::get_desktop_file_info(const QString &file_name) const
 {
     ItemInfo item;
 
     // If not a .desktop file, initialize all fields explicitly
     if (!file_name.endsWith(".desktop")) {
-        item.category.clear();
         item.name = file_name;
-        item.comment.clear();
         item.icon_name = file_name;
         item.exec = file_name;
         item.terminal = true;
-        item.root = false;
-        item.user = false;
         return item;
     }
 
@@ -504,15 +397,12 @@ MainWindow::ItemInfo MainWindow::get_desktop_file_info(const QString &file_name)
     const QString text = file.readAll();
     file.close();
 
-    item.category.clear(); // Will be set by caller in process_line()
     static const QRegularExpression mx_prefix("^MX ");
-    item.name = extract_localized_value(text, "Name").remove(mx_prefix);
-    item.comment = extract_localized_value(text, "Comment");
-    item.icon_name = extract_localized_value(text, "Icon");
-    item.exec = extract_localized_value(text, "Exec");
-    item.terminal = extract_localized_value(text, "Terminal").toLower() == "true";
-    item.root = false; // Will be set by caller based on keywords
-    item.user = false; // Will be set by caller based on keywords
+    item.name = LauncherParser::extract_localized_value(text, "Name", lang).remove(mx_prefix);
+    item.comment = LauncherParser::extract_localized_value(text, "Comment", lang);
+    item.icon_name = LauncherParser::extract_localized_value(text, "Icon", lang);
+    item.exec = LauncherParser::extract_localized_value(text, "Exec", lang);
+    item.terminal = LauncherParser::extract_localized_value(text, "Terminal", lang).toLower() == "true";
 
     return item;
 }
@@ -627,77 +517,6 @@ void MainWindow::clear_grid_layout()
     }
 }
 
-void MainWindow::process_line(QStringView line)
-{
-    if (line.isEmpty() || line.startsWith('#')) {
-        return;
-    }
-
-    const QStringView line_view(line);
-    const int split_pos = line_view.indexOf('=');
-
-    QStringView key_view;
-    QStringView value_view;
-
-    if (split_pos > 0) {
-        key_view = line_view.left(split_pos).trimmed();
-        value_view = line_view.mid(split_pos + 1).trimmed();
-        if (value_view.startsWith('"') && value_view.endsWith('"')) {
-            value_view = value_view.mid(1, value_view.size() - 2);
-        }
-    } else {
-        key_view = line_view.trimmed();
-    }
-
-    if (key_view.isEmpty()) {
-        return;
-    }
-
-    const QString key = key_view.toString();
-    const QString lower_key = key.toLower();
-
-    if (lower_key == "category") {
-        categories.append(value_view.toString());
-    } else if (lower_key == "theme") {
-        icon_theme = value_view.toString();
-    } else {
-        const QStringList key_tokens = key.split(' ', Qt::SkipEmptyParts);
-        const QString desktop_file = get_desktop_file_name(key_tokens.first());
-        if (!desktop_file.isEmpty()) {
-            ItemInfo info = get_desktop_file_info(desktop_file);
-            if (key_tokens.size() > 1) {
-                const bool has_root = key_tokens.contains("root");
-                const bool has_user = key_tokens.contains("user");
-                const bool has_alias = key_tokens.contains("alias");
-                const bool has_terminal = key_tokens.contains("terminal");
-
-                info.root = has_root;
-                info.user = has_user;
-                info.terminal = info.terminal || has_terminal;
-
-                if (has_alias) {
-                    const int alias_index = key_tokens.indexOf("alias");
-                    if (alias_index >= 0 && alias_index + 1 < key_tokens.size()) {
-                        info.name = key_tokens.mid(alias_index + 1).join(' ').trimmed();
-                        if (info.name.startsWith('"') && info.name.endsWith('"')) {
-                            info.name = info.name.mid(1, info.name.size() - 2);
-                        } else if (info.name.startsWith('\'') && info.name.endsWith('\'')) {
-                            info.name = info.name.mid(1, info.name.size() - 2);
-                        }
-                    } else {
-                        qWarning() << "Alias keyword found but no valid alias name provided.";
-                    }
-                }
-            }
-
-            if (!categories.isEmpty()) {
-                info.category = categories.last();
-                category_map.insert(info.category, info);
-            }
-        }
-    }
-}
-
 // Open the .list file and process it
 void MainWindow::read_file(const QString &file_name)
 {
@@ -716,80 +535,40 @@ void MainWindow::read_file(const QString &file_name)
         return;
     }
 
-    categories.clear();
-    categories.reserve(20); // Reserve space for typical number of categories
+    const QString text = file.readAll();
+    file.close();
+
     category_map.clear();
-    icon_cache.clear();
+    IconLoader::clearCache();
     icon_theme.clear();
     desktop_file_cache.clear();
     desktop_file_index.clear();
     desktop_file_index_built = false;
 
-    const QString text = file.readAll();
-    file.close();
+    const auto parsed = LauncherParser::parse(text, lang);
+    icon_theme = parsed.icon_theme;
 
-    const QString name = extract_localized_value(text, "Name");
-    const QString comment = extract_localized_value(text, "Comment");
+    setWindowTitle(parsed.name);
+    ui->commentLabel->setText(parsed.comment);
 
-    setWindowTitle(name);
-    ui->commentLabel->setText(comment);
-
-    // Process line by line without creating intermediate QStringList
-    static const QRegularExpression skipPattern(QStringLiteral("^(Name|Comment|#|$).*"));
-
-    QStringView textView(text);
-    qsizetype pos = 0;
-    while (pos < textView.size()) {
-        qsizetype endPos = textView.indexOf(QLatin1Char('\n'), pos);
-        if (endPos == -1) {
-            endPos = textView.size();
+    for (const auto &p : parsed.items) {
+        const QString desktop_file = get_desktop_file_name(p.app_name);
+        if (desktop_file.isEmpty()) {
+            continue;
         }
 
-        QStringView lineView = textView.mid(pos, endPos - pos);
-#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
-        if (!lineView.isEmpty() && !skipPattern.matchView(lineView).hasMatch()) {
-#else
-        if (!lineView.isEmpty() && !skipPattern.match(lineView).hasMatch()) {
-#endif
-            process_line(lineView);
+        ItemInfo info = get_desktop_file_info(desktop_file);
+        info.root = p.root;
+        info.user = p.user;
+        info.terminal = info.terminal || p.terminal;
+        if (!p.alias.isEmpty()) {
+            info.name = p.alias;
         }
-
-        pos = endPos + 1;
+        info.category = p.category;
+        category_map.insert(info.category, info);
     }
 
     QIcon::setThemeName(icon_theme.isEmpty() ? default_icon_theme : icon_theme);
-}
-
-QString MainWindow::extract_localized_value(const QString &text, const QString &key) const
-{
-    const QString pattern = QStringLiteral("^%1\\[%2]=(.*)$").arg(key, lang);
-    const QString fallback_pattern = QStringLiteral("^%1=(.*)$").arg(key);
-    const QString lang_short_pattern = QStringLiteral("^%1\\[%2]=(.*)$").arg(key, lang.section('_', 0, 0));
-
-    // Check full language pattern
-    if (!regex_cache.contains(pattern)) {
-        regex_cache[pattern] = QRegularExpression(pattern, QRegularExpression::MultilineOption);
-    }
-    QRegularExpressionMatch match = regex_cache[pattern].match(text);
-    if (match.hasMatch()) {
-        return match.captured(1);
-    }
-
-    // Check short language pattern
-    if (!regex_cache.contains(lang_short_pattern)) {
-        regex_cache[lang_short_pattern] = QRegularExpression(lang_short_pattern, QRegularExpression::MultilineOption);
-    }
-    match = regex_cache[lang_short_pattern].match(text);
-    if (match.hasMatch()) {
-        return match.captured(1);
-    }
-
-    // Check fallback pattern
-    if (!regex_cache.contains(fallback_pattern)) {
-        regex_cache[fallback_pattern] = QRegularExpression(fallback_pattern, QRegularExpression::MultilineOption);
-    }
-    match = regex_cache[fallback_pattern].match(text);
-    return match.hasMatch() ? match.captured(1) : QString();
 }
 
 void MainWindow::set_connections()
