@@ -543,29 +543,15 @@ void MainWindow::read_file(const QString &file_name)
         parsed = LauncherParser::parse(file.readAll(), lang);
     }
 
-    // Reject parses with no items — a launcher with no entries is unusable, and
-    // preserving the previous UI is preferable to wiping it on a mid-edit reload.
     if (parsed.items.isEmpty()) {
         QMessageBox::critical(this, tr("Parse Error"),
                               tr("The file %1 contains no recognizable launcher entries.").arg(file_name));
         return;
     }
 
-    // Parse succeeded — now safe to swap state.
-    const QFileInfo file_info(file_name);
-    custom_name = file_info.baseName();
-    file_location = file_info.path();
-
-    category_map.clear();
-    IconLoader::clearCache();
-    desktop_file_cache.clear();
-    desktop_file_index.clear();
-    desktop_file_index_built = false;
-
-    icon_theme = parsed.icon_theme;
-    setWindowTitle(parsed.name);
-    ui->commentLabel->setText(parsed.comment);
-
+    // Resolve items against installed .desktop files into a temporary map.
+    // If nothing resolves, the launcher would be empty — bail without touching state.
+    QMultiMap<QString, ItemInfo> new_map;
     for (const auto &p : parsed.items) {
         const QString desktop_file = get_desktop_file_name(p.app_name);
         if (desktop_file.isEmpty()) {
@@ -580,8 +566,28 @@ void MainWindow::read_file(const QString &file_name)
             info.name = p.alias;
         }
         info.category = p.category;
-        category_map.insert(info.category, info);
+        new_map.insert(info.category, info);
     }
+
+    if (new_map.isEmpty()) {
+        QMessageBox::critical(this, tr("Parse Error"),
+                              tr("None of the entries in %1 match an installed application.").arg(file_name));
+        return;
+    }
+
+    // Swap state in.
+    const QFileInfo file_info(file_name);
+    custom_name = file_info.baseName();
+    file_location = file_info.path();
+
+    category_map = std::move(new_map);
+    IconLoader::clearCache();
+    desktop_file_cache.clear();
+    desktop_file_index.clear();
+    desktop_file_index_built = false;
+    icon_theme = parsed.icon_theme;
+    setWindowTitle(parsed.name);
+    ui->commentLabel->setText(parsed.comment);
 
     QIcon::setThemeName(icon_theme.isEmpty() ? default_icon_theme : icon_theme);
 }
