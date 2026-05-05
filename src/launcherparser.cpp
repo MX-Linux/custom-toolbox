@@ -119,15 +119,22 @@ LauncherParser::ParseResult LauncherParser::parse(const QString &text, const QSt
 
             const int alias_index = key_tokens.indexOf(QLatin1String("alias"));
             if (alias_index >= 0) {
+                QString alias;
                 if (alias_index + 1 < key_tokens.size()) {
-                    QString alias = key_tokens.mid(alias_index + 1).join(QLatin1Char(' ')).trimmed();
-                    if ((alias.startsWith(QLatin1Char('"')) && alias.endsWith(QLatin1Char('"')))
-                        || (alias.startsWith(QLatin1Char('\'')) && alias.endsWith(QLatin1Char('\'')))) {
-                        alias = alias.mid(1, alias.size() - 2);
-                    }
-                    item.alias = alias;
-                } else {
+                    // Space-separated form: `app alias "My App"`
+                    alias = key_tokens.mid(alias_index + 1).join(QLatin1Char(' ')).trimmed();
+                } else if (!value_view.isEmpty()) {
+                    // `=`-separated form: `app alias="My App"` — value_view holds the alias.
+                    alias = value_view.toString();
+                }
+                if ((alias.startsWith(QLatin1Char('"')) && alias.endsWith(QLatin1Char('"')))
+                    || (alias.startsWith(QLatin1Char('\'')) && alias.endsWith(QLatin1Char('\'')))) {
+                    alias = alias.mid(1, alias.size() - 2);
+                }
+                if (alias.isEmpty()) {
                     qWarning() << "Alias keyword found but no valid alias name provided.";
+                } else {
+                    item.alias = alias;
                 }
             }
         }

@@ -525,17 +525,6 @@ void MainWindow::read_file(const QString &file_name)
         return;
     }
 
-    const QFileInfo file_info(file_name);
-    custom_name = file_info.baseName();
-    file_location = file_info.path();
-
-    category_map.clear();
-    IconLoader::clearCache();
-    icon_theme.clear();
-    desktop_file_cache.clear();
-    desktop_file_index.clear();
-    desktop_file_index_built = false;
-
     // Detect INI format. QSettings puts [General] keys at root scope, so we
     // identify the new format by the presence of the [Categories] section.
     QSettings ini_settings(file_name, QSettings::IniFormat);
@@ -547,14 +536,31 @@ void MainWindow::read_file(const QString &file_name)
         parsed = LauncherParser::parse_ini(ini_settings, lang);
     } else {
         QFile file(file_name);
-        if (file.open(QFile::ReadOnly | QFile::Text)) {
-            parsed = LauncherParser::parse(file.readAll(), lang);
-            file.close();
-        } else {
+        if (!file.open(QFile::ReadOnly | QFile::Text)) {
             QMessageBox::critical(this, tr("File Open Error"), tr("Could not open file: ") + file_name);
             return;
         }
+        parsed = LauncherParser::parse(file.readAll(), lang);
     }
+
+    // Reject empty parse — preserves the currently-displayed launcher rather than
+    // wiping it on a malformed file (e.g. mid-edit reload).
+    if (parsed.name.isEmpty() && parsed.categories.isEmpty() && parsed.items.isEmpty()) {
+        QMessageBox::critical(this, tr("Parse Error"),
+                              tr("The file %1 contains no recognizable launcher entries.").arg(file_name));
+        return;
+    }
+
+    // Parse succeeded — now safe to swap state.
+    const QFileInfo file_info(file_name);
+    custom_name = file_info.baseName();
+    file_location = file_info.path();
+
+    category_map.clear();
+    IconLoader::clearCache();
+    desktop_file_cache.clear();
+    desktop_file_index.clear();
+    desktop_file_index_built = false;
 
     icon_theme = parsed.icon_theme;
     setWindowTitle(parsed.name);
