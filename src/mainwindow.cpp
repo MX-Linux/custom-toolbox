@@ -25,6 +25,7 @@
 #include "mainwindow.h"
 #include "launcherparser.h"
 #include "iconloader.h"
+#include "common.h"
 #include "ui_mainwindow.h"
 
 #include <QDebug>
@@ -49,7 +50,7 @@
 MainWindow::MainWindow(const QCommandLineParser &arg_parser, QWidget *parent)
     : QDialog(parent),
       ui(new Ui::MainWindow),
-      file_location {"/etc/custom-toolbox"},
+      file_location {Config::ConfigDir},
       lang(locale.name()),
       remove_startup_checkbox {arg_parser.isSet("remove-checkbox")}
 {
@@ -119,7 +120,7 @@ void MainWindow::setup()
 
     const int default_icon_size = 40;
 
-    QSettings settings("/etc/custom-toolbox/custom-toolbox.conf", QSettings::NativeFormat);
+    QSettings settings(Config::ConfigFile, QSettings::NativeFormat);
     hide_gui = settings.value("hideGUI", false).toBool();
     min_height = qBound(300, settings.value("min_height").toInt(), 3000);
     min_width = qBound(300, settings.value("min_width").toInt(), 3000);
@@ -593,15 +594,14 @@ void MainWindow::push_about_clicked()
               .arg(windowTitle(), tr("Version:"), QApplication::applicationVersion(),
                    tr("Custom Toolbox is a tool used for creating a custom launcher"), tr("Copyright (c) MX Linux"));
 
-    displayAboutMsgBox(tr("About %1").arg(windowTitle()), about_text, "/usr/share/doc/custom-toolbox/license.html",
+    displayAboutMsgBox(tr("About %1").arg(windowTitle()), about_text, Config::LicenseFile,
                        tr("%1 License").arg(windowTitle()));
     show();
 }
 
 void MainWindow::push_help_clicked()
 {
-    const QString url = "/usr/share/doc/custom-toolbox/help.html";
-    displayHelpDoc(url, tr("%1 Help").arg(windowTitle()));
+    displayHelpDoc(Config::HelpFile, tr("%1 Help").arg(windowTitle()));
 }
 
 void MainWindow::text_search_text_changed(const QString &search_text)

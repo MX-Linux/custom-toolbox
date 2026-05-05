@@ -28,3 +28,12 @@ inline const QString &starting_home()
     static const QString home = qEnvironmentVariable("HOME");
     return home;
 }
+
+namespace Config {
+    inline const QString ConfigDir = "/etc/custom-toolbox";
+    inline const QString ConfigFile = ConfigDir + "/custom-toolbox.conf";
+    inline const QString DocDir = "/usr/share/doc/custom-toolbox";
+    inline const QString HelpFile = DocDir + "/help.html";
+    inline const QString LicenseFile = DocDir + "/license.html";
+    inline const QString ChangelogFile = DocDir + "/changelog.gz";
+}
