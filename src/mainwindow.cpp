@@ -543,9 +543,9 @@ void MainWindow::read_file(const QString &file_name)
         parsed = LauncherParser::parse(file.readAll(), lang);
     }
 
-    // Reject empty parse — preserves the currently-displayed launcher rather than
-    // wiping it on a malformed file (e.g. mid-edit reload).
-    if (parsed.name.isEmpty() && parsed.categories.isEmpty() && parsed.items.isEmpty()) {
+    // Reject parses with no items — a launcher with no entries is unusable, and
+    // preserving the previous UI is preferable to wiping it on a mid-edit reload.
+    if (parsed.items.isEmpty()) {
         QMessageBox::critical(this, tr("Parse Error"),
                               tr("The file %1 contains no recognizable launcher entries.").arg(file_name));
         return;
