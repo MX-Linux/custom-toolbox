@@ -31,7 +31,4 @@ class FlatButton : public QPushButton
 public:
     explicit FlatButton(QWidget *parent = nullptr);
     explicit FlatButton(const QString &name, QWidget *parent = nullptr);
-protected:
-    void enterEvent(QEnterEvent *e) override;
-    void leaveEvent(QEvent *e) override;
 };

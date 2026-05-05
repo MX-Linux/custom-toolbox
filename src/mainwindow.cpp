@@ -87,7 +87,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-QIcon MainWindow::find_icon(const QString &icon_name)
+QIcon MainWindow::find_icon(const QString &icon_name) const
 {
     // Check cache first
     if (icon_cache.contains(icon_name)) {
@@ -96,18 +96,28 @@ QIcon MainWindow::find_icon(const QString &icon_name)
 
     static const QRegularExpression re(R"(\.(png|svg|xpm)$)");
     static const QStringList extensions {".png", ".svg", ".xpm"};
-    static const QStringList search_paths {QDir::homePath() + "/.local/share/icons/",
-                                          "/usr/share/pixmaps/",
-                                          "/usr/local/share/icons/",
-                                          "/usr/share/icons/",
-                                          "/usr/share/icons/hicolor/scalable/apps/",
-                                          "/usr/share/icons/hicolor/48x48/apps/",
-                                          "/usr/share/icons/Adwaita/48x48/legacy/"};
+
+    // Use QStandardPaths for more robust search path discovery
+    static const QStringList search_paths = []() {
+        QStringList paths = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation);
+        for (auto &path : paths) {
+            path = QDir(path).filePath("icons");
+        }
+        paths << "/usr/share/pixmaps"; // Still useful as a fallback
+        return paths;
+    }();
 
     // Helper function to search for icon in all paths
     static const auto search_in_paths = [](const QString &name) -> QIcon {
         for (const auto &path : search_paths) {
-            const QString full_path = QDir(path).filePath(name);
+            const QDir dir(path);
+            if (!dir.exists()) {
+                continue;
+            }
+
+            // Search recursively in icon directories if needed, or just top-level
+            // For pixmaps and simple layouts, top-level is often enough
+            const QString full_path = dir.filePath(name);
             if (QFile::exists(full_path)) {
                 QIcon icon(full_path);
                 if (!icon.isNull()) {
@@ -397,7 +407,7 @@ QString MainWindow::get_desktop_file_name(const QString &app_name) const
 }
 
 // Return the app info needed for the button
-MainWindow::ItemInfo MainWindow::get_desktop_file_info(const QString &file_name)
+MainWindow::ItemInfo MainWindow::get_desktop_file_info(const QString &file_name) const
 {
     ItemInfo item;
 
@@ -500,7 +510,7 @@ void MainWindow::add_item_button(const ItemInfo &item, int &row, int &col, int m
     }
 }
 
-void MainWindow::prepare_command(const ItemInfo &item, QString &cmd)
+void MainWindow::prepare_command(const ItemInfo &item, QString &cmd) const
 {
     if (item.terminal) {
         cmd.prepend("x-terminal-emulator -e ");
@@ -544,24 +554,41 @@ void MainWindow::clear_grid_layout()
     }
 }
 
-void MainWindow::process_line(const QString &line)
+void MainWindow::process_line(QStringView line)
 {
-    if (line.isEmpty()) {
+    if (line.isEmpty() || line.startsWith('#')) {
         return;
     }
-    const int split_pos = line.indexOf('=');
-    const QString key = (split_pos > 0) ? line.left(split_pos).trimmed() : line.trimmed();
-    if (key.isEmpty()) {
-        return;
-    }
-    const QString value = (split_pos > 0) ? QString(line.mid(split_pos + 1)).trimmed().remove('"') : QString();
-    const QString lower_key = key.toLower();
-    if (lower_key == "category") {
-        categories.append(value);
-    } else if (lower_key == "theme") {
-        icon_theme = value;
+
+    const QStringView line_view(line);
+    const int split_pos = line_view.indexOf('=');
+
+    QStringView key_view;
+    QStringView value_view;
+
+    if (split_pos > 0) {
+        key_view = line_view.left(split_pos).trimmed();
+        value_view = line_view.mid(split_pos + 1).trimmed();
+        if (value_view.startsWith('"') && value_view.endsWith('"')) {
+            value_view = value_view.mid(1, value_view.size() - 2);
+        }
     } else {
-        const QStringList key_tokens = key.split(' ');
+        key_view = line_view.trimmed();
+    }
+
+    if (key_view.isEmpty()) {
+        return;
+    }
+
+    const QString key = key_view.toString();
+    const QString lower_key = key.toLower();
+
+    if (lower_key == "category") {
+        categories.append(value_view.toString());
+    } else if (lower_key == "theme") {
+        icon_theme = value_view.toString();
+    } else {
+        const QStringList key_tokens = key.split(' ', Qt::SkipEmptyParts);
         const QString desktop_file = get_desktop_file_name(key_tokens.first());
         if (!desktop_file.isEmpty()) {
             ItemInfo info = get_desktop_file_info(desktop_file);
@@ -578,7 +605,12 @@ void MainWindow::process_line(const QString &line)
                 if (has_alias) {
                     const int alias_index = key_tokens.indexOf("alias");
                     if (alias_index >= 0 && alias_index + 1 < key_tokens.size()) {
-                        info.name = key_tokens.mid(alias_index + 1).join(' ').trimmed().remove('\'').remove('"');
+                        info.name = key_tokens.mid(alias_index + 1).join(' ').trimmed();
+                        if (info.name.startsWith('"') && info.name.endsWith('"')) {
+                            info.name = info.name.mid(1, info.name.size() - 2);
+                        } else if (info.name.startsWith('\'') && info.name.endsWith('\'')) {
+                            info.name = info.name.mid(1, info.name.size() - 2);
+                        }
                     } else {
                         qWarning() << "Alias keyword found but no valid alias name provided.";
                     }
@@ -644,7 +676,7 @@ void MainWindow::read_file(const QString &file_name)
 #else
         if (!lineView.isEmpty() && !skipPattern.match(lineView).hasMatch()) {
 #endif
-            process_line(lineView.toString());
+            process_line(lineView);
         }
 
         pos = endPos + 1;
@@ -837,7 +869,7 @@ void MainWindow::push_edit_clicked()
     watch_file(file_name);
 }
 
-QString MainWindow::get_default_editor()
+QString MainWindow::get_default_editor() const
 {
     QProcess proc;
     proc.start("xdg-mime", {"query", "default", "text/plain"});
@@ -868,7 +900,7 @@ QString MainWindow::get_default_editor()
     return "nano"; // Fallback to nano
 }
 
-QStringList MainWindow::build_editor_prefix(const QString &editor)
+QStringList MainWindow::build_editor_prefix(const QString &editor) const
 {
     const bool is_root = getuid() == 0;
     static const QRegularExpression elevates_pattern(R"(\b(kate|kwrite|featherpad|code|codium)$)");

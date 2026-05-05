@@ -98,13 +98,13 @@ private:
     mutable QHash<QString, QString> desktop_file_cache;
     mutable QHash<QString, QRegularExpression> regex_cache;
 
-    [[nodiscard]] ItemInfo get_desktop_file_info(const QString &file_name);
-    [[nodiscard]] QIcon find_icon(const QString &icon_name);
+    [[nodiscard]] ItemInfo get_desktop_file_info(const QString &file_name) const;
+    [[nodiscard]] QIcon find_icon(const QString &icon_name) const;
     [[nodiscard]] QString extract_localized_value(const QString &text, const QString &key) const;
-    [[nodiscard]] QString get_default_editor();
+    [[nodiscard]] QString get_default_editor() const;
     [[nodiscard]] QString get_desktop_file_name(const QString &app_name) const;
     [[nodiscard]] QString get_file_name();
-    [[nodiscard]] QStringList build_editor_prefix(const QString &editor);
+    [[nodiscard]] QStringList build_editor_prefix(const QString &editor) const;
     static void fix_exec_item(QString *item);
     static void fix_name_item(QString *item);
     void add_buttons(const QMultiMap<QString, ItemInfo> &map);
@@ -114,9 +114,9 @@ private:
     void add_item_button(const ItemInfo &item, int &row, int &col, int max_cols);
     void center_window();
     void clear_grid_layout();
-    void prepare_command(const ItemInfo &item, QString &cmd);
+    void prepare_command(const ItemInfo &item, QString &cmd) const;
     void run_synchronous(const QString &cmd, bool use_shell);
-    void process_line(const QString &line);
+    void process_line(QStringView line);
     void read_file(const QString &file_name);
     void set_connections();
     void set_gui();

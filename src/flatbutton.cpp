@@ -22,33 +22,21 @@
 
 #include "flatbutton.h"
 
-static const QString base_style = QStringLiteral("text-align:left");
-
 FlatButton::FlatButton(QWidget *parent)
     : QPushButton(parent)
 {
     setFlat(true);
-    setStyleSheet(base_style);
+    setStyleSheet(QStringLiteral("QPushButton { text-align: left; } "
+                                 "QPushButton:hover { text-decoration: underline; } "
+                                 "QToolTip { text-decoration: none; }"));
 }
 
 FlatButton::FlatButton(const QString &name, QWidget *parent)
     : QPushButton(name, parent)
 {
     setFlat(true);
-    setStyleSheet(base_style);
-}
-
-void FlatButton::leaveEvent(QEvent *e)
-{
-    setStyleSheet(base_style);
-    QPushButton::leaveEvent(e);
-}
-
-void FlatButton::enterEvent(QEnterEvent *e)
-{
-    static const QString enter_style
-        = QStringLiteral("QPushButton { text-align:left; text-decoration:underline} QToolTip { text-decoration: none; }");
-    setStyleSheet(enter_style);
-    QPushButton::enterEvent(e);
+    setStyleSheet(QStringLiteral("QPushButton { text-align: left; } "
+                                 "QPushButton:hover { text-decoration: underline; } "
+                                 "QToolTip { text-decoration: none; }"));
 }
 
