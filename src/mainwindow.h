@@ -31,8 +31,9 @@
 #include <QLocale>
 #include <QMessageBox>
 #include <QMultiMap>
-#include <QRegularExpression>
 #include <QTimer>
+
+#include "iteminfo.h"
 
 namespace Ui
 {
@@ -58,16 +59,6 @@ private slots:
 private:
     void closeEvent(QCloseEvent * /*unused*/) override;
     void resizeEvent(QResizeEvent *event) override;
-    struct ItemInfo {
-        QString category {};
-        QString name {};
-        QString comment {};
-        QString icon_name {};
-        QString exec {};
-        bool terminal {};
-        bool root {};
-        bool user {};
-    };
 
     Ui::MainWindow *ui;
     QMultiMap<QString, ItemInfo> category_map;
@@ -80,7 +71,6 @@ private:
     const QString default_icon_theme {QIcon::themeName()};
     QLocale locale;
     QString lang;
-    QStringList categories;
     QFileSystemWatcher file_watcher;
     QTimer file_reload_timer;
     bool first_run {true};
@@ -98,12 +88,10 @@ private:
     mutable QHash<QString, QString> desktop_file_cache;
     mutable QHash<QString, QString> desktop_file_index;
     mutable bool desktop_file_index_built {false};
-    mutable QHash<QString, QRegularExpression> regex_cache;
 
     void build_desktop_file_index() const;
     [[nodiscard]] ItemInfo get_desktop_file_info(const QString &file_name) const;
     [[nodiscard]] QIcon find_icon(const QString &icon_name) const;
-    [[nodiscard]] QString extract_localized_value(const QString &text, const QString &key) const;
     [[nodiscard]] QString get_default_editor() const;
     [[nodiscard]] QString get_desktop_file_name(const QString &app_name) const;
     [[nodiscard]] QString get_file_name();
@@ -119,7 +107,6 @@ private:
     void clear_grid_layout();
     void prepare_command(const ItemInfo &item, QString &cmd) const;
     void run_synchronous(const QString &cmd, bool use_shell);
-    void process_line(QStringView line);
     void read_file(const QString &file_name);
     void set_connections();
     void set_gui();
