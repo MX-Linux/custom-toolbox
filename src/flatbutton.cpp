@@ -32,11 +32,8 @@ FlatButton::FlatButton(QWidget *parent)
 }
 
 FlatButton::FlatButton(const QString &name, QWidget *parent)
-    : QPushButton(name, parent)
+    : FlatButton(parent)
 {
-    setFlat(true);
-    setStyleSheet(QStringLiteral("QPushButton { text-align: left; } "
-                                 "QPushButton:hover { text-decoration: underline; } "
-                                 "QToolTip { text-decoration: none; }"));
+    setText(name);
 }
 
