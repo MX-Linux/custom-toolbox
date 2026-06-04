@@ -34,6 +34,8 @@
 #include <QUrl>
 #include <QVBoxLayout>
 
+#include "common.h"
+
 namespace
 {
 void setupDocDialog(QDialog &dialog, QTextBrowser *browser, const QString &title, bool largeWindow)
@@ -108,9 +110,7 @@ void displayAboutMsgBox(const QString &title, const QString &message, const QStr
         auto *text = new QTextEdit(&changelog);
         text->setReadOnly(true);
         QProcess proc;
-        const QString appName = QFileInfo(QCoreApplication::applicationFilePath()).fileName();
-        const QString changelogPath = QStringLiteral("/usr/share/doc/") + appName + QStringLiteral("/changelog.gz");
-        proc.start(QStringLiteral("zcat"), {changelogPath}, QIODevice::ReadOnly);
+        proc.start(QStringLiteral("zcat"), {Config::ChangelogFile}, QIODevice::ReadOnly);
         if (proc.waitForStarted(3000) && proc.waitForFinished(3000)) {
             text->setText(proc.readAllStandardOutput());
         } else {

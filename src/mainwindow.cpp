@@ -639,7 +639,6 @@ void MainWindow::setConnections()
 
 void MainWindow::pushAboutClicked()
 {
-    hide();
     const QString aboutText
         = QString("<p align=\"center\"><b><h2>%1</h2></b></p>"
                   "<p align=\"center\">%2 %3</p>"
@@ -651,7 +650,6 @@ void MainWindow::pushAboutClicked()
 
     displayAboutMsgBox(tr("About %1").arg(windowTitle()), aboutText, Config::LicenseFile,
                        tr("%1 License").arg(windowTitle()));
-    show();
 }
 
 void MainWindow::pushHelpClicked()
