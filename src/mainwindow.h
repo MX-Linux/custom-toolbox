@@ -99,7 +99,6 @@ private:
     [[nodiscard]] QStringList buildEditorPrefix(const QString &editor) const;
     [[nodiscard]] QString invokingUser() const;
     static void fixExecItem(QString *item);
-    static void fixNameItem(QString *item);
     void addButtons(const QMultiMap<QString, ItemInfo> &map);
     void addCategoryLabel(const QString &category, int &row, int &col);
     void addEmptyRowIfNeeded(const QString &category, const QMultiMap<QString, ItemInfo> &map, int &row,

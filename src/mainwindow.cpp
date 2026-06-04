@@ -104,16 +104,6 @@ void MainWindow::fixExecItem(QString *item)
     item->remove(exec_pattern);
 }
 
-void MainWindow::fixNameItem(QString *item)
-{
-    static const QString oldName = QStringLiteral("System Profiler and Benchmark");
-    static const QString newName = QStringLiteral("System Information");
-
-    if (*item == oldName) {
-        *item = newName;
-    }
-}
-
 void MainWindow::setup()
 {
     setWindowTitle(tr("Custom Toolbox"));
@@ -453,7 +443,6 @@ void MainWindow::addItemButton(const ItemInfo &item, int &row, int &col, int max
 {
     QString name = item.name;
     QString cmd = item.exec;
-    fixNameItem(&name);
     fixExecItem(&cmd);
 
     auto *btn = new FlatButton(name);
