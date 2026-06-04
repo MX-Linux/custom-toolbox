@@ -515,8 +515,10 @@ void MainWindow::addEmptyRowIfNeeded(const QString &category, const QMultiMap<QS
     if (category != map.lastKey()) {
         col = 0;
         auto *line = new QFrame();
-        line->setFrameShape(QFrame::HLine);
-        line->setFrameShadow(QFrame::Sunken);
+        line->setFixedHeight(1);
+        // Theme-adaptive separator: palette(mid) tracks the active light/dark palette,
+        // whereas a Sunken QFrame's etched 3D shading can look faint or wrong on dark themes.
+        line->setStyleSheet(QStringLiteral("background-color: palette(mid);"));
         ui->gridLayout_btn->addWidget(line, ++row, col, 1, -1);
         ui->gridLayout_btn->setRowStretch(row, 0);
     }
