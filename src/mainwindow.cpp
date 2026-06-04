@@ -311,7 +311,6 @@ QString MainWindow::getDesktopFileName(const QString &appName) const
 // "ghex" still resolve to "org.gnome.GHex.desktop".
 void MainWindow::buildDesktopFileIndex() const
 {
-    QMutexLocker locker(&desktopFileIndexMutex);
     if (desktopFileIndexBuilt) {
         return;
     }

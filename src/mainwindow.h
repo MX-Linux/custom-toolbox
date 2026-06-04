@@ -31,7 +31,6 @@
 #include <QLocale>
 #include <QMessageBox>
 #include <QMultiMap>
-#include <QMutex>
 #include <QTimer>
 
 #include "iteminfo.h"
@@ -88,7 +87,6 @@ private:
     mutable QHash<QString, QString> desktopFileCache;
     mutable QHash<QString, QString> desktopFileIndex;
     mutable bool desktopFileIndexBuilt {false};
-    mutable QMutex desktopFileIndexMutex;
 
     void buildDesktopFileIndex() const;
     [[nodiscard]] ItemInfo getDesktopFileInfo(const QString &fname) const;
