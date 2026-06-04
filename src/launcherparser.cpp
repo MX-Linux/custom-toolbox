@@ -19,88 +19,88 @@ QRegularExpression &cached_re(const QString &pattern)
 }
 } // namespace
 
-QString LauncherParser::extract_localized_value(const QString &text, const QString &key, const QString &lang)
+QString LauncherParser::extractLocalizedValue(const QString &text, const QString &key, const QString &lang)
 {
-    const QString full_pattern = QStringLiteral("^%1\\[%2]=(.*)$").arg(key, lang);
-    auto match = cached_re(full_pattern).match(text);
+    const QString fullPattern = QStringLiteral("^%1\\[%2]=(.*)$").arg(key, lang);
+    auto match = cached_re(fullPattern).match(text);
     if (match.hasMatch()) {
         return match.captured(1);
     }
 
-    const QString short_pattern = QStringLiteral("^%1\\[%2]=(.*)$").arg(key, lang.section('_', 0, 0));
-    match = cached_re(short_pattern).match(text);
+    const QString shortPattern = QStringLiteral("^%1\\[%2]=(.*)$").arg(key, lang.section('_', 0, 0));
+    match = cached_re(shortPattern).match(text);
     if (match.hasMatch()) {
         return match.captured(1);
     }
 
-    const QString fallback_pattern = QStringLiteral("^%1=(.*)$").arg(key);
-    match = cached_re(fallback_pattern).match(text);
+    const QString fallbackPattern = QStringLiteral("^%1=(.*)$").arg(key);
+    match = cached_re(fallbackPattern).match(text);
     return match.hasMatch() ? match.captured(1) : QString();
 }
 
 LauncherParser::ParseResult LauncherParser::parse(const QString &text, const QString &lang)
 {
     ParseResult result;
-    result.name = extract_localized_value(text, QStringLiteral("Name"), lang);
-    result.comment = extract_localized_value(text, QStringLiteral("Comment"), lang);
+    result.name = extractLocalizedValue(text, QStringLiteral("Name"), lang);
+    result.comment = extractLocalizedValue(text, QStringLiteral("Comment"), lang);
     result.categories.reserve(20);
 
-    static const QRegularExpression skip_pattern(QStringLiteral("^(Name|Comment|#|$).*"));
+    static const QRegularExpression skipPattern(QStringLiteral("^(Name|Comment|#|$).*"));
 
-    QStringView text_view(text);
+    QStringView textView(text);
     qsizetype pos = 0;
-    while (pos < text_view.size()) {
-        qsizetype end_pos = text_view.indexOf(QLatin1Char('\n'), pos);
-        if (end_pos == -1) {
-            end_pos = text_view.size();
+    while (pos < textView.size()) {
+        qsizetype endPos = textView.indexOf(QLatin1Char('\n'), pos);
+        if (endPos == -1) {
+            endPos = textView.size();
         }
-        const QStringView line_view = text_view.mid(pos, end_pos - pos);
-        pos = end_pos + 1;
+        const QStringView lineView = textView.mid(pos, endPos - pos);
+        pos = endPos + 1;
 
-        if (line_view.isEmpty()) {
+        if (lineView.isEmpty()) {
             continue;
         }
 #if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
-        if (skip_pattern.matchView(line_view).hasMatch()) {
+        if (skipPattern.matchView(lineView).hasMatch()) {
             continue;
         }
 #else
-        if (skip_pattern.match(line_view.toString()).hasMatch()) {
+        if (skipPattern.match(lineView.toString()).hasMatch()) {
             continue;
         }
 #endif
 
-        const qsizetype split_pos = line_view.indexOf(QLatin1Char('='));
-        QStringView key_view;
-        QStringView value_view;
-        if (split_pos > 0) {
-            key_view = line_view.left(split_pos).trimmed();
-            value_view = line_view.mid(split_pos + 1).trimmed();
-            if (value_view.startsWith(QLatin1Char('"')) && value_view.endsWith(QLatin1Char('"'))) {
-                value_view = value_view.mid(1, value_view.size() - 2);
+        const qsizetype splitPos = lineView.indexOf(QLatin1Char('='));
+        QStringView keyView;
+        QStringView valueView;
+        if (splitPos > 0) {
+            keyView = lineView.left(splitPos).trimmed();
+            valueView = lineView.mid(splitPos + 1).trimmed();
+            if (valueView.startsWith(QLatin1Char('"')) && valueView.endsWith(QLatin1Char('"'))) {
+                valueView = valueView.mid(1, valueView.size() - 2);
             }
         } else {
-            key_view = line_view.trimmed();
+            keyView = lineView.trimmed();
         }
 
-        if (key_view.isEmpty()) {
+        if (keyView.isEmpty()) {
             continue;
         }
 
-        const QString key = key_view.toString();
-        const QString lower_key = key.toLower();
+        const QString key = keyView.toString();
+        const QString lowerKey = key.toLower();
 
-        if (lower_key == QLatin1String("category")) {
-            result.categories.append(value_view.toString());
+        if (lowerKey == QLatin1String("category")) {
+            result.categories.append(valueView.toString());
             continue;
         }
-        if (lower_key == QLatin1String("theme")) {
-            result.icon_theme = value_view.toString();
+        if (lowerKey == QLatin1String("theme")) {
+            result.iconTheme = valueView.toString();
             continue;
         }
 
-        const QStringList key_tokens = key.split(QLatin1Char(' '), Qt::SkipEmptyParts);
-        if (key_tokens.isEmpty()) {
+        const QStringList keyTokens = key.split(QLatin1Char(' '), Qt::SkipEmptyParts);
+        if (keyTokens.isEmpty()) {
             continue;
         }
         if (result.categories.isEmpty()) {
@@ -109,23 +109,23 @@ LauncherParser::ParseResult LauncherParser::parse(const QString &text, const QSt
         }
 
         ParsedItem item;
-        item.app_name = key_tokens.first();
+        item.appName = keyTokens.first();
         item.category = result.categories.last();
 
-        if (key_tokens.size() > 1) {
-            item.root = key_tokens.contains(QLatin1String("root"));
-            item.user = key_tokens.contains(QLatin1String("user"));
-            item.terminal = key_tokens.contains(QLatin1String("terminal"));
+        if (keyTokens.size() > 1) {
+            item.root = keyTokens.contains(QLatin1String("root"));
+            item.user = keyTokens.contains(QLatin1String("user"));
+            item.terminal = keyTokens.contains(QLatin1String("terminal"));
 
-            const int alias_index = key_tokens.indexOf(QLatin1String("alias"));
-            if (alias_index >= 0) {
+            const int aliasIndex = keyTokens.indexOf(QLatin1String("alias"));
+            if (aliasIndex >= 0) {
                 QString alias;
-                if (alias_index + 1 < key_tokens.size()) {
+                if (aliasIndex + 1 < keyTokens.size()) {
                     // Space-separated form: `app alias "My App"`
-                    alias = key_tokens.mid(alias_index + 1).join(QLatin1Char(' ')).trimmed();
-                } else if (!value_view.isEmpty()) {
-                    // `=`-separated form: `app alias="My App"` — value_view holds the alias.
-                    alias = value_view.toString();
+                    alias = keyTokens.mid(aliasIndex + 1).join(QLatin1Char(' ')).trimmed();
+                } else if (!valueView.isEmpty()) {
+                    // `=`-separated form: `app alias="My App"` — valueView holds the alias.
+                    alias = valueView.toString();
                 }
                 if ((alias.startsWith(QLatin1Char('"')) && alias.endsWith(QLatin1Char('"')))
                     || (alias.startsWith(QLatin1Char('\'')) && alias.endsWith(QLatin1Char('\'')))) {
@@ -145,12 +145,12 @@ LauncherParser::ParseResult LauncherParser::parse(const QString &text, const QSt
     return result;
 }
 
-LauncherParser::ParseResult LauncherParser::parse_ini(QSettings &settings, const QString &lang)
+LauncherParser::ParseResult LauncherParser::parseIni(QSettings &settings, const QString &lang)
 {
     ParseResult result;
 
     // Keys under [General] are stored at root scope by QSettings.
-    auto get_localized = [&](const QString &key) -> QString {
+    auto getLocalized = [&](const QString &key) -> QString {
         QString val = settings.value(QStringLiteral("%1[%2]").arg(key, lang)).toString();
         if (val.isEmpty()) {
             val = settings.value(QStringLiteral("%1[%2]").arg(key, lang.section('_', 0, 0))).toString();
@@ -161,34 +161,34 @@ LauncherParser::ParseResult LauncherParser::parse_ini(QSettings &settings, const
         return val;
     };
 
-    result.name = get_localized(QStringLiteral("Name"));
-    result.comment = get_localized(QStringLiteral("Comment"));
-    result.icon_theme = settings.value(QStringLiteral("IconTheme")).toString();
+    result.name = getLocalized(QStringLiteral("Name"));
+    result.comment = getLocalized(QStringLiteral("Comment"));
+    result.iconTheme = settings.value(QStringLiteral("IconTheme")).toString();
 
-    const QStringList category_list = settings.value(QStringLiteral("Categories/list")).toStringList();
-    for (const QString &cat_name : category_list) {
-        const QString trimmed_cat = cat_name.trimmed();
-        if (trimmed_cat.isEmpty()) {
+    const QStringList categoryList = settings.value(QStringLiteral("Categories/list")).toStringList();
+    for (const QString &catName : categoryList) {
+        const QString trimmedCat = catName.trimmed();
+        if (trimmedCat.isEmpty()) {
             continue;
         }
-        result.categories.append(trimmed_cat);
+        result.categories.append(trimmedCat);
 
-        settings.beginGroup(trimmed_cat);
-        const QStringList raw_items = settings.value(QStringLiteral("items")).toStringList();
+        settings.beginGroup(trimmedCat);
+        const QStringList rawItems = settings.value(QStringLiteral("items")).toStringList();
         settings.endGroup();
 
-        for (const QString &raw_item : raw_items) {
-            const QString trimmed_item = raw_item.trimmed();
-            if (trimmed_item.isEmpty()) {
+        for (const QString &rawItem : rawItems) {
+            const QString trimmedItem = rawItem.trimmed();
+            if (trimmedItem.isEmpty()) {
                 continue;
             }
 
             ParsedItem item;
-            item.category = trimmed_cat;
+            item.category = trimmedCat;
 
             // Handle flags: item:root:terminal:alias="My Name"
-            const QStringList tokens = trimmed_item.split(QLatin1Char(':'));
-            item.app_name = tokens.first();
+            const QStringList tokens = trimmedItem.split(QLatin1Char(':'));
+            item.appName = tokens.first();
 
             for (int i = 1; i < tokens.size(); ++i) {
                 const QString token = tokens.at(i);

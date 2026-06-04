@@ -10,7 +10,7 @@ class LauncherParser
 {
 public:
     struct ParsedItem {
-        QString app_name;
+        QString appName;
         QString category;
         QString alias;
         bool root {};
@@ -21,12 +21,12 @@ public:
     struct ParseResult {
         QString name;
         QString comment;
-        QString icon_theme;
+        QString iconTheme;
         QStringList categories;
         QList<ParsedItem> items;
     };
 
     static ParseResult parse(const QString &text, const QString &lang);
-    static ParseResult parse_ini(QSettings &settings, const QString &lang);
-    static QString extract_localized_value(const QString &text, const QString &key, const QString &lang);
+    static ParseResult parseIni(QSettings &settings, const QString &lang);
+    static QString extractLocalizedValue(const QString &text, const QString &key, const QString &lang);
 };

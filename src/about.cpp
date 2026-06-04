@@ -48,13 +48,13 @@ void setupDocDialog(QDialog &dialog, QTextBrowser *browser, const QString &title
 
     browser->setOpenExternalLinks(true);
 
-    auto *btn_close = new QPushButton(QObject::tr("&Close"), &dialog);
-    btn_close->setIcon(QIcon::fromTheme(QStringLiteral("window-close")));
-    QObject::connect(btn_close, &QPushButton::clicked, &dialog, &QDialog::close);
+    auto *btnClose = new QPushButton(QObject::tr("&Close"), &dialog);
+    btnClose->setIcon(QIcon::fromTheme(QStringLiteral("window-close")));
+    QObject::connect(btnClose, &QPushButton::clicked, &dialog, &QDialog::close);
 
     auto *layout = new QVBoxLayout(&dialog);
     layout->addWidget(browser);
-    layout->addWidget(btn_close);
+    layout->addWidget(btnClose);
 }
 
 void showHtmlDoc(const QString &url, const QString &title, bool largeWindow)
@@ -63,10 +63,10 @@ void showHtmlDoc(const QString &url, const QString &title, bool largeWindow)
     auto *browser = new QTextBrowser(&dialog);
     setupDocDialog(dialog, browser, title, largeWindow);
 
-    const QUrl source_url = QUrl::fromUserInput(url);
-    const QString local_path = source_url.isLocalFile() ? source_url.toLocalFile() : url;
-    if (source_url.isLocalFile() ? QFileInfo::exists(local_path) : QFileInfo::exists(url)) {
-        browser->setSource(source_url.isLocalFile() ? source_url : QUrl::fromLocalFile(url));
+    const QUrl sourceUrl = QUrl::fromUserInput(url);
+    const QString localPath = sourceUrl.isLocalFile() ? sourceUrl.toLocalFile() : url;
+    if (sourceUrl.isLocalFile() ? QFileInfo::exists(localPath) : QFileInfo::exists(url)) {
+        browser->setSource(sourceUrl.isLocalFile() ? sourceUrl : QUrl::fromLocalFile(url));
     } else {
         browser->setText(QObject::tr("Could not load %1").arg(url));
     }
@@ -85,45 +85,45 @@ void displayHelpDoc(const QString &path, const QString &title)
     showHtmlDoc(path, title, true);
 }
 
-void displayAboutMsgBox(const QString &title, const QString &message, const QString &licence_url,
-                        const QString &license_title)
+void displayAboutMsgBox(const QString &title, const QString &message, const QString &licenceUrl,
+                        const QString &licenseTitle)
 {
-    constexpr int dialog_width = 600;
-    constexpr int dialog_height = 500;
+    constexpr int dialogWidth = 600;
+    constexpr int dialogHeight = 500;
     QMessageBox msgBox(QMessageBox::NoIcon, title, message);
-    auto *btn_license = msgBox.addButton(QObject::tr("License"), QMessageBox::HelpRole);
-    auto *btn_changelog = msgBox.addButton(QObject::tr("Changelog"), QMessageBox::HelpRole);
-    auto *btn_cancel = msgBox.addButton(QObject::tr("Cancel"), QMessageBox::NoRole);
-    btn_cancel->setIcon(QIcon::fromTheme("window-close"));
+    auto *btnLicense = msgBox.addButton(QObject::tr("License"), QMessageBox::HelpRole);
+    auto *btnChangelog = msgBox.addButton(QObject::tr("Changelog"), QMessageBox::HelpRole);
+    auto *btnCancel = msgBox.addButton(QObject::tr("Cancel"), QMessageBox::NoRole);
+    btnCancel->setIcon(QIcon::fromTheme("window-close"));
 
     msgBox.exec();
 
-    if (msgBox.clickedButton() == btn_license) {
-        displayDoc(licence_url, license_title);
-    } else if (msgBox.clickedButton() == btn_changelog) {
+    if (msgBox.clickedButton() == btnLicense) {
+        displayDoc(licenceUrl, licenseTitle);
+    } else if (msgBox.clickedButton() == btnChangelog) {
         QDialog changelog;
         changelog.setWindowTitle(QObject::tr("Changelog"));
-        changelog.resize(dialog_width, dialog_height);
+        changelog.resize(dialogWidth, dialogHeight);
 
         auto *text = new QTextEdit(&changelog);
         text->setReadOnly(true);
         QProcess proc;
-        const QString app_name = QFileInfo(QCoreApplication::applicationFilePath()).fileName();
-        const QString changelog_path = QStringLiteral("/usr/share/doc/") + app_name + QStringLiteral("/changelog.gz");
-        proc.start(QStringLiteral("zcat"), {changelog_path}, QIODevice::ReadOnly);
+        const QString appName = QFileInfo(QCoreApplication::applicationFilePath()).fileName();
+        const QString changelogPath = QStringLiteral("/usr/share/doc/") + appName + QStringLiteral("/changelog.gz");
+        proc.start(QStringLiteral("zcat"), {changelogPath}, QIODevice::ReadOnly);
         if (proc.waitForStarted(3000) && proc.waitForFinished(3000)) {
             text->setText(proc.readAllStandardOutput());
         } else {
             text->setText(QObject::tr("Could not load changelog."));
         }
 
-        auto *btn_close = new QPushButton(QObject::tr("&Close"), &changelog);
-        btn_close->setIcon(QIcon::fromTheme("window-close"));
-        QObject::connect(btn_close, &QPushButton::clicked, &changelog, &QDialog::close);
+        auto *btnClose = new QPushButton(QObject::tr("&Close"), &changelog);
+        btnClose->setIcon(QIcon::fromTheme("window-close"));
+        QObject::connect(btnClose, &QPushButton::clicked, &changelog, &QDialog::close);
 
         auto *layout = new QVBoxLayout(&changelog);
         layout->addWidget(text);
-        layout->addWidget(btn_close);
+        layout->addWidget(btnClose);
         changelog.setLayout(layout);
         changelog.exec();
     }

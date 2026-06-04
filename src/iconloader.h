@@ -7,7 +7,7 @@
 class IconLoader
 {
 public:
-    static QIcon loadIcon(const QString &icon_name);
+    static QIcon loadIcon(const QString &iconName);
     static void clearCache();
 
 private:

@@ -46,75 +46,75 @@ class MainWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit MainWindow(const QCommandLineParser &arg_parser, QWidget *parent = nullptr);
+    explicit MainWindow(const QCommandLineParser &argParser, QWidget *parent = nullptr);
     ~MainWindow() override;
 
 private slots:
-    void btn_clicked();
-    void push_about_clicked();
-    void push_edit_clicked();
-    void push_help_clicked();
-    void checkbox_startup_clicked(bool checked);
-    void text_search_text_changed(const QString &text);
+    void btnClicked();
+    void pushAboutClicked();
+    void pushEditClicked();
+    void pushHelpClicked();
+    void checkboxStartupClicked(bool checked);
+    void textSearchTextChanged(const QString &text);
 
 private:
     void closeEvent(QCloseEvent * /*unused*/) override;
     void resizeEvent(QResizeEvent *event) override;
 
     Ui::MainWindow *ui;
-    QMultiMap<QString, ItemInfo> category_map;
-    QSize icon_size;
-    QString custom_name;
-    QString file_location;
-    QString file_name;
-    QString gui_editor;
-    QString icon_theme;
-    const QString default_icon_theme {QIcon::themeName()};
+    QMultiMap<QString, ItemInfo> categoryMap;
+    QSize iconSize;
+    QString customName;
+    QString fileLocation;
+    QString fileName;
+    QString guiEditor;
+    QString iconTheme;
+    const QString defaultIconTheme {QIcon::themeName()};
     QLocale locale;
     QString lang;
-    QFileSystemWatcher file_watcher;
-    QTimer file_reload_timer;
-    bool first_run {true};
-    bool geometry_restored {};
-    bool hide_gui {};
-    bool remove_startup_checkbox {};
-    const QStringList default_path {qEnvironmentVariable("PATH").split(':') << "/usr/sbin"};
-    int col_count {};
-    int fixed_number_col {};
-    int min_height {};
-    int min_width {};
+    QFileSystemWatcher fileWatcher;
+    QTimer fileReloadTimer;
+    bool firstRun {true};
+    bool geometryRestored {};
+    bool hideGui {};
+    bool removeStartupCheckbox {};
+    const QStringList defaultPath {qEnvironmentVariable("PATH").split(':') << "/usr/sbin"};
+    int colCount {};
+    int fixedNumberCol {};
+    int minHeight {};
+    int minWidth {};
 
     // Caches for performance optimization (mutable to allow caching in const methods)
-    mutable QHash<QString, QString> desktop_file_cache;
-    mutable QHash<QString, QString> desktop_file_index;
-    mutable bool desktop_file_index_built {false};
-    mutable QMutex desktop_file_index_mutex;
+    mutable QHash<QString, QString> desktopFileCache;
+    mutable QHash<QString, QString> desktopFileIndex;
+    mutable bool desktopFileIndexBuilt {false};
+    mutable QMutex desktopFileIndexMutex;
 
-    void build_desktop_file_index() const;
-    [[nodiscard]] ItemInfo get_desktop_file_info(const QString &file_name) const;
-    [[nodiscard]] QIcon find_icon(const QString &icon_name) const;
-    [[nodiscard]] QString get_default_editor() const;
-    [[nodiscard]] QString get_desktop_file_name(const QString &app_name) const;
-    [[nodiscard]] QString get_file_name();
-    [[nodiscard]] QString invoking_user() const;
-    [[nodiscard]] QStringList build_editor_prefix(const QString &editor) const;
-    static void fix_exec_item(QString *item);
-    static void fix_name_item(QString *item);
-    void add_buttons(const QMultiMap<QString, ItemInfo> &map);
-    void add_category_label(const QString &category, int &row, int &col);
-    void add_empty_row_if_needed(const QString &category, const QMultiMap<QString, ItemInfo> &map, int &row,
+    void buildDesktopFileIndex() const;
+    [[nodiscard]] ItemInfo getDesktopFileInfo(const QString &fname) const;
+    [[nodiscard]] QIcon findIcon(const QString &iconName) const;
+    [[nodiscard]] QString getDefaultEditor() const;
+    [[nodiscard]] QString getDesktopFileName(const QString &appName) const;
+    [[nodiscard]] QString getFileName();
+    [[nodiscard]] QStringList buildEditorPrefix(const QString &editor) const;
+    [[nodiscard]] QString invokingUser() const;
+    static void fixExecItem(QString *item);
+    static void fixNameItem(QString *item);
+    void addButtons(const QMultiMap<QString, ItemInfo> &map);
+    void addCategoryLabel(const QString &category, int &row, int &col);
+    void addEmptyRowIfNeeded(const QString &category, const QMultiMap<QString, ItemInfo> &map, int &row,
                                  int &col);
-    void add_item_button(const ItemInfo &item, int &row, int &col, int max_cols);
-    void center_window();
-    void clear_grid_layout();
-    void prepare_command(const ItemInfo &item, QString &cmd) const;
-    void run_synchronous(const QString &cmd, bool use_shell);
-    void read_file(const QString &file_name);
-    void set_connections();
-    void set_gui();
+    void addItemButton(const ItemInfo &item, int &row, int &col, int maxCols);
+    void centerWindow();
+    void clearGridLayout();
+    void prepareCommand(const ItemInfo &item, QString &cmd) const;
+    void runSynchronous(const QString &cmd, bool useShell);
+    void readFile(const QString &fname);
+    void setConnections();
+    void setGui();
     void setup();
-    void handle_directory_changed(const QString &path);
-    void handle_file_changed(const QString &path);
-    void refresh_if_file_changed();
-    void watch_file(const QString &path);
+    void handleDirectoryChanged(const QString &path);
+    void handleFileChanged(const QString &path);
+    void refreshIfFileChanged();
+    void watchFile(const QString &path);
 };

@@ -48,43 +48,43 @@
 
 
 
-MainWindow::MainWindow(const QCommandLineParser &arg_parser, QWidget *parent)
+MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
     : QDialog(parent),
       ui(new Ui::MainWindow),
-      file_location {Config::ConfigDir},
+      fileLocation {Config::ConfigDir},
       lang(locale.name()),
-      remove_startup_checkbox {arg_parser.isSet("remove-checkbox")}
+      removeStartupCheckbox {argParser.isSet("remove-checkbox")}
 {
     ui->setupUi(this);
-    set_connections();
-    connect(&file_watcher, &QFileSystemWatcher::fileChanged, this, &MainWindow::handle_file_changed);
-    connect(&file_watcher, &QFileSystemWatcher::directoryChanged, this, &MainWindow::handle_directory_changed);
+    setConnections();
+    connect(&fileWatcher, &QFileSystemWatcher::fileChanged, this, &MainWindow::handleFileChanged);
+    connect(&fileWatcher, &QFileSystemWatcher::directoryChanged, this, &MainWindow::handleDirectoryChanged);
 
     // Set up debounce timer for file change events
-    file_reload_timer.setSingleShot(true);
-    file_reload_timer.setInterval(200);
-    connect(&file_reload_timer, &QTimer::timeout, this, &MainWindow::refresh_if_file_changed);
+    fileReloadTimer.setSingleShot(true);
+    fileReloadTimer.setInterval(200);
+    connect(&fileReloadTimer, &QTimer::timeout, this, &MainWindow::refreshIfFileChanged);
 
-    if (remove_startup_checkbox) {
+    if (removeStartupCheckbox) {
         ui->checkBoxStartup->hide();
     }
 
     setWindowFlags(Qt::Window); // Enable close, minimize, and maximize buttons
     setup();
 
-    const QStringList arg_list = arg_parser.positionalArguments();
-    if (arg_list.isEmpty()) {
-        file_name = get_file_name();
-    } else if (QFile::exists(arg_list.first())) {
-        file_name = arg_list.first();
+    const QStringList argList = argParser.positionalArguments();
+    if (argList.isEmpty()) {
+        fileName = getFileName();
+    } else if (QFile::exists(argList.first())) {
+        fileName = argList.first();
     } else {
-        QMessageBox::critical(this, tr("File Not Found"), tr("The file %1 does not exist.").arg(arg_list.first()));
+        QMessageBox::critical(this, tr("File Not Found"), tr("The file %1 does not exist.").arg(argList.first()));
         exit(EXIT_FAILURE);
     }
 
-    read_file(file_name);
-    watch_file(file_name);
-    set_gui();
+    readFile(fileName);
+    watchFile(fileName);
+    setGui();
 }
 
 MainWindow::~MainWindow()
@@ -92,19 +92,19 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-QIcon MainWindow::find_icon(const QString &icon_name) const
+QIcon MainWindow::findIcon(const QString &iconName) const
 {
-    return IconLoader::loadIcon(icon_name);
+    return IconLoader::loadIcon(iconName);
 }
 
 // Strip %f, %F, %U, etc. if exec expects a file name since it's called without an argument from this launcher.
-void MainWindow::fix_exec_item(QString *item)
+void MainWindow::fixExecItem(QString *item)
 {
     static const QRegularExpression exec_pattern(QStringLiteral(R"( %[a-zA-Z])"));
     item->remove(exec_pattern);
 }
 
-void MainWindow::fix_name_item(QString *item)
+void MainWindow::fixNameItem(QString *item)
 {
     static const QString oldName = QStringLiteral("System Profiler and Benchmark");
     static const QString newName = QStringLiteral("System Information");
@@ -119,41 +119,41 @@ void MainWindow::setup()
     setWindowTitle(tr("Custom Toolbox"));
     adjustSize();
 
-    const int default_icon_size = 40;
+    const int defaultIconSize = 40;
 
     QSettings settings(Config::ConfigFile, QSettings::NativeFormat);
-    hide_gui = settings.value("hideGUI", false).toBool();
-    min_height = qBound(300, settings.value("min_height").toInt(), 3000);
-    min_width = qBound(300, settings.value("min_width").toInt(), 3000);
-    gui_editor = settings.value("gui_editor").toString();
-    fixed_number_col = qBound(0, settings.value("fixed_number_columns", 0).toInt(), 20);
-    const int size = qBound(8, settings.value("icon_size", default_icon_size).toInt(), 1024);
-    icon_size = {size, size};
+    hideGui = settings.value("hideGUI", false).toBool();
+    minHeight = qBound(300, settings.value("minHeight").toInt(), 3000);
+    minWidth = qBound(300, settings.value("minWidth").toInt(), 3000);
+    guiEditor = settings.value("guiEditor").toString();
+    fixedNumberCol = qBound(0, settings.value("fixedNumberColumns", 0).toInt(), 20);
+    const int size = qBound(8, settings.value("iconSize", defaultIconSize).toInt(), 1024);
+    iconSize = {size, size};
 }
 
 // Add buttons and resize GUI
-void MainWindow::set_gui()
+void MainWindow::setGui()
 {
-    setMinimumSize(min_width, min_height);
+    setMinimumSize(minWidth, minHeight);
 
     QSettings settings(QApplication::organizationName(),
-                       QApplication::applicationName() + '_' + custom_name);
-    const QSize old_size = size();
-    if (!geometry_restored) {
-        geometry_restored = true;
+                       QApplication::applicationName() + '_' + customName);
+    const QSize oldSize = size();
+    if (!geometryRestored) {
+        geometryRestored = true;
         if (settings.contains("geometry")) {
             restoreGeometry(settings.value("geometry").toByteArray());
             if (isMaximized()) { // Add option to resize if maximized
-                resize(old_size);
-                center_window();
+                resize(oldSize);
+                centerWindow();
             }
         }
     }
-    add_buttons(category_map);
+    addButtons(categoryMap);
 
-    // Check if .desktop file is in autostart; same custom_name as .list file
-    if (!remove_startup_checkbox
-        && QFile::exists(QDir::homePath() + "/.config/autostart/" + custom_name + ".desktop")) {
+    // Check if .desktop file is in autostart; same customName as .list file
+    if (!removeStartupCheckbox
+        && QFile::exists(QDir::homePath() + "/.config/autostart/" + customName + ".desktop")) {
         ui->checkBoxStartup->show();
         ui->checkBoxStartup->setChecked(true);
     }
@@ -162,14 +162,14 @@ void MainWindow::set_gui()
     ui->pushCancel->setDefault(false);
 }
 
-void MainWindow::run_synchronous(const QString &cmd, bool use_shell)
+void MainWindow::runSynchronous(const QString &cmd, bool useShell)
 {
-    if (hide_gui) {
+    if (hideGui) {
         hide();
     }
 
     QProcess proc;
-    if (use_shell) {
+    if (useShell) {
         proc.start("/bin/sh", {"-c", cmd});
     } else {
         QStringList arguments = QProcess::splitCommand(cmd);
@@ -188,12 +188,12 @@ void MainWindow::run_synchronous(const QString &cmd, bool use_shell)
         }
     }
 
-    if (hide_gui) {
+    if (hideGui) {
         show();
     }
 }
 
-void MainWindow::btn_clicked()
+void MainWindow::btnClicked()
 {
     const auto *button = sender();
     if (!button) {
@@ -205,9 +205,9 @@ void MainWindow::btn_clicked()
         return;
     }
 
-    // pkexec requires shell for variable expansion; hide_gui requires synchronous execution
-    if (cmd.startsWith("pkexec") || hide_gui) {
-        run_synchronous(cmd, cmd.startsWith("pkexec"));
+    // pkexec requires shell for variable expansion; hideGui requires synchronous execution
+    if (cmd.startsWith("pkexec") || hideGui) {
+        runSynchronous(cmd, cmd.startsWith("pkexec"));
     } else {
         QStringList arguments = QProcess::splitCommand(cmd);
         const QString program = arguments.takeFirst();
@@ -220,50 +220,50 @@ void MainWindow::btn_clicked()
 void MainWindow::closeEvent(QCloseEvent * /*unused*/)
 {
     QSettings settings(QApplication::organizationName(),
-                       QApplication::applicationName() + '_' + custom_name);
+                       QApplication::applicationName() + '_' + customName);
     settings.setValue("geometry", saveGeometry());
 }
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
-    if (first_run || event->oldSize().width() == event->size().width() || fixed_number_col != 0) {
-        first_run = false;
+    if (firstRun || event->oldSize().width() == event->size().width() || fixedNumberCol != 0) {
+        firstRun = false;
         return;
     }
 
-    const int item_size = 200; // Determined through trial and error
-    const int new_count = qMax(1, width() / item_size);
+    const int itemSize = 200; // Determined through trial and error
+    const int newCount = qMax(1, width() / itemSize);
 
-    if (new_count == col_count) {
+    if (newCount == colCount) {
         return;
     }
 
-    col_count = new_count;
+    colCount = newCount;
 
     if (ui->textSearch->text().isEmpty()) {
-        add_buttons(category_map);
+        addButtons(categoryMap);
     } else {
-        text_search_text_changed(ui->textSearch->text());
+        textSearchTextChanged(ui->textSearch->text());
     }
 }
 
 // Select .list file to open
-QString MainWindow::get_file_name()
+QString MainWindow::getFileName()
 {
     while (true) {
-        const QString file_name
-            = QFileDialog::getOpenFileName(this, tr("Open List File"), file_location, tr("List Files (*.list)"));
-        if (file_name.isEmpty()) {
+        const QString fname
+            = QFileDialog::getOpenFileName(this, tr("Open List File"), fileLocation, tr("List Files (*.list)"));
+        if (fname.isEmpty()) {
             QMessageBox::critical(this, tr("File Selection Error"), tr("No file selected. Application will now exit."));
             exit(EXIT_FAILURE);
         }
-        if (QFile::exists(file_name)) {
-            return file_name;
+        if (QFile::exists(fname)) {
+            return fname;
         } else {
-            const auto user_choice = QMessageBox::critical(this, tr("File Open Error"),
+            const auto userChoice = QMessageBox::critical(this, tr("File Open Error"),
                                                            tr("Could not open file. Do you want to try again?"),
                                                            QMessageBox::Yes | QMessageBox::No);
-            if (user_choice == QMessageBox::No) {
+            if (userChoice == QMessageBox::No) {
                 exit(EXIT_FAILURE);
             }
         }
@@ -271,22 +271,22 @@ QString MainWindow::get_file_name()
 }
 
 // Find the .desktop file for the given app name
-QString MainWindow::get_desktop_file_name(const QString &app_name) const
+QString MainWindow::getDesktopFileName(const QString &appName) const
 {
     // Check cache first
-    if (desktop_file_cache.contains(app_name)) {
-        return desktop_file_cache[app_name];
+    if (desktopFileCache.contains(appName)) {
+        return desktopFileCache[appName];
     }
 
     // Search for .desktop files in standard applications locations
     const QStringList searchPaths = QStandardPaths::standardLocations(QStandardPaths::ApplicationsLocation);
 
     // Search for .desktop file in each path
-    const QString desktop_file_name = app_name + ".desktop";
+    const QString desktopFileName = appName + ".desktop";
     QString result;
 
     for (const QString &searchPath : searchPaths) {
-        QDirIterator it(searchPath, {desktop_file_name}, QDir::Files, QDirIterator::Subdirectories);
+        QDirIterator it(searchPath, {desktopFileName}, QDir::Files, QDirIterator::Subdirectories);
         if (it.hasNext()) {
             result = it.next();
             break;
@@ -296,21 +296,21 @@ QString MainWindow::get_desktop_file_name(const QString &app_name) const
     // Fallback: enumerate /usr/share/applications and match by Exec= first token
     // or reverse-DNS suffix (e.g. "ghex" -> "org.gnome.GHex.desktop").
     if (result.isEmpty()) {
-        build_desktop_file_index();
-        const auto it = desktop_file_index.constFind(app_name.toLower());
-        if (it != desktop_file_index.constEnd()) {
+        buildDesktopFileIndex();
+        const auto it = desktopFileIndex.constFind(appName.toLower());
+        if (it != desktopFileIndex.constEnd()) {
             result = it.value();
         }
     }
 
     // If still not found, fallback to finding the executable
     if (result.isEmpty()) {
-        const QString executable_path = QStandardPaths::findExecutable(app_name, {default_path});
-        result = !executable_path.isEmpty() ? QFileInfo(executable_path).fileName() : QString();
+        const QString executablePath = QStandardPaths::findExecutable(appName, {defaultPath});
+        result = !executablePath.isEmpty() ? QFileInfo(executablePath).fileName() : QString();
     }
 
     // Cache the result (even if empty to avoid repeated failed lookups)
-    desktop_file_cache[app_name] = result;
+    desktopFileCache[appName] = result;
     return result;
 }
 
@@ -318,13 +318,13 @@ QString MainWindow::get_desktop_file_name(const QString &app_name) const
 // Priority (highest wins): Exec= first token > reverse-DNS suffix.
 // Used when an exact "<name>.desktop" match fails so that .list entries like
 // "ghex" still resolve to "org.gnome.GHex.desktop".
-void MainWindow::build_desktop_file_index() const
+void MainWindow::buildDesktopFileIndex() const
 {
-    QMutexLocker locker(&desktop_file_index_mutex);
-    if (desktop_file_index_built) {
+    QMutexLocker locker(&desktopFileIndexMutex);
+    if (desktopFileIndexBuilt) {
         return;
     }
-    desktop_file_index_built = true;
+    desktopFileIndexBuilt = true;
 
     static const QRegularExpression exec_re(QStringLiteral(R"(^Exec=(.*)$)"),
                                             QRegularExpression::MultilineOption);
@@ -371,27 +371,27 @@ void MainWindow::build_desktop_file_index() const
     }
 
     // Apply lowest priority first; higher priority overwrites.
-    desktop_file_index = std::move(by_suffix);
+    desktopFileIndex = std::move(by_suffix);
     for (auto it = by_exec.constBegin(); it != by_exec.constEnd(); ++it) {
-        desktop_file_index.insert(it.key(), it.value());
+        desktopFileIndex.insert(it.key(), it.value());
     }
 }
 
 // Return the app info needed for the button
-ItemInfo MainWindow::get_desktop_file_info(const QString &file_name) const
+ItemInfo MainWindow::getDesktopFileInfo(const QString &fname) const
 {
     ItemInfo item;
 
     // If not a .desktop file, initialize all fields explicitly
-    if (!file_name.endsWith(".desktop")) {
-        item.name = file_name;
-        item.icon_name = file_name;
-        item.exec = file_name;
+    if (!fname.endsWith(".desktop")) {
+        item.name = fname;
+        item.iconName = fname;
+        item.exec = fname;
         item.terminal = true;
         return item;
     }
 
-    QFile file(file_name);
+    QFile file(fname);
     if (!file.open(QFile::Text | QFile::ReadOnly)) {
         return {};
     }
@@ -399,46 +399,46 @@ ItemInfo MainWindow::get_desktop_file_info(const QString &file_name) const
     file.close();
 
     static const QRegularExpression mx_prefix("^MX ");
-    item.name = LauncherParser::extract_localized_value(text, "Name", lang).remove(mx_prefix);
-    item.comment = LauncherParser::extract_localized_value(text, "Comment", lang);
-    item.icon_name = LauncherParser::extract_localized_value(text, "Icon", lang);
-    item.exec = LauncherParser::extract_localized_value(text, "Exec", lang);
-    item.terminal = LauncherParser::extract_localized_value(text, "Terminal", lang).toLower() == "true";
+    item.name = LauncherParser::extractLocalizedValue(text, "Name", lang).remove(mx_prefix);
+    item.comment = LauncherParser::extractLocalizedValue(text, "Comment", lang);
+    item.iconName = LauncherParser::extractLocalizedValue(text, "Icon", lang);
+    item.exec = LauncherParser::extractLocalizedValue(text, "Exec", lang);
+    item.terminal = LauncherParser::extractLocalizedValue(text, "Terminal", lang).toLower() == "true";
 
     return item;
 }
 
-void MainWindow::add_buttons(const QMultiMap<QString, ItemInfo> &map)
+void MainWindow::addButtons(const QMultiMap<QString, ItemInfo> &map)
 {
-    clear_grid_layout();
+    clearGridLayout();
     int col = 0;
     int row = 0;
-    const int max_cols = fixed_number_col != 0 ? fixed_number_col : qMax(1, width() / 200);
-    col_count = max_cols;
+    const int max_cols = fixedNumberCol != 0 ? fixedNumberCol : qMax(1, width() / 200);
+    colCount = max_cols;
 
-    QString prev_category;
+    QString prevCategory;
     for (auto it = map.constBegin(); it != map.constEnd();) {
         const QString &category = it.key();
 
         // Add category label on first encounter
-        if (category != prev_category) {
-            if (!prev_category.isEmpty()) {
-                add_empty_row_if_needed(prev_category, map, row, col);
+        if (category != prevCategory) {
+            if (!prevCategory.isEmpty()) {
+                addEmptyRowIfNeeded(prevCategory, map, row, col);
             }
-            add_category_label(category, row, col);
-            prev_category = category;
+            addCategoryLabel(category, row, col);
+            prevCategory = category;
         }
 
-        add_item_button(it.value(), row, col, max_cols);
+        addItemButton(it.value(), row, col, max_cols);
         ++it;
     }
-    if (!prev_category.isEmpty()) {
-        add_empty_row_if_needed(prev_category, map, row, col);
+    if (!prevCategory.isEmpty()) {
+        addEmptyRowIfNeeded(prevCategory, map, row, col);
     }
     ui->gridLayout_btn->setRowStretch(row, 1);
 }
 
-void MainWindow::add_category_label(const QString &category, int &row, int &col)
+void MainWindow::addCategoryLabel(const QString &category, int &row, int &col)
 {
     auto *label = new QLabel(category, this);
     QFont font;
@@ -449,26 +449,26 @@ void MainWindow::add_category_label(const QString &category, int &row, int &col)
     ui->gridLayout_btn->setRowStretch(++row, 0);
 }
 
-void MainWindow::add_item_button(const ItemInfo &item, int &row, int &col, int max_cols)
+void MainWindow::addItemButton(const ItemInfo &item, int &row, int &col, int maxCols)
 {
     QString name = item.name;
     QString cmd = item.exec;
-    fix_name_item(&name);
-    fix_exec_item(&cmd);
+    fixNameItem(&name);
+    fixExecItem(&cmd);
 
     auto *btn = new FlatButton(name);
-    btn->setIconSize(icon_size);
+    btn->setIconSize(iconSize);
     btn->setToolTip(item.comment);
-    const QIcon icon = find_icon(item.icon_name);
+    const QIcon icon = findIcon(item.iconName);
     btn->setIcon(icon.isNull() ? QIcon::fromTheme("utilities-terminal") : icon);
     ui->gridLayout_btn->addWidget(btn, row, col);
     ui->gridLayout_btn->setRowStretch(row, 0);
 
-    prepare_command(item, cmd);
+    prepareCommand(item, cmd);
     btn->setProperty("cmd", cmd);
-    connect(btn, &QPushButton::clicked, this, &MainWindow::btn_clicked);
+    connect(btn, &QPushButton::clicked, this, &MainWindow::btnClicked);
 
-    if (++col >= max_cols) {
+    if (++col >= maxCols) {
         col = 0;
         ++row;
     }
@@ -478,9 +478,9 @@ void MainWindow::add_item_button(const ItemInfo &item, int &row, int &col, int m
 // variables the elevation tool exports. Returns empty if none are set; logname(1)
 // is deliberately not used as it reads utmp, which is empty in the GUI/SSH/container
 // sessions this needs to cover.
-QString MainWindow::invoking_user() const
+QString MainWindow::invokingUser() const
 {
-    auto name_for_uid = [](const QByteArray &value) -> QString {
+    auto nameForUid = [](const QByteArray &value) -> QString {
         bool ok = false;
         const uint uid = value.toUInt(&ok);
         if (ok) {
@@ -493,7 +493,7 @@ QString MainWindow::invoking_user() const
 
     for (const char *var : {"PKEXEC_UID", "SUDO_UID"}) {
         if (const QByteArray value = qgetenv(var); !value.isEmpty()) {
-            if (const QString name = name_for_uid(value); !name.isEmpty()) {
+            if (const QString name = nameForUid(value); !name.isEmpty()) {
                 return name;
             }
         }
@@ -504,7 +504,7 @@ QString MainWindow::invoking_user() const
     return {};
 }
 
-void MainWindow::prepare_command(const ItemInfo &item, QString &cmd) const
+void MainWindow::prepareCommand(const ItemInfo &item, QString &cmd) const
 {
     if (item.terminal) {
         cmd.prepend("x-terminal-emulator -e ");
@@ -512,7 +512,7 @@ void MainWindow::prepare_command(const ItemInfo &item, QString &cmd) const
     if (item.root && getuid() != 0) {
         cmd.prepend("pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY ");
     } else if (item.user && getuid() == 0) {
-        if (const QString user = invoking_user(); !user.isEmpty()) {
+        if (const QString user = invokingUser(); !user.isEmpty()) {
             cmd = QStringLiteral("pkexec --user %1 env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY ").arg(user) + cmd;
         } else {
             qWarning() << "Could not determine the unprivileged user; running as root:" << cmd;
@@ -520,7 +520,7 @@ void MainWindow::prepare_command(const ItemInfo &item, QString &cmd) const
     }
 }
 
-void MainWindow::add_empty_row_if_needed(const QString &category, const QMultiMap<QString, ItemInfo> &map, int &row,
+void MainWindow::addEmptyRowIfNeeded(const QString &category, const QMultiMap<QString, ItemInfo> &map, int &row,
                                          int &col)
 {
     if (category != map.lastKey()) {
@@ -533,46 +533,46 @@ void MainWindow::add_empty_row_if_needed(const QString &category, const QMultiMa
     }
 }
 
-void MainWindow::center_window()
+void MainWindow::centerWindow()
 {
-    const QRect screen_geometry = QApplication::primaryScreen()->geometry();
-    const int x = (screen_geometry.width() - width()) / 2;
-    const int y = (screen_geometry.height() - height()) / 2;
+    const QRect screenGeometry = QApplication::primaryScreen()->geometry();
+    const int x = (screenGeometry.width() - width()) / 2;
+    const int y = (screenGeometry.height() - height()) / 2;
     move(x, y);
 }
 
 // Remove all items from the grid layout
-void MainWindow::clear_grid_layout()
+void MainWindow::clearGridLayout()
 {
-    QLayoutItem *child_item {};
-    while ((child_item = ui->gridLayout_btn->takeAt(0)) != nullptr) {
+    QLayoutItem *childItem {};
+    while ((childItem = ui->gridLayout_btn->takeAt(0)) != nullptr) {
         // Delete the widget and the layout item
-        delete child_item->widget();
-        delete child_item;
+        delete childItem->widget();
+        delete childItem;
     }
 }
 
 // Open the .list file and process it
-void MainWindow::read_file(const QString &file_name)
+void MainWindow::readFile(const QString &fname)
 {
-    if (!QFile::exists(file_name)) {
-        QMessageBox::critical(this, tr("File Not Found"), tr("The file %1 does not exist.").arg(file_name));
+    if (!QFile::exists(fname)) {
+        QMessageBox::critical(this, tr("File Not Found"), tr("The file %1 does not exist.").arg(fname));
         return;
     }
 
     // Detect INI format. QSettings puts [General] keys at root scope, so we
     // identify the new format by the presence of the [Categories] section.
-    QSettings ini_settings(file_name, QSettings::IniFormat);
-    const bool is_ini = ini_settings.status() == QSettings::NoError
-                        && ini_settings.contains(QStringLiteral("Categories/list"));
+    QSettings iniSettings(fname, QSettings::IniFormat);
+    const bool isIni = iniSettings.status() == QSettings::NoError
+                        && iniSettings.contains(QStringLiteral("Categories/list"));
 
     LauncherParser::ParseResult parsed;
-    if (is_ini) {
-        parsed = LauncherParser::parse_ini(ini_settings, lang);
+    if (isIni) {
+        parsed = LauncherParser::parseIni(iniSettings, lang);
     } else {
-        QFile file(file_name);
+        QFile file(fname);
         if (!file.open(QFile::ReadOnly | QFile::Text)) {
-            QMessageBox::critical(this, tr("File Open Error"), tr("Could not open file: ") + file_name);
+            QMessageBox::critical(this, tr("File Open Error"), tr("Could not open file: ") + fname);
             return;
         }
         parsed = LauncherParser::parse(file.readAll(), lang);
@@ -580,20 +580,20 @@ void MainWindow::read_file(const QString &file_name)
 
     if (parsed.items.isEmpty()) {
         QMessageBox::critical(this, tr("Parse Error"),
-                              tr("The file %1 contains no recognizable launcher entries.").arg(file_name));
+                              tr("The file %1 contains no recognizable launcher entries.").arg(fname));
         return;
     }
 
     // Resolve items against installed .desktop files into a temporary map.
     // If nothing resolves, the launcher would be empty — bail without touching state.
-    QMultiMap<QString, ItemInfo> new_map;
+    QMultiMap<QString, ItemInfo> newMap;
     for (const auto &p : parsed.items) {
-        const QString desktop_file = get_desktop_file_name(p.app_name);
-        if (desktop_file.isEmpty()) {
+        const QString desktopFile = getDesktopFileName(p.appName);
+        if (desktopFile.isEmpty()) {
             continue;
         }
 
-        ItemInfo info = get_desktop_file_info(desktop_file);
+        ItemInfo info = getDesktopFileInfo(desktopFile);
         info.root = p.root;
         info.user = p.user;
         info.terminal = info.terminal || p.terminal;
@@ -601,46 +601,46 @@ void MainWindow::read_file(const QString &file_name)
             info.name = p.alias;
         }
         info.category = p.category;
-        new_map.insert(info.category, info);
+        newMap.insert(info.category, info);
     }
 
-    if (new_map.isEmpty()) {
+    if (newMap.isEmpty()) {
         QMessageBox::critical(this, tr("Parse Error"),
-                              tr("None of the entries in %1 match an installed application.").arg(file_name));
+                              tr("None of the entries in %1 match an installed application.").arg(fileName));
         return;
     }
 
     // Swap state in.
-    const QFileInfo file_info(file_name);
-    custom_name = file_info.baseName();
-    file_location = file_info.path();
+    const QFileInfo fileInfo(fileName);
+    customName = fileInfo.baseName();
+    fileLocation = fileInfo.path();
 
-    category_map = std::move(new_map);
+    categoryMap = std::move(newMap);
     IconLoader::clearCache();
-    desktop_file_cache.clear();
-    desktop_file_index.clear();
-    desktop_file_index_built = false;
-    icon_theme = parsed.icon_theme;
+    desktopFileCache.clear();
+    desktopFileIndex.clear();
+    desktopFileIndexBuilt = false;
+    iconTheme = parsed.iconTheme;
     setWindowTitle(parsed.name);
     ui->commentLabel->setText(parsed.comment);
 
-    QIcon::setThemeName(icon_theme.isEmpty() ? default_icon_theme : icon_theme);
+    QIcon::setThemeName(iconTheme.isEmpty() ? defaultIconTheme : iconTheme);
 }
 
-void MainWindow::set_connections()
+void MainWindow::setConnections()
 {
-    connect(ui->checkBoxStartup, &QPushButton::clicked, this, &MainWindow::checkbox_startup_clicked);
-    connect(ui->pushAbout, &QPushButton::clicked, this, &MainWindow::push_about_clicked);
+    connect(ui->checkBoxStartup, &QPushButton::clicked, this, &MainWindow::checkboxStartupClicked);
+    connect(ui->pushAbout, &QPushButton::clicked, this, &MainWindow::pushAboutClicked);
     connect(ui->pushCancel, &QPushButton::clicked, qApp, &QApplication::quit);
-    connect(ui->pushEdit, &QPushButton::clicked, this, &MainWindow::push_edit_clicked);
-    connect(ui->pushHelp, &QPushButton::clicked, this, &MainWindow::push_help_clicked);
-    connect(ui->textSearch, &QLineEdit::textChanged, this, &MainWindow::text_search_text_changed);
+    connect(ui->pushEdit, &QPushButton::clicked, this, &MainWindow::pushEditClicked);
+    connect(ui->pushHelp, &QPushButton::clicked, this, &MainWindow::pushHelpClicked);
+    connect(ui->textSearch, &QLineEdit::textChanged, this, &MainWindow::textSearchTextChanged);
 }
 
-void MainWindow::push_about_clicked()
+void MainWindow::pushAboutClicked()
 {
     hide();
-    const QString about_text
+    const QString aboutText
         = QString("<p align=\"center\"><b><h2>%1</h2></b></p>"
                   "<p align=\"center\">%2 %3</p>"
                   "<p align=\"center\"><h3>%4</h3></p>"
@@ -649,69 +649,69 @@ void MainWindow::push_about_clicked()
               .arg(windowTitle(), tr("Version:"), QApplication::applicationVersion(),
                    tr("Custom Toolbox is a tool used for creating a custom launcher"), tr("Copyright (c) MX Linux"));
 
-    displayAboutMsgBox(tr("About %1").arg(windowTitle()), about_text, Config::LicenseFile,
+    displayAboutMsgBox(tr("About %1").arg(windowTitle()), aboutText, Config::LicenseFile,
                        tr("%1 License").arg(windowTitle()));
     show();
 }
 
-void MainWindow::push_help_clicked()
+void MainWindow::pushHelpClicked()
 {
     displayHelpDoc(Config::HelpFile, tr("%1 Help").arg(windowTitle()));
 }
 
-void MainWindow::text_search_text_changed(const QString &search_text)
+void MainWindow::textSearchTextChanged(const QString &searchText)
 {
     // Early return for empty search - show all items
-    if (search_text.isEmpty()) {
-        add_buttons(category_map);
+    if (searchText.isEmpty()) {
+        addButtons(categoryMap);
         return;
     }
 
     // Use QStringView for efficient string matching
-    const QStringView search_view(search_text);
+    const QStringView searchView(searchText);
 
     // Create a lambda function to check if an item matches the search text
-    auto matches_search_text = [&search_view](const ItemInfo &item) {
-        return QStringView(item.name).contains(search_view, Qt::CaseInsensitive)
-               || QStringView(item.comment).contains(search_view, Qt::CaseInsensitive)
-               || QStringView(item.category).contains(search_view, Qt::CaseInsensitive);
+    auto matchesSearchText = [&searchView](const ItemInfo &item) {
+        return QStringView(item.name).contains(searchView, Qt::CaseInsensitive)
+               || QStringView(item.comment).contains(searchView, Qt::CaseInsensitive)
+               || QStringView(item.category).contains(searchView, Qt::CaseInsensitive);
     };
 
-    // Filter category_map to only include items that match the search text
-    QMultiMap<QString, ItemInfo> filtered_map;
-    for (const auto &item : category_map) {
-        if (matches_search_text(item)) {
-            filtered_map.insert(item.category, item);
+    // Filter categoryMap to only include items that match the search text
+    QMultiMap<QString, ItemInfo> filteredMap;
+    for (const auto &item : categoryMap) {
+        if (matchesSearchText(item)) {
+            filteredMap.insert(item.category, item);
         }
     }
 
     // Update the buttons with the filtered map (empty map shows no results)
-    add_buttons(filtered_map);
+    addButtons(filteredMap);
 }
 
 // Add a .desktop file to the ~/.config/autostart
-void MainWindow::checkbox_startup_clicked(bool checked)
+void MainWindow::checkboxStartupClicked(bool checked)
 {
-    const QString autostart_dir = QDir::homePath() + "/.config/autostart/";
-    const QString file_name = autostart_dir + custom_name + ".desktop"; // Same name as .list file
+    const QString autostartDir = QDir::homePath() + "/.config/autostart/";
+    const QString autostartFileName = autostartDir + customName + ".desktop"; // Same name as .list file
     if (checked) {
         // Ensure the autostart directory exists
-        if (!QDir(autostart_dir).exists() && !QDir().mkpath(autostart_dir)) {
+        if (!QDir(autostartDir).exists() && !QDir().mkpath(autostartDir)) {
             QMessageBox::critical(this, tr("Directory Creation Error"),
-                                  tr("Could not create directory: %1").arg(autostart_dir));
+                                  tr("Could not create directory: %1").arg(autostartDir));
             ui->checkBoxStartup->setChecked(false);
             return;
         }
 
-        if (QFile file(file_name); file.open(QFile::WriteOnly | QFile::Text)) {
-            auto escape_desktop_string = [](QString value) {
+        if (QFile file(autostartFileName); file.open(QFile::WriteOnly | QFile::Text)) {
+            auto escapeDesktopString = [](QString value) {
                 value.replace('\\', "\\\\");
                 value.replace('\n', "\\n");
                 value.replace('\r', "\\r");
                 value.replace('\t', "\\t");
                 return value;
             };
-            auto quote_exec_arg = [](QString value) {
+            auto quoteExecArg = [](QString value) {
                 value.replace('\\', "\\\\");
                 value.replace('"', "\\\"");
                 value.replace('$', "\\$");
@@ -719,36 +719,36 @@ void MainWindow::checkbox_startup_clicked(bool checked)
                 return '"' + value + '"';
             };
 
-            const QString list_path = QDir(file_location).filePath(custom_name + ".list");
+            const QString listPath = QDir(fileLocation).filePath(customName + ".list");
             QTextStream out(&file);
             out << "[Desktop Entry]\n"
-                << "Name=" << escape_desktop_string(windowTitle()) << '\n'
-                << "Comment=" << escape_desktop_string(ui->commentLabel->text()) << '\n'
-                << "Exec=custom-toolbox " << quote_exec_arg(list_path) << '\n'
+                << "Name=" << escapeDesktopString(windowTitle()) << '\n'
+                << "Comment=" << escapeDesktopString(ui->commentLabel->text()) << '\n'
+                << "Exec=custom-toolbox " << quoteExecArg(listPath) << '\n'
                 << "Terminal=false\n"
                 << "Type=Application\n"
                 << "Icon=custom-toolbox\n"
                 << "Categories=XFCE;System\n"
                 << "StartupNotify=false";
         } else {
-            QMessageBox::critical(this, tr("File Open Error"), tr("Could not write file: %1").arg(file_name));
+            QMessageBox::critical(this, tr("File Open Error"), tr("Could not write file: %1").arg(autostartFileName));
             ui->checkBoxStartup->setChecked(false);
         }
     } else {
-        if (!QFile::remove(file_name)) {
-            QMessageBox::warning(this, tr("File Removal Error"), tr("Could not remove file: %1").arg(file_name));
+        if (!QFile::remove(autostartFileName)) {
+            QMessageBox::warning(this, tr("File Removal Error"), tr("Could not remove file: %1").arg(autostartFileName));
         }
     }
 }
 
-void MainWindow::push_edit_clicked()
+void MainWindow::pushEditClicked()
 {
-    const QString gui_editor_program = QProcess::splitCommand(gui_editor).value(0);
-    const bool use_default_editor = gui_editor.isEmpty() || gui_editor_program.isEmpty()
-                                    || QStandardPaths::findExecutable(gui_editor_program, {default_path}).isEmpty();
-    const QString editor = use_default_editor ? get_default_editor() : gui_editor;
-    const QStringList editor_parts = QProcess::splitCommand(editor);
-    if (editor_parts.isEmpty()) {
+    const QString guiEditorProgram = QProcess::splitCommand(guiEditor).value(0);
+    const bool useDefaultEditor = guiEditor.isEmpty() || guiEditorProgram.isEmpty()
+                                    || QStandardPaths::findExecutable(guiEditorProgram, {defaultPath}).isEmpty();
+    const QString editor = useDefaultEditor ? getDefaultEditor() : guiEditor;
+    const QStringList editorParts = QProcess::splitCommand(editor);
+    if (editorParts.isEmpty()) {
         QMessageBox::warning(this, tr("Error"), tr("Editor command is empty."));
         return;
     }
@@ -761,24 +761,24 @@ void MainWindow::push_edit_clicked()
         return "'" + quoted + "'";
     };
 
-    QStringList cmd_parts = build_editor_prefix(editor);
-    for (const auto &part : editor_parts) {
-        cmd_parts << shell_quote(part);
+    QStringList cmdParts = buildEditorPrefix(editor);
+    for (const auto &part : editorParts) {
+        cmdParts << shell_quote(part);
     }
-    cmd_parts << shell_quote(file_name);
+    cmdParts << shell_quote(fileName);
 
-    const int exit_code = QProcess::execute("/bin/sh", {"-c", cmd_parts.join(' ')});
+    const int exit_code = QProcess::execute("/bin/sh", {"-c", cmdParts.join(' ')});
     if (exit_code != 0) {
         QMessageBox::warning(this, tr("Error"), tr("Editor command failed with code %1").arg(exit_code));
     }
 
     // Stop any pending debounced refresh and refresh immediately for instant feedback
-    file_reload_timer.stop();
-    refresh_if_file_changed();
-    watch_file(file_name);
+    fileReloadTimer.stop();
+    refreshIfFileChanged();
+    watchFile(fileName);
 }
 
-QString MainWindow::get_default_editor() const
+QString MainWindow::getDefaultEditor() const
 {
     QProcess proc;
     proc.start("xdg-mime", {"query", "default", "text/plain"});
@@ -786,12 +786,12 @@ QString MainWindow::get_default_editor() const
         qWarning() << "xdg-mime failed to query default editor";
         return "nano"; // Fallback to nano
     }
-    const QString default_editor = proc.readAllStandardOutput().trimmed();
-    const QString desktop_file
-        = QStandardPaths::locate(QStandardPaths::ApplicationsLocation, default_editor, QStandardPaths::LocateFile);
+    const QString defaultEditor = proc.readAllStandardOutput().trimmed();
+    const QString desktopFile
+        = QStandardPaths::locate(QStandardPaths::ApplicationsLocation, defaultEditor, QStandardPaths::LocateFile);
 
-    QFile file(desktop_file);
-    if (desktop_file.isEmpty() || !file.open(QIODevice::ReadOnly)) {
+    QFile file(desktopFile);
+    if (desktopFile.isEmpty() || !file.open(QIODevice::ReadOnly)) {
         return "nano"; // Fallback to nano
     }
 
@@ -809,91 +809,91 @@ QString MainWindow::get_default_editor() const
     return "nano"; // Fallback to nano
 }
 
-QStringList MainWindow::build_editor_prefix(const QString &editor) const
+QStringList MainWindow::buildEditorPrefix(const QString &editor) const
 {
-    const bool is_root = getuid() == 0;
-    static const QRegularExpression elevates_pattern(R"(\b(kate|kwrite|featherpad|code|codium)$)");
-    static const QRegularExpression cli_pattern(R"(\b(nano|vi|vim|nvim|micro|emacs)\b)");
-    const QString editor_program = QProcess::splitCommand(editor).value(0);
-    const QString editor_name = QFileInfo(editor_program).baseName();
-    const bool is_editor_that_elevates = elevates_pattern.match(editor_name).hasMatch();
-    const bool is_cli_editor = cli_pattern.match(editor_name).hasMatch();
+    const bool isRoot = getuid() == 0;
+    static const QRegularExpression elevatesPattern(R"(\b(kate|kwrite|featherpad|code|codium)$)");
+    static const QRegularExpression cliPattern(R"(\b(nano|vi|vim|nvim|micro|emacs)\b)");
+    const QString editorProgram = QProcess::splitCommand(editor).value(0);
+    const QString editorName = QFileInfo(editorProgram).baseName();
+    const bool isEditorThatElevates = elevatesPattern.match(editorName).hasMatch();
+    const bool isCliEditor = cliPattern.match(editorName).hasMatch();
 
     QStringList prefix;
-    if (is_root && is_editor_that_elevates) {
-        if (const QString user = invoking_user(); !user.isEmpty()) {
+    if (isRoot && isEditorThatElevates) {
+        if (const QString user = invokingUser(); !user.isEmpty()) {
             prefix << QStringLiteral("pkexec --user ") + user;
         }
-    } else if (!QFileInfo(file_name).isWritable() && !is_editor_that_elevates) {
+    } else if (!QFileInfo(fileName).isWritable() && !isEditorThatElevates) {
         prefix << "pkexec";
     }
 
     prefix << "env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY";
 
-    if (is_cli_editor) {
+    if (isCliEditor) {
         prefix << "x-terminal-emulator -e";
     }
 
     return prefix;
 }
 
-void MainWindow::handle_file_changed(const QString &path)
+void MainWindow::handleFileChanged(const QString &path)
 {
-    if (path != file_name) {
+    if (path != fileName) {
         return;
     }
 
     // Re-add watch immediately to avoid missing further changes
-    watch_file(file_name);
+    watchFile(fileName);
 
     // Debounce: restart timer on each change to avoid redundant reloads
-    file_reload_timer.start();
+    fileReloadTimer.start();
 }
 
-void MainWindow::handle_directory_changed(const QString &path)
+void MainWindow::handleDirectoryChanged(const QString &path)
 {
-    if (path != file_location) {
+    if (path != fileLocation) {
         return;
     }
 
     // Re-add watch if file exists to avoid missing further changes
-    if (QFile::exists(file_name)) {
-        watch_file(file_name);
+    if (QFile::exists(fileName)) {
+        watchFile(fileName);
     }
 
     // Debounce: restart timer on each change to avoid redundant reloads
-    file_reload_timer.start();
+    fileReloadTimer.start();
 }
 
-void MainWindow::refresh_if_file_changed()
+void MainWindow::refreshIfFileChanged()
 {
-    if (!QFile::exists(file_name)) {
+    if (!QFile::exists(fileName)) {
         return;
     }
 
-    read_file(file_name);
-    set_gui();
+    readFile(fileName);
+    setGui();
 }
 
-void MainWindow::watch_file(const QString &path)
+void MainWindow::watchFile(const QString &path)
 {
     if (path.isEmpty()) {
         return;
     }
 
-    if (file_watcher.files().contains(path)) {
-        file_watcher.removePath(path);
+    if (fileWatcher.files().contains(path)) {
+        fileWatcher.removePath(path);
     }
 
     if (QFile::exists(path)) {
-        if (!file_watcher.addPath(path)) {
+        if (!fileWatcher.addPath(path)) {
             qWarning() << "Failed to add watch for file:" << path;
         }
     }
 
-    if (!file_location.isEmpty() && !file_watcher.directories().contains(file_location)) {
-        if (!file_watcher.addPath(file_location)) {
-            qWarning() << "Failed to add watch for directory:" << file_location;
+    if (!fileLocation.isEmpty() && !fileWatcher.directories().contains(fileLocation)) {
+        if (!fileWatcher.addPath(fileLocation)) {
+            qWarning() << "Failed to add watch for directory:" << fileLocation;
         }
     }
 }

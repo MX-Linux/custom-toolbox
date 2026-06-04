@@ -37,9 +37,9 @@ QIcon searchInPaths(const QString &name)
         if (!dir.exists()) {
             continue;
         }
-        const QString full_path = dir.filePath(name);
-        if (QFile::exists(full_path)) {
-            QIcon icon(full_path);
+        const QString fullPath = dir.filePath(name);
+        if (QFile::exists(fullPath)) {
+            QIcon icon(fullPath);
             if (!icon.isNull()) {
                 return icon;
             }
@@ -50,13 +50,13 @@ QIcon searchInPaths(const QString &name)
 
 QIcon getDefaultIcon()
 {
-    static const QString default_name = QStringLiteral("utilities-terminal");
-    QIcon icon = QIcon::fromTheme(default_name);
+    static const QString defaultName = QStringLiteral("utilities-terminal");
+    QIcon icon = QIcon::fromTheme(defaultName);
     if (!icon.isNull()) {
         return icon;
     }
     for (const auto &ext : iconExtensions()) {
-        icon = searchInPaths(default_name + ext);
+        icon = searchInPaths(defaultName + ext);
         if (!icon.isNull()) {
             return icon;
         }
@@ -70,50 +70,50 @@ void IconLoader::clearCache()
     icon_cache.clear();
 }
 
-QIcon IconLoader::loadIcon(const QString &icon_name)
+QIcon IconLoader::loadIcon(const QString &iconName)
 {
-    if (auto it = icon_cache.constFind(icon_name); it != icon_cache.constEnd()) {
+    if (auto it = icon_cache.constFind(iconName); it != icon_cache.constEnd()) {
         return it.value();
     }
 
-    if (icon_name.isEmpty() || icon_name == QLatin1String("utilities-terminal")) {
+    if (iconName.isEmpty() || iconName == QLatin1String("utilities-terminal")) {
         const QIcon result = getDefaultIcon();
-        icon_cache.insert(icon_name, result);
+        icon_cache.insert(iconName, result);
         return result;
     }
 
-    const QFileInfo icon_info(icon_name);
-    if (icon_info.isAbsolute() && icon_info.exists()) {
-        QIcon result(icon_name);
-        icon_cache.insert(icon_name, result);
+    const QFileInfo iconInfo(iconName);
+    if (iconInfo.isAbsolute() && iconInfo.exists()) {
+        QIcon result(iconName);
+        icon_cache.insert(iconName, result);
         return result;
     }
 
-    static const QRegularExpression ext_re(QStringLiteral(R"(\.(png|svg|xpm)$)"));
-    QString name_no_ext = icon_name;
-    name_no_ext.remove(ext_re);
+    static const QRegularExpression extRe(QStringLiteral(R"(\.(png|svg|xpm)$)"));
+    QString nameNoExt = iconName;
+    nameNoExt.remove(extRe);
 
-    QIcon icon = QIcon::fromTheme(name_no_ext);
+    QIcon icon = QIcon::fromTheme(nameNoExt);
     if (!icon.isNull()) {
-        icon_cache.insert(icon_name, icon);
+        icon_cache.insert(iconName, icon);
         return icon;
     }
 
-    icon = searchInPaths(icon_name);
+    icon = searchInPaths(iconName);
     if (!icon.isNull()) {
-        icon_cache.insert(icon_name, icon);
+        icon_cache.insert(iconName, icon);
         return icon;
     }
 
     for (const auto &ext : iconExtensions()) {
-        icon = searchInPaths(name_no_ext + ext);
+        icon = searchInPaths(nameNoExt + ext);
         if (!icon.isNull()) {
-            icon_cache.insert(icon_name, icon);
+            icon_cache.insert(iconName, icon);
             return icon;
         }
     }
 
     const QIcon default_icon = getDefaultIcon();
-    icon_cache.insert(icon_name, default_icon);
+    icon_cache.insert(iconName, default_icon);
     return default_icon;
 }
