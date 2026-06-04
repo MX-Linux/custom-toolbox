@@ -499,10 +499,10 @@ void MainWindow::prepareCommand(const ItemInfo &item, QString &cmd) const
         cmd.prepend("x-terminal-emulator -e ");
     }
     if (item.root && getuid() != 0) {
-        cmd.prepend("pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY ");
+        cmd.prepend("pkexec env DISPLAY=$DISPLAY XAUTHORITY=${XAUTHORITY:-$HOME/.Xauthority} ");
     } else if (item.user && getuid() == 0) {
         if (const QString user = invokingUser(); !user.isEmpty()) {
-            cmd = QStringLiteral("pkexec --user %1 env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY ").arg(user) + cmd;
+            cmd = QStringLiteral("pkexec --user %1 env DISPLAY=$DISPLAY XAUTHORITY=${XAUTHORITY:-$HOME/.Xauthority} ").arg(user) + cmd;
         } else {
             qWarning() << "Could not determine the unprivileged user; running as root:" << cmd;
         }
@@ -817,7 +817,7 @@ QStringList MainWindow::buildEditorPrefix(const QString &editor) const
         prefix << "pkexec";
     }
 
-    prefix << "env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY";
+    prefix << "env DISPLAY=$DISPLAY XAUTHORITY=${XAUTHORITY:-$HOME/.Xauthority}";
 
     if (isCliEditor) {
         prefix << "x-terminal-emulator -e";
