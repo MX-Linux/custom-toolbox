@@ -21,8 +21,6 @@
  **********************************************************************/
 #pragma once
 
-#include <QEnterEvent>
-#include <QEvent>
 #include <QPushButton>
 
 class FlatButton : public QPushButton

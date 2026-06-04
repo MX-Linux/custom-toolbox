@@ -30,6 +30,7 @@
 
 #include <QDebug>
 #include <QDirIterator>
+#include <QLabel>
 #include <QFile>
 #include <QFileDialog>
 #include <QFileInfo>
