@@ -96,6 +96,7 @@ private:
     [[nodiscard]] QString get_default_editor() const;
     [[nodiscard]] QString get_desktop_file_name(const QString &app_name) const;
     [[nodiscard]] QString get_file_name();
+    [[nodiscard]] QString invoking_user() const;
     [[nodiscard]] QStringList build_editor_prefix(const QString &editor) const;
     static void fix_exec_item(QString *item);
     static void fix_name_item(QString *item);

@@ -43,6 +43,7 @@
 
 #include "about.h"
 #include "flatbutton.h"
+#include <pwd.h>
 #include <unistd.h>
 
 
@@ -473,6 +474,36 @@ void MainWindow::add_item_button(const ItemInfo &item, int &row, int &col, int m
     }
 }
 
+// Resolve the unprivileged user that elevated this (now-root) process from the
+// variables the elevation tool exports. Returns empty if none are set; logname(1)
+// is deliberately not used as it reads utmp, which is empty in the GUI/SSH/container
+// sessions this needs to cover.
+QString MainWindow::invoking_user() const
+{
+    auto name_for_uid = [](const QByteArray &value) -> QString {
+        bool ok = false;
+        const uint uid = value.toUInt(&ok);
+        if (ok) {
+            if (const passwd *pw = getpwuid(uid)) {
+                return QString::fromLocal8Bit(pw->pw_name);
+            }
+        }
+        return {};
+    };
+
+    for (const char *var : {"PKEXEC_UID", "SUDO_UID"}) {
+        if (const QByteArray value = qgetenv(var); !value.isEmpty()) {
+            if (const QString name = name_for_uid(value); !name.isEmpty()) {
+                return name;
+            }
+        }
+    }
+    if (const QByteArray sudo_user = qgetenv("SUDO_USER"); !sudo_user.isEmpty()) {
+        return QString::fromLocal8Bit(sudo_user);
+    }
+    return {};
+}
+
 void MainWindow::prepare_command(const ItemInfo &item, QString &cmd) const
 {
     if (item.terminal) {
@@ -481,7 +512,11 @@ void MainWindow::prepare_command(const ItemInfo &item, QString &cmd) const
     if (item.root && getuid() != 0) {
         cmd.prepend("pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY ");
     } else if (item.user && getuid() == 0) {
-        cmd = QString("pkexec --user $(logname) env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY ") + cmd;
+        if (const QString user = invoking_user(); !user.isEmpty()) {
+            cmd = QStringLiteral("pkexec --user %1 env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY ").arg(user) + cmd;
+        } else {
+            qWarning() << "Could not determine the unprivileged user; running as root:" << cmd;
+        }
     }
 }
 
@@ -786,7 +821,9 @@ QStringList MainWindow::build_editor_prefix(const QString &editor) const
 
     QStringList prefix;
     if (is_root && is_editor_that_elevates) {
-        prefix << "pkexec --user $(logname)";
+        if (const QString user = invoking_user(); !user.isEmpty()) {
+            prefix << QStringLiteral("pkexec --user ") + user;
+        }
     } else if (!QFileInfo(file_name).isWritable() && !is_editor_that_elevates) {
         prefix << "pkexec";
     }
