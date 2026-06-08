@@ -528,11 +528,13 @@ void MainWindow::clearGridLayout()
 }
 
 // Open the .list file and process it
-void MainWindow::readFile(const QString &fname)
+bool MainWindow::readFile(const QString &fname, bool showErrors)
 {
     if (!QFile::exists(fname)) {
-        QMessageBox::critical(this, tr("File Not Found"), tr("The file %1 does not exist.").arg(fname));
-        return;
+        if (showErrors) {
+            QMessageBox::critical(this, tr("File Not Found"), tr("The file %1 does not exist.").arg(fname));
+        }
+        return false;
     }
 
     // Update file location early so watchFile always watches the correct directory
@@ -551,16 +553,20 @@ void MainWindow::readFile(const QString &fname)
     } else {
         QFile file(fname);
         if (!file.open(QFile::ReadOnly | QFile::Text)) {
-            QMessageBox::critical(this, tr("File Open Error"), tr("Could not open file: ") + fname);
-            return;
+            if (showErrors) {
+                QMessageBox::critical(this, tr("File Open Error"), tr("Could not open file: ") + fname);
+            }
+            return false;
         }
         parsed = LauncherParser::parse(file.readAll(), lang);
     }
 
     if (parsed.items.isEmpty()) {
-        QMessageBox::critical(this, tr("Parse Error"),
-                              tr("The file %1 contains no recognizable launcher entries.").arg(fname));
-        return;
+        if (showErrors) {
+            QMessageBox::critical(this, tr("Parse Error"),
+                                  tr("The file %1 contains no recognizable launcher entries.").arg(fname));
+        }
+        return false;
     }
 
     // Resolve items against installed .desktop files into a temporary map.
@@ -584,9 +590,11 @@ void MainWindow::readFile(const QString &fname)
     }
 
     if (newMap.isEmpty()) {
-        QMessageBox::critical(this, tr("Parse Error"),
-                              tr("None of the entries in %1 match an installed application.").arg(fileName));
-        return;
+        if (showErrors) {
+            QMessageBox::critical(this, tr("Parse Error"),
+                                  tr("None of the entries in %1 match an installed application.").arg(fileName));
+        }
+        return false;
     }
 
     // Swap state in. (fileLocation was already set near the top of readFile.)
@@ -603,6 +611,7 @@ void MainWindow::readFile(const QString &fname)
     ui->commentLabel->setText(parsed.comment);
 
     QIcon::setThemeName(iconTheme.isEmpty() ? defaultIconTheme : iconTheme);
+    return true;
 }
 
 void MainWindow::setConnections()
@@ -851,8 +860,9 @@ void MainWindow::refreshIfFileChanged()
         return;
     }
 
-    readFile(fileName);
-    setGui();
+    if (readFile(fileName, false)) {
+        setGui();
+    }
 }
 
 void MainWindow::watchFile(const QString &path)

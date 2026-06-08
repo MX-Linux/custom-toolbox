@@ -105,7 +105,7 @@ private:
     void clearGridLayout();
     void prepareCommand(const ItemInfo &item, QString &cmd) const;
     void runSynchronous(const QString &cmd, bool useShell);
-    void readFile(const QString &fname);
+    bool readFile(const QString &fname, bool showErrors = true);
     void setConnections();
     void setGui();
     void setup();

@@ -3,7 +3,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../src/mainwindow.ui" line="20"/>
-        <location filename="../src/mainwindow.cpp" line="118"/>
+        <location filename="../src/mainwindow.cpp" line="110"/>
         <source>Custom Toolbox</source>
         <translation>Selvvalgt verktøykasse</translation>
     </message>
@@ -78,166 +78,166 @@
         <translation>søk</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="180"/>
-        <location filename="../src/mainwindow.cpp" line="186"/>
-        <location filename="../src/mainwindow.cpp" line="203"/>
-        <location filename="../src/mainwindow.cpp" line="214"/>
+        <location filename="../src/mainwindow.cpp" line="173"/>
+        <location filename="../src/mainwindow.cpp" line="179"/>
+        <location filename="../src/mainwindow.cpp" line="196"/>
+        <location filename="../src/mainwindow.cpp" line="207"/>
         <source>Execution Error</source>
         <translation>Kjørefeil</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="203"/>
+        <location filename="../src/mainwindow.cpp" line="196"/>
         <source>Command is empty. Cannot execute.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="180"/>
+        <location filename="../src/mainwindow.cpp" line="173"/>
         <source>Failed to start command: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="186"/>
+        <location filename="../src/mainwindow.cpp" line="179"/>
         <source>Failed to execute command: %1</source>
         <translation>Klarte ikke kjøre kommando: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="214"/>
+        <location filename="../src/mainwindow.cpp" line="207"/>
         <source>Failed to start program: %1</source>
         <translation>Klarte ikke starte program: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="254"/>
+        <location filename="../src/mainwindow.cpp" line="247"/>
         <source>Open List File</source>
         <translation>Åpne listefil</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="254"/>
+        <location filename="../src/mainwindow.cpp" line="247"/>
         <source>List Files (*.list)</source>
         <translation>Listefiler (*.list)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="256"/>
+        <location filename="../src/mainwindow.cpp" line="249"/>
         <source>File Selection Error</source>
         <translation>Feil ved valg av fil</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="256"/>
+        <location filename="../src/mainwindow.cpp" line="249"/>
         <source>No file selected. Application will now exit.</source>
         <translation>Ingen fil valgt. Programmet vil nå avslutte.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="262"/>
-        <location filename="../src/mainwindow.cpp" line="540"/>
-        <location filename="../src/mainwindow.cpp" line="699"/>
+        <location filename="../src/mainwindow.cpp" line="255"/>
+        <location filename="../src/mainwindow.cpp" line="571"/>
+        <location filename="../src/mainwindow.cpp" line="727"/>
         <source>File Open Error</source>
         <translation>Feil ved åpning av fil</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="263"/>
+        <location filename="../src/mainwindow.cpp" line="256"/>
         <source>Could not open file. Do you want to try again?</source>
         <translation>Klarte ikke åpne fil. Forsøke igjen?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="80"/>
-        <location filename="../src/mainwindow.cpp" line="524"/>
+        <location filename="../src/mainwindow.cpp" line="82"/>
+        <location filename="../src/mainwindow.cpp" line="551"/>
         <source>File Not Found</source>
         <translation>Fant ikke fil</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="80"/>
-        <location filename="../src/mainwindow.cpp" line="524"/>
+        <location filename="../src/mainwindow.cpp" line="82"/>
+        <location filename="../src/mainwindow.cpp" line="551"/>
         <source>The file %1 does not exist.</source>
         <translation>Fila %1 finnes ikke.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="540"/>
+        <location filename="../src/mainwindow.cpp" line="571"/>
         <source>Could not open file: </source>
         <translation>Klarte ikke åpne fil:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="547"/>
-        <location filename="../src/mainwindow.cpp" line="573"/>
+        <location filename="../src/mainwindow.cpp" line="578"/>
+        <location filename="../src/mainwindow.cpp" line="604"/>
         <source>Parse Error</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="548"/>
+        <location filename="../src/mainwindow.cpp" line="579"/>
         <source>The file %1 contains no recognizable launcher entries.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="574"/>
+        <location filename="../src/mainwindow.cpp" line="605"/>
         <source>None of the entries in %1 match an installed application.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="614"/>
+        <location filename="../src/mainwindow.cpp" line="643"/>
         <source>Version:</source>
         <translation>Versjon:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="617"/>
+        <location filename="../src/mainwindow.cpp" line="646"/>
         <source>About %1</source>
         <translation>Om %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="665"/>
+        <location filename="../src/mainwindow.cpp" line="693"/>
         <source>Directory Creation Error</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="666"/>
+        <location filename="../src/mainwindow.cpp" line="694"/>
         <source>Could not create directory: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="717"/>
-        <location filename="../src/mainwindow.cpp" line="737"/>
+        <location filename="../src/mainwindow.cpp" line="745"/>
+        <location filename="../src/mainwindow.cpp" line="765"/>
         <source>Error</source>
         <translation>Feil</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="717"/>
+        <location filename="../src/mainwindow.cpp" line="745"/>
         <source>Editor command is empty.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="737"/>
+        <location filename="../src/mainwindow.cpp" line="765"/>
         <source>Editor command failed with code %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="615"/>
+        <location filename="../src/mainwindow.cpp" line="644"/>
         <source>Custom Toolbox is a tool used for creating a custom launcher</source>
         <translation>Selvvalgt Verktøykasse er et verktøy for å lage egne snarveier</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="615"/>
+        <location filename="../src/mainwindow.cpp" line="644"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Opphavsrett (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="618"/>
+        <location filename="../src/mainwindow.cpp" line="647"/>
         <source>%1 License</source>
         <translation>Lisens for %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="624"/>
+        <location filename="../src/mainwindow.cpp" line="652"/>
         <source>%1 Help</source>
         <translation>Hjelpetekst for %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="699"/>
+        <location filename="../src/mainwindow.cpp" line="727"/>
         <source>Could not write file: %1</source>
         <translation>Klarte ikke skrive til fil: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="704"/>
+        <location filename="../src/mainwindow.cpp" line="732"/>
         <source>File Removal Error</source>
         <translation>Feil ved fjerning av fil</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="704"/>
+        <location filename="../src/mainwindow.cpp" line="732"/>
         <source>Could not remove file: %1</source>
         <translation>Klarte ikke fjerne fil: %1</translation>
     </message>
@@ -245,23 +245,23 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/about.cpp" line="71"/>
+        <location filename="../src/about.cpp" line="73"/>
         <source>Could not load %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="94"/>
+        <location filename="../src/about.cpp" line="96"/>
         <source>License</source>
         <translation>Lisens</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="95"/>
-        <location filename="../src/about.cpp" line="105"/>
+        <location filename="../src/about.cpp" line="97"/>
+        <location filename="../src/about.cpp" line="107"/>
         <source>Changelog</source>
         <translation>Endringslogg</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="96"/>
+        <location filename="../src/about.cpp" line="98"/>
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
@@ -271,7 +271,7 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="51"/>
+        <location filename="../src/about.cpp" line="53"/>
         <location filename="../src/about.cpp" line="120"/>
         <source>&amp;Close</source>
         <translation>&amp;Lukk</translation>
