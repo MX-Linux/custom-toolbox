@@ -237,6 +237,17 @@ QString MainWindow::getDesktopFileName(const QString &appName) const
         return it.value();
     }
 
+    // Accept an absolute path to a .desktop file directly (with or without the
+    // .desktop suffix) instead of treating it as a short name to search for.
+    if (QFileInfo(appName).isAbsolute()) {
+        const QString resolved
+            = appName.endsWith(QLatin1String(".desktop")) ? appName : appName + QLatin1String(".desktop");
+        if (QFile::exists(resolved)) {
+            desktopFileCache[appName] = resolved;
+            return resolved;
+        }
+    }
+
     // Search for .desktop files in standard applications locations
     const QStringList searchPaths = QStandardPaths::standardLocations(QStandardPaths::ApplicationsLocation);
 
