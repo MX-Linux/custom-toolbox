@@ -17,6 +17,28 @@ QRegularExpression &cached_re(const QString &pattern)
     }
     return it.value();
 }
+
+// Return the index of the first '#' that begins an inline comment, i.e. one that
+// is not enclosed in single or double quotes. Returns -1 if there is none.
+qsizetype unquotedCommentIndex(QStringView line)
+{
+    QChar quote;
+    bool inQuote = false;
+    for (qsizetype i = 0; i < line.size(); ++i) {
+        const QChar c = line[i];
+        if (inQuote) {
+            if (c == quote) {
+                inQuote = false;
+            }
+        } else if (c == QLatin1Char('\'') || c == QLatin1Char('"')) {
+            inQuote = true;
+            quote = c;
+        } else if (c == QLatin1Char('#')) {
+            return i;
+        }
+    }
+    return -1;
+}
 } // namespace
 
 QString LauncherParser::extractLocalizedValue(const QString &text, const QString &key, const QString &lang)
@@ -60,8 +82,15 @@ LauncherParser::ParseResult LauncherParser::parse(const QString &text, const QSt
         if (endPos == -1) {
             endPos = textView.size();
         }
-        const QStringView lineView = textView.mid(pos, endPos - pos);
+        const QStringView rawLine = textView.mid(pos, endPos - pos);
         pos = endPos + 1;
+
+        // Strip inline comments: truncate at the first unquoted '#'. This keeps
+        // trailing notes (e.g. `app root  # runs elevated`) from being tokenized
+        // as flags, and prevents `app alias 'X'  # note` from bleeding into the
+        // alias. '#' inside single/double quotes is preserved.
+        const qsizetype commentPos = unquotedCommentIndex(rawLine);
+        const QStringView lineView = commentPos >= 0 ? rawLine.left(commentPos) : rawLine;
 
         if (lineView.isEmpty()) {
             continue;
