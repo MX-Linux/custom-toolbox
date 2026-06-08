@@ -45,7 +45,10 @@ LauncherParser::ParseResult LauncherParser::parse(const QString &text, const QSt
     result.comment = extractLocalizedValue(text, QStringLiteral("Comment"), lang);
     result.categories.reserve(20);
 
-    static const QRegularExpression skipPattern(QStringLiteral("^(Name|Comment|#|$).*"));
+    // Skip the launcher's own Name=/Comment= header lines (with optional locale
+    // suffix), comment lines and blank lines. Anchored on "=" so app entries whose
+    // executable name merely starts with "Name"/"Comment" are not dropped.
+    static const QRegularExpression skipPattern(QStringLiteral("^(Name|Comment)(\\[.*])?=|^#|^$"));
 
     QStringView textView(text);
     qsizetype pos = 0;
