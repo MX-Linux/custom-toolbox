@@ -127,8 +127,8 @@
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="262"/>
-        <location filename="../src/mainwindow.cpp" line="558"/>
-        <location filename="../src/mainwindow.cpp" line="691"/>
+        <location filename="../src/mainwindow.cpp" line="540"/>
+        <location filename="../src/mainwindow.cpp" line="699"/>
         <source>File Open Error</source>
         <translation>Error en obrir el fitxer</translation>
     </message>
@@ -150,78 +150,94 @@
         <translation>El fitxer %1 no existeix.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="558"/>
+        <location filename="../src/mainwindow.cpp" line="540"/>
         <source>Could not open file: </source>
         <translation>No s&apos;ha pogut obrir el fitxer: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="606"/>
+        <location filename="../src/mainwindow.cpp" line="547"/>
+        <location filename="../src/mainwindow.cpp" line="573"/>
+        <source>Parse Error</source>
+        <translation>Analitza l&apos;error</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="548"/>
+        <source>The file %1 contains no recognizable launcher entries.</source>
+        <translation>El fitxer %1 no conté cap entrada executable identificable.</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="574"/>
+        <source>None of the entries in %1 match an installed application.</source>
+        <translation>Cap de les entrades a %1 coincideix amb una aplicació instal·lada.</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="614"/>
         <source>Version:</source>
         <translation>Versió: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="609"/>
+        <location filename="../src/mainwindow.cpp" line="617"/>
         <source>About %1</source>
         <translation>Quant a %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="657"/>
+        <location filename="../src/mainwindow.cpp" line="665"/>
         <source>Directory Creation Error</source>
         <translation>Error de creació del directori</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="658"/>
+        <location filename="../src/mainwindow.cpp" line="666"/>
         <source>Could not create directory: %1</source>
         <translation>No s&apos;ha pogut crear el directori: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="709"/>
-        <location filename="../src/mainwindow.cpp" line="729"/>
+        <location filename="../src/mainwindow.cpp" line="717"/>
+        <location filename="../src/mainwindow.cpp" line="737"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="709"/>
+        <location filename="../src/mainwindow.cpp" line="717"/>
         <source>Editor command is empty.</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;ordre de l&apos;editor està buida.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="729"/>
+        <location filename="../src/mainwindow.cpp" line="737"/>
         <source>Editor command failed with code %1</source>
         <translation>L&apos;ordre de l&apos;editor ha fallat amb el codi %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="607"/>
+        <location filename="../src/mainwindow.cpp" line="615"/>
         <source>Custom Toolbox is a tool used for creating a custom launcher</source>
         <translation>Custom Toolbox és una eina usada per crear llançadors personalitzats</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="607"/>
+        <location filename="../src/mainwindow.cpp" line="615"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Copyright (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="610"/>
+        <location filename="../src/mainwindow.cpp" line="618"/>
         <source>%1 License</source>
         <translation>Llicència de %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="616"/>
+        <location filename="../src/mainwindow.cpp" line="624"/>
         <source>%1 Help</source>
         <translation>Ajuda de %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="691"/>
+        <location filename="../src/mainwindow.cpp" line="699"/>
         <source>Could not write file: %1</source>
         <translation>No puc escriure al fitxer: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="696"/>
+        <location filename="../src/mainwindow.cpp" line="704"/>
         <source>File Removal Error</source>
         <translation>Error d&apos;eliminació de fitxer</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="696"/>
+        <location filename="../src/mainwindow.cpp" line="704"/>
         <source>Could not remove file: %1</source>
         <translation>No puc eliminar el fitxer: %1</translation>
     </message>
@@ -273,7 +289,7 @@
     <message>
         <location filename="../src/main.cpp" line="91"/>
         <source>Full path and name of the .list file you want to load. Supports both custom format (Key=Value) and INI format ([Section]).</source>
-        <translation type="unfinished"/>
+        <translation>Camí sencer i nom del fitxer .list que voleu carregar. Admet tant el format personalitzat (Clau=Valor) com l&apos;INI ([Secció]).</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="102"/>

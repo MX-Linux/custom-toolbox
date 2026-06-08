@@ -1,3 +1,13 @@
+custom-toolbox (26.06) mx; urgency=medium
+
+  * Settings in custom-toolbox.conf (minimum window size, icon size, editor, and number of columns) are applied again
+  * The divider line between categories is now clearly visible on both light and dark themes
+  * Opening the About window no longer makes the main window disappear and reappear
+  * Fix the Edit button failing to open the text editor in some login sessions
+  * When running as administrator, the Edit button now opens the editor as your normal user
+
+ -- Adrian <adrian@mxlinux.org>  Sun, 07 Jun 2026 23:50:06 -0400
+
 custom-toolbox (26.05.2) mx; urgency=medium
 
   * Fix INI-format .list files not being recognized correctly

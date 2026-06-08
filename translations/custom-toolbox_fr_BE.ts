@@ -127,8 +127,8 @@
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="262"/>
-        <location filename="../src/mainwindow.cpp" line="558"/>
-        <location filename="../src/mainwindow.cpp" line="691"/>
+        <location filename="../src/mainwindow.cpp" line="540"/>
+        <location filename="../src/mainwindow.cpp" line="699"/>
         <source>File Open Error</source>
         <translation>Erreur d’ouverture du fichier</translation>
     </message>
@@ -150,78 +150,94 @@
         <translation>Le fichier %1 n’existe pas.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="558"/>
+        <location filename="../src/mainwindow.cpp" line="540"/>
         <source>Could not open file: </source>
         <translation>Impossible d’ouvrir le fichier: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="606"/>
+        <location filename="../src/mainwindow.cpp" line="547"/>
+        <location filename="../src/mainwindow.cpp" line="573"/>
+        <source>Parse Error</source>
+        <translation>Erreur d’analyse</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="548"/>
+        <source>The file %1 contains no recognizable launcher entries.</source>
+        <translation>Le fichier %1 ne contient aucune entrée de lanceur reconnaissable.</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="574"/>
+        <source>None of the entries in %1 match an installed application.</source>
+        <translation>Aucune des entrées de %1 ne correspond à une application installée.</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="614"/>
         <source>Version:</source>
         <translation>Version:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="609"/>
+        <location filename="../src/mainwindow.cpp" line="617"/>
         <source>About %1</source>
         <translation>À propos de %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="657"/>
+        <location filename="../src/mainwindow.cpp" line="665"/>
         <source>Directory Creation Error</source>
         <translation>Erreur de création du répertoire</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="658"/>
+        <location filename="../src/mainwindow.cpp" line="666"/>
         <source>Could not create directory: %1</source>
         <translation>Impossible de créer le répertoire: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="709"/>
-        <location filename="../src/mainwindow.cpp" line="729"/>
+        <location filename="../src/mainwindow.cpp" line="717"/>
+        <location filename="../src/mainwindow.cpp" line="737"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="709"/>
+        <location filename="../src/mainwindow.cpp" line="717"/>
         <source>Editor command is empty.</source>
-        <translation type="unfinished"/>
+        <translation>La commande de l’éditeur est vide.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="729"/>
+        <location filename="../src/mainwindow.cpp" line="737"/>
         <source>Editor command failed with code %1</source>
         <translation>La commande de l’éditeur a échoué avec le code %1.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="607"/>
+        <location filename="../src/mainwindow.cpp" line="615"/>
         <source>Custom Toolbox is a tool used for creating a custom launcher</source>
         <translation>La boîte à outils personnalisée « Custom Toolbox » est un outil utilisé pour créer un lanceur personnalisé</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="607"/>
+        <location filename="../src/mainwindow.cpp" line="615"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Copyright (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="610"/>
+        <location filename="../src/mainwindow.cpp" line="618"/>
         <source>%1 License</source>
         <translation>%1 Licence</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="616"/>
+        <location filename="../src/mainwindow.cpp" line="624"/>
         <source>%1 Help</source>
         <translation>%1 Aide</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="691"/>
+        <location filename="../src/mainwindow.cpp" line="699"/>
         <source>Could not write file: %1</source>
         <translation>Impossible d’écrire le fichier: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="696"/>
+        <location filename="../src/mainwindow.cpp" line="704"/>
         <source>File Removal Error</source>
         <translation>Erreur de suppression de fichier</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="696"/>
+        <location filename="../src/mainwindow.cpp" line="704"/>
         <source>Could not remove file: %1</source>
         <translation>Impossible de supprimer le fichier: %1</translation>
     </message>
@@ -273,7 +289,7 @@
     <message>
         <location filename="../src/main.cpp" line="91"/>
         <source>Full path and name of the .list file you want to load. Supports both custom format (Key=Value) and INI format ([Section]).</source>
-        <translation type="unfinished"/>
+        <translation>Chemin complet et nom du fichier .list que vous souhaitez charger. Prend en charge à la fois le format personnalisé (Key=Value) et le format INI ([Section]).</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="102"/>

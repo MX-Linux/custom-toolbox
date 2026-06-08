@@ -127,8 +127,8 @@
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="262"/>
-        <location filename="../src/mainwindow.cpp" line="558"/>
-        <location filename="../src/mainwindow.cpp" line="691"/>
+        <location filename="../src/mainwindow.cpp" line="540"/>
+        <location filename="../src/mainwindow.cpp" line="699"/>
         <source>File Open Error</source>
         <translation>Ocorreu um erro ao abrir o arquivo</translation>
     </message>
@@ -150,78 +150,94 @@
         <translation>O arquivo %1 não existe.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="558"/>
+        <location filename="../src/mainwindow.cpp" line="540"/>
         <source>Could not open file: </source>
         <translation>Não foi possível abrir o arquivo</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="606"/>
+        <location filename="../src/mainwindow.cpp" line="547"/>
+        <location filename="../src/mainwindow.cpp" line="573"/>
+        <source>Parse Error</source>
+        <translation>Ocorreu um erro de análise</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="548"/>
+        <source>The file %1 contains no recognizable launcher entries.</source>
+        <translation>O arquivo em %1 não contém um lançador reconhecível.</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="574"/>
+        <source>None of the entries in %1 match an installed application.</source>
+        <translation>Nenhuma das entradas em %1 corresponde a um programa instalado.</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="614"/>
         <source>Version:</source>
         <translation>Versão:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="609"/>
+        <location filename="../src/mainwindow.cpp" line="617"/>
         <source>About %1</source>
         <translation>Sobre o %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="657"/>
+        <location filename="../src/mainwindow.cpp" line="665"/>
         <source>Directory Creation Error</source>
         <translation>Ocorreu um erro ao criar o diretório</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="658"/>
+        <location filename="../src/mainwindow.cpp" line="666"/>
         <source>Could not create directory: %1</source>
         <translation>Não foi possível criar o diretório: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="709"/>
-        <location filename="../src/mainwindow.cpp" line="729"/>
+        <location filename="../src/mainwindow.cpp" line="717"/>
+        <location filename="../src/mainwindow.cpp" line="737"/>
         <source>Error</source>
         <translation>Ocorreu um erro</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="709"/>
+        <location filename="../src/mainwindow.cpp" line="717"/>
         <source>Editor command is empty.</source>
         <translation>O comando do editor está vazio ou está em branco.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="729"/>
+        <location filename="../src/mainwindow.cpp" line="737"/>
         <source>Editor command failed with code %1</source>
         <translation>O editor de comando falhou com código de erro %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="607"/>
+        <location filename="../src/mainwindow.cpp" line="615"/>
         <source>Custom Toolbox is a tool used for creating a custom launcher</source>
         <translation>O ‘Personalizador da Caixa de Ferramentas’ ou ‘Custom Toolbox’ é uma ferramenta utilizada para criar um iniciador ou um lançador ou um ícone de atalho personalizado para os programas</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="607"/>
+        <location filename="../src/mainwindow.cpp" line="615"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Direitos reservados ao (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="610"/>
+        <location filename="../src/mainwindow.cpp" line="618"/>
         <source>%1 License</source>
         <translation>Licença do %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="616"/>
+        <location filename="../src/mainwindow.cpp" line="624"/>
         <source>%1 Help</source>
         <translation>Ajuda do %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="691"/>
+        <location filename="../src/mainwindow.cpp" line="699"/>
         <source>Could not write file: %1</source>
         <translation>Não foi possível gravar o arquivo %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="696"/>
+        <location filename="../src/mainwindow.cpp" line="704"/>
         <source>File Removal Error</source>
         <translation>Ocorreu um erro ao remover o arquivo</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="696"/>
+        <location filename="../src/mainwindow.cpp" line="704"/>
         <source>Could not remove file: %1</source>
         <translation>Não foi possível remover o arquivo %1</translation>
     </message>

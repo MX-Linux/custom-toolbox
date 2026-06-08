@@ -127,8 +127,8 @@
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="262"/>
-        <location filename="../src/mainwindow.cpp" line="558"/>
-        <location filename="../src/mainwindow.cpp" line="691"/>
+        <location filename="../src/mainwindow.cpp" line="540"/>
+        <location filename="../src/mainwindow.cpp" line="699"/>
         <source>File Open Error</source>
         <translation>Ошибка открытия файла</translation>
     </message>
@@ -150,78 +150,94 @@
         <translation>Файл %1 не существует.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="558"/>
+        <location filename="../src/mainwindow.cpp" line="540"/>
         <source>Could not open file: </source>
         <translation>Не удалось открыть файл:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="606"/>
+        <location filename="../src/mainwindow.cpp" line="547"/>
+        <location filename="../src/mainwindow.cpp" line="573"/>
+        <source>Parse Error</source>
+        <translation>Ошибка разбора</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="548"/>
+        <source>The file %1 contains no recognizable launcher entries.</source>
+        <translation>Файл% 1 не содержит распознаваемых записей программы запуска.</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="574"/>
+        <source>None of the entries in %1 match an installed application.</source>
+        <translation>Ни одна из записей в% 1 не соответствует установленному приложению.</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="614"/>
         <source>Version:</source>
         <translation>Версия:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="609"/>
+        <location filename="../src/mainwindow.cpp" line="617"/>
         <source>About %1</source>
         <translation>О %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="657"/>
+        <location filename="../src/mainwindow.cpp" line="665"/>
         <source>Directory Creation Error</source>
         <translation>Ошибка создания каталога</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="658"/>
+        <location filename="../src/mainwindow.cpp" line="666"/>
         <source>Could not create directory: %1</source>
         <translation>Не удалось создать каталог: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="709"/>
-        <location filename="../src/mainwindow.cpp" line="729"/>
+        <location filename="../src/mainwindow.cpp" line="717"/>
+        <location filename="../src/mainwindow.cpp" line="737"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="709"/>
+        <location filename="../src/mainwindow.cpp" line="717"/>
         <source>Editor command is empty.</source>
-        <translation type="unfinished"/>
+        <translation>Команда редактора пуста.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="729"/>
+        <location filename="../src/mainwindow.cpp" line="737"/>
         <source>Editor command failed with code %1</source>
         <translation>Команда редактора не выполнена с кодом %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="607"/>
+        <location filename="../src/mainwindow.cpp" line="615"/>
         <source>Custom Toolbox is a tool used for creating a custom launcher</source>
         <translation>Пользовательский набор инструментов - это инструмент, используемый для создания пользовательского лаунчера</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="607"/>
+        <location filename="../src/mainwindow.cpp" line="615"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Copyright (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="610"/>
+        <location filename="../src/mainwindow.cpp" line="618"/>
         <source>%1 License</source>
         <translation>%1 Лицензия</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="616"/>
+        <location filename="../src/mainwindow.cpp" line="624"/>
         <source>%1 Help</source>
         <translation>%1 Справка</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="691"/>
+        <location filename="../src/mainwindow.cpp" line="699"/>
         <source>Could not write file: %1</source>
         <translation>Не удалось записать файл: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="696"/>
+        <location filename="../src/mainwindow.cpp" line="704"/>
         <source>File Removal Error</source>
         <translation>Ошибка удаления файла</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="696"/>
+        <location filename="../src/mainwindow.cpp" line="704"/>
         <source>Could not remove file: %1</source>
         <translation>Не удалось удалить файл: %1</translation>
     </message>
@@ -273,7 +289,7 @@
     <message>
         <location filename="../src/main.cpp" line="91"/>
         <source>Full path and name of the .list file you want to load. Supports both custom format (Key=Value) and INI format ([Section]).</source>
-        <translation type="unfinished"/>
+        <translation>Полный путь и имя файла «.list», который вы хотите загрузить. Поддерживает как пользовательский формат (Ключ=Значение), так и формат INI ([Раздел]).</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="102"/>
