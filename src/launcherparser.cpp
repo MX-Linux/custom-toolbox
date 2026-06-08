@@ -21,21 +21,24 @@ QRegularExpression &cached_re(const QString &pattern)
 
 QString LauncherParser::extractLocalizedValue(const QString &text, const QString &key, const QString &lang)
 {
+    // trimmed() drops trailing whitespace, including the stray '\r' left behind
+    // when a .list/.desktop file uses Windows (CRLF) line endings. Without it an
+    // Exec value would carry a '\r' and fail to launch.
     const QString fullPattern = QStringLiteral("^%1\\[%2]=(.*)$").arg(key, lang);
     auto match = cached_re(fullPattern).match(text);
     if (match.hasMatch()) {
-        return match.captured(1);
+        return match.captured(1).trimmed();
     }
 
     const QString shortPattern = QStringLiteral("^%1\\[%2]=(.*)$").arg(key, lang.section('_', 0, 0));
     match = cached_re(shortPattern).match(text);
     if (match.hasMatch()) {
-        return match.captured(1);
+        return match.captured(1).trimmed();
     }
 
     const QString fallbackPattern = QStringLiteral("^%1=(.*)$").arg(key);
     match = cached_re(fallbackPattern).match(text);
-    return match.hasMatch() ? match.captured(1) : QString();
+    return match.hasMatch() ? match.captured(1).trimmed() : QString();
 }
 
 LauncherParser::ParseResult LauncherParser::parse(const QString &text, const QString &lang)
