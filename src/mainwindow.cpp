@@ -265,8 +265,8 @@ QString MainWindow::getFileName()
 QString MainWindow::getDesktopFileName(const QString &appName) const
 {
     // Check cache first
-    if (desktopFileCache.contains(appName)) {
-        return desktopFileCache[appName];
+    if (auto it = desktopFileCache.constFind(appName); it != desktopFileCache.constEnd()) {
+        return it.value();
     }
 
     // Search for .desktop files in standard applications locations
