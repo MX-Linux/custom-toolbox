@@ -552,6 +552,10 @@ void MainWindow::readFile(const QString &fname)
         return;
     }
 
+    // Update file location early so watchFile always watches the correct directory
+    // even if parsing or resolution fails.
+    fileLocation = QFileInfo(fname).path();
+
     // Detect INI format. QSettings puts [General] keys at root scope, so we
     // identify the new format by the presence of the [Categories] section.
     QSettings iniSettings(fname, QSettings::IniFormat);
@@ -602,10 +606,9 @@ void MainWindow::readFile(const QString &fname)
         return;
     }
 
-    // Swap state in.
+    // Swap state in. (fileLocation was already set near the top of readFile.)
     const QFileInfo fileInfo(fileName);
     customName = fileInfo.baseName();
-    fileLocation = fileInfo.path();
 
     categoryMap = std::move(newMap);
     IconLoader::clearCache();
