@@ -114,11 +114,11 @@ void MainWindow::setup()
 
     QSettings settings(Config::ConfigFile, QSettings::NativeFormat);
     hideGui = settings.value("hideGUI", false).toBool();
-    minHeight = qBound(300, settings.value("minHeight").toInt(), 3000);
-    minWidth = qBound(300, settings.value("minWidth").toInt(), 3000);
-    guiEditor = settings.value("guiEditor").toString();
-    fixedNumberCol = qBound(0, settings.value("fixedNumberColumns", 0).toInt(), 20);
-    const int size = qBound(8, settings.value("iconSize", defaultIconSize).toInt(), 1024);
+    minHeight = qBound(300, settings.value("min_height").toInt(), 3000);
+    minWidth = qBound(300, settings.value("min_width").toInt(), 3000);
+    guiEditor = settings.value("gui_editor").toString();
+    fixedNumberCol = qBound(0, settings.value("fixed_number_columns", 0).toInt(), 20);
+    const int size = qBound(8, settings.value("icon_size", defaultIconSize).toInt(), 1024);
     iconSize = {size, size};
 }
 
