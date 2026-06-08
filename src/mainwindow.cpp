@@ -149,8 +149,9 @@ void MainWindow::setGui()
         ui->checkBoxStartup->setChecked(true);
     }
     ui->textSearch->setFocus();
-    ui->pushCancel->setDefault(true); // Otherwise some other button might be default
-    ui->pushCancel->setDefault(false);
+    for (auto *button : findChildren<QPushButton *>()) {
+        button->setDefault(false);
+    }
 }
 
 void MainWindow::runSynchronous(const QString &cmd, bool useShell)
