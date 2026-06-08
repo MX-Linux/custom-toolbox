@@ -24,6 +24,7 @@
 
 #include <QApplication>
 #include <QCommandLineParser>
+#include <QCoreApplication>
 #include <QFile>
 #include <QFileDialog>
 #include <QIcon>
@@ -44,22 +45,29 @@
 
 // Prompt the user to choose a .list file. Returns an empty string if the user
 // cancels, so the caller can exit main() normally instead of calling exit().
+// The user-facing strings are kept in the "MainWindow" translation context
+// (where they lived before this moved out of MainWindow::getFileName) so their
+// existing translations keep applying.
 static QString promptForListFile()
 {
     while (true) {
-        const QString fname = QFileDialog::getOpenFileName(nullptr, QObject::tr("Open List File"), Config::ConfigDir,
-                                                           QObject::tr("List Files (*.list)"));
+        const QString fname
+            = QFileDialog::getOpenFileName(nullptr, QCoreApplication::translate("MainWindow", "Open List File"),
+                                           Config::ConfigDir,
+                                           QCoreApplication::translate("MainWindow", "List Files (*.list)"));
         if (fname.isEmpty()) {
-            QMessageBox::critical(nullptr, QObject::tr("File Selection Error"),
-                                  QObject::tr("No file selected. Application will now exit."));
+            QMessageBox::critical(nullptr, QCoreApplication::translate("MainWindow", "File Selection Error"),
+                                  QCoreApplication::translate("MainWindow",
+                                                              "No file selected. Application will now exit."));
             return {};
         }
         if (QFile::exists(fname)) {
             return fname;
         }
-        const auto userChoice = QMessageBox::critical(nullptr, QObject::tr("File Open Error"),
-                                                      QObject::tr("Could not open file. Do you want to try again?"),
-                                                      QMessageBox::Yes | QMessageBox::No);
+        const auto userChoice = QMessageBox::critical(
+            nullptr, QCoreApplication::translate("MainWindow", "File Open Error"),
+            QCoreApplication::translate("MainWindow", "Could not open file. Do you want to try again?"),
+            QMessageBox::Yes | QMessageBox::No);
         if (userChoice == QMessageBox::No) {
             return {};
         }
@@ -144,8 +152,9 @@ int main(int argc, char *argv[])
     } else if (QFile::exists(argList.first())) {
         fileName = argList.first();
     } else {
-        QMessageBox::critical(nullptr, QObject::tr("File Not Found"),
-                              QObject::tr("The file %1 does not exist.").arg(argList.first()));
+        QMessageBox::critical(nullptr, QCoreApplication::translate("MainWindow", "File Not Found"),
+                              QCoreApplication::translate("MainWindow", "The file %1 does not exist.")
+                                  .arg(argList.first()));
         return EXIT_FAILURE;
     }
 
