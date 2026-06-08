@@ -706,7 +706,8 @@ void MainWindow::checkboxStartupClicked(bool checked)
             ui->checkBoxStartup->setChecked(false);
         }
     } else {
-        if (!QFile::remove(autostartFileName)) {
+        // Only warn on a genuine removal failure; an absent file is not an error.
+        if (QFile::exists(autostartFileName) && !QFile::remove(autostartFileName)) {
             QMessageBox::warning(this, tr("File Removal Error"), tr("Could not remove file: %1").arg(autostartFileName));
         }
     }
