@@ -481,7 +481,12 @@ void MainWindow::prepareCommand(const ItemInfo &item, QString &cmd) const
         cmd.prepend("pkexec env DISPLAY=$DISPLAY XAUTHORITY=${XAUTHORITY:-$HOME/.Xauthority} ");
     } else if (item.user && getuid() == 0) {
         if (const QString user = invokingUser(); !user.isEmpty()) {
-            cmd = QStringLiteral("pkexec --user %1 env DISPLAY=$DISPLAY XAUTHORITY=${XAUTHORITY:-$HOME/.Xauthority} ").arg(user) + cmd;
+            // $HOME was overwritten to /root in main(); use the original (pre-root)
+            // home so the demoted user reads their own .Xauthority, not root's.
+            const QString userHome = starting_home();
+            cmd = QStringLiteral("pkexec --user %1 env DISPLAY=$DISPLAY XAUTHORITY=${XAUTHORITY:-%2/.Xauthority} ")
+                      .arg(user, userHome)
+                  + cmd;
         } else {
             qWarning() << "Could not determine the unprivileged user; running as root:" << cmd;
         }
