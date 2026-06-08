@@ -814,8 +814,12 @@ QStringList MainWindow::buildEditorPrefix(const QString &editor) const
         if (const QString user = invokingUser(); !user.isEmpty()) {
             prefix << QStringLiteral("pkexec --user ") + user;
         }
-    } else if (!QFileInfo(fileName).isWritable() && !isEditorThatElevates) {
-        prefix << "pkexec";
+    } else if (!isEditorThatElevates) {
+        const QFileInfo fi(fileName);
+        const bool needsElevation = fi.exists() ? !fi.isWritable() : !QFileInfo(fi.path()).isWritable();
+        if (needsElevation) {
+            prefix << "pkexec";
+        }
     }
 
     prefix << "env DISPLAY=$DISPLAY XAUTHORITY=${XAUTHORITY:-$HOME/.Xauthority}";
