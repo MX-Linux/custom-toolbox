@@ -25,6 +25,7 @@
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QFile>
+#include <QFileDialog>
 #include <QIcon>
 #include <QLibraryInfo>
 #include <QLocale>
@@ -40,6 +41,30 @@
 #ifndef VERSION
     #define VERSION "?.?.?.?"
 #endif
+
+// Prompt the user to choose a .list file. Returns an empty string if the user
+// cancels, so the caller can exit main() normally instead of calling exit().
+static QString promptForListFile()
+{
+    while (true) {
+        const QString fname = QFileDialog::getOpenFileName(nullptr, QObject::tr("Open List File"), Config::ConfigDir,
+                                                           QObject::tr("List Files (*.list)"));
+        if (fname.isEmpty()) {
+            QMessageBox::critical(nullptr, QObject::tr("File Selection Error"),
+                                  QObject::tr("No file selected. Application will now exit."));
+            return {};
+        }
+        if (QFile::exists(fname)) {
+            return fname;
+        }
+        const auto userChoice = QMessageBox::critical(nullptr, QObject::tr("File Open Error"),
+                                                      QObject::tr("Could not open file. Do you want to try again?"),
+                                                      QMessageBox::Yes | QMessageBox::No);
+        if (userChoice == QMessageBox::No) {
+            return {};
+        }
+    }
+}
 
 int main(int argc, char *argv[])
 {
@@ -102,10 +127,29 @@ int main(int argc, char *argv[])
                 nullptr, QObject::tr("Error"),
                 QObject::tr(
                     "You seem to be logged in as root, please log out and log in as normal user to use this program."));
-            exit(EXIT_FAILURE);
+            return EXIT_FAILURE;
         }
     }
-    MainWindow w(parser);
+
+    // Resolve the .list file before constructing MainWindow so that a missing
+    // file or a cancelled dialog exits main() normally (unwinding QApplication)
+    // instead of calling std::exit() from deep inside the widget.
+    QString fileName;
+    const QStringList argList = parser.positionalArguments();
+    if (argList.isEmpty()) {
+        fileName = promptForListFile();
+        if (fileName.isEmpty()) {
+            return EXIT_FAILURE;
+        }
+    } else if (QFile::exists(argList.first())) {
+        fileName = argList.first();
+    } else {
+        QMessageBox::critical(nullptr, QObject::tr("File Not Found"),
+                              QObject::tr("The file %1 does not exist.").arg(argList.first()));
+        return EXIT_FAILURE;
+    }
+
+    MainWindow w(parser, fileName);
     w.show();
     return QApplication::exec();
 }

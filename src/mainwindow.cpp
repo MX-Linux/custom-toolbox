@@ -32,7 +32,6 @@
 #include <QDirIterator>
 #include <QLabel>
 #include <QFile>
-#include <QFileDialog>
 #include <QFileInfo>
 #include <QProcess>
 #include <QRegularExpression>
@@ -49,10 +48,11 @@
 
 
 
-MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
+MainWindow::MainWindow(const QCommandLineParser &argParser, const QString &listFile, QWidget *parent)
     : QDialog(parent),
       ui(new Ui::MainWindow),
       fileLocation {Config::ConfigDir},
+      fileName {listFile},
       lang(locale.name()),
       removeStartupCheckbox {argParser.isSet("remove-checkbox")}
 {
@@ -72,16 +72,6 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
 
     setWindowFlags(Qt::Window); // Enable close, minimize, and maximize buttons
     setup();
-
-    const QStringList argList = argParser.positionalArguments();
-    if (argList.isEmpty()) {
-        fileName = getFileName();
-    } else if (QFile::exists(argList.first())) {
-        fileName = argList.first();
-    } else {
-        QMessageBox::critical(this, tr("File Not Found"), tr("The file %1 does not exist.").arg(argList.first()));
-        exit(EXIT_FAILURE);
-    }
 
     readFile(fileName);
     watchFile(fileName);
@@ -236,29 +226,6 @@ void MainWindow::resizeEvent(QResizeEvent *event)
         addButtons(categoryMap);
     } else {
         textSearchTextChanged(ui->textSearch->text());
-    }
-}
-
-// Select .list file to open
-QString MainWindow::getFileName()
-{
-    while (true) {
-        const QString fname
-            = QFileDialog::getOpenFileName(this, tr("Open List File"), fileLocation, tr("List Files (*.list)"));
-        if (fname.isEmpty()) {
-            QMessageBox::critical(this, tr("File Selection Error"), tr("No file selected. Application will now exit."));
-            exit(EXIT_FAILURE);
-        }
-        if (QFile::exists(fname)) {
-            return fname;
-        } else {
-            const auto userChoice = QMessageBox::critical(this, tr("File Open Error"),
-                                                           tr("Could not open file. Do you want to try again?"),
-                                                           QMessageBox::Yes | QMessageBox::No);
-            if (userChoice == QMessageBox::No) {
-                exit(EXIT_FAILURE);
-            }
-        }
     }
 }
 

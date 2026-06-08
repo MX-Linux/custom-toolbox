@@ -45,7 +45,7 @@ class MainWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit MainWindow(const QCommandLineParser &argParser, QWidget *parent = nullptr);
+    explicit MainWindow(const QCommandLineParser &argParser, const QString &listFile, QWidget *parent = nullptr);
     ~MainWindow() override;
 
 private slots:
@@ -93,7 +93,6 @@ private:
     [[nodiscard]] QIcon findIcon(const QString &iconName) const;
     [[nodiscard]] QString getDefaultEditor() const;
     [[nodiscard]] QString getDesktopFileName(const QString &appName) const;
-    [[nodiscard]] QString getFileName();
     [[nodiscard]] QStringList buildEditorPrefix(const QString &editor) const;
     [[nodiscard]] QString invokingUser() const;
     static void fixExecItem(QString *item);
