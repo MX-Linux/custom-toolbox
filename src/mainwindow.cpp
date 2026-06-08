@@ -738,14 +738,13 @@ void MainWindow::pushEditClicked()
     }
     cmdParts << shell_quote(fileName);
 
-    const int exit_code = QProcess::execute("/bin/sh", {"-c", cmdParts.join(' ')});
-    if (exit_code != 0) {
-        QMessageBox::warning(this, tr("Error"), tr("Editor command failed with code %1").arg(exit_code));
+    if (!QProcess::startDetached("/bin/sh", {"-c", cmdParts.join(' ')})) {
+        QMessageBox::warning(this, tr("Error"), tr("Failed to launch the editor."));
     }
 
-    // Stop any pending debounced refresh and refresh immediately for instant feedback
-    fileReloadTimer.stop();
-    refreshIfFileChanged();
+    // The editor runs detached so the toolbox stays responsive; edits saved in
+    // the editor are picked up automatically by the file/directory watcher,
+    // which debounces and reloads. Re-arm the watch in case it was dropped.
     watchFile(fileName);
 }
 
