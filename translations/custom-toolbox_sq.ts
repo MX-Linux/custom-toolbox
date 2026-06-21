@@ -3,7 +3,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../src/mainwindow.ui" line="20"/>
-        <location filename="../src/mainwindow.cpp" line="110"/>
+        <location filename="../src/mainwindow.cpp" line="100"/>
         <source>Custom Toolbox</source>
         <translation>Grup Vetjak Mjetesh</translation>
     </message>
@@ -78,168 +78,168 @@
         <translation>kërko</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="173"/>
-        <location filename="../src/mainwindow.cpp" line="179"/>
-        <location filename="../src/mainwindow.cpp" line="196"/>
-        <location filename="../src/mainwindow.cpp" line="207"/>
+        <location filename="../src/mainwindow.cpp" line="163"/>
+        <location filename="../src/mainwindow.cpp" line="169"/>
+        <location filename="../src/mainwindow.cpp" line="186"/>
+        <location filename="../src/mainwindow.cpp" line="197"/>
         <source>Execution Error</source>
         <translation>Gabim Ekzekutimi</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="196"/>
+        <location filename="../src/mainwindow.cpp" line="186"/>
         <source>Command is empty. Cannot execute.</source>
         <translation>Urdhri është i zbrazët. S’mund të përmbushet.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="173"/>
+        <location filename="../src/mainwindow.cpp" line="163"/>
         <source>Failed to start command: %1</source>
         <translation>S’u arrit të nisej urdhër: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="179"/>
+        <location filename="../src/mainwindow.cpp" line="169"/>
         <source>Failed to execute command: %1</source>
         <translation>S’u arrit të ekzekutohet urdhër: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="207"/>
+        <location filename="../src/mainwindow.cpp" line="197"/>
         <source>Failed to start program: %1</source>
         <translation>S’u arrit të nisej program: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="247"/>
-        <source>Open List File</source>
-        <translation>Hap Kartelën Listë</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="247"/>
-        <source>List Files (*.list)</source>
-        <translation>Kartela Listë (*.list)</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="249"/>
-        <source>File Selection Error</source>
-        <translation>Gabim Përzgjedhjeje Kartele</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="249"/>
-        <source>No file selected. Application will now exit.</source>
-        <translation>S’u përzgjodh kartelë. Aplikacioni tani do të mbyllet.</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="255"/>
-        <location filename="../src/mainwindow.cpp" line="571"/>
-        <location filename="../src/mainwindow.cpp" line="727"/>
+        <location filename="../src/mainwindow.cpp" line="557"/>
+        <location filename="../src/mainwindow.cpp" line="719"/>
+        <location filename="../src/main.cpp" line="68"/>
         <source>File Open Error</source>
         <translation>Gabim Hapje Kartele</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="256"/>
-        <source>Could not open file. Do you want to try again?</source>
-        <translation>S’u hap dot kartelë. Doni të riprovohet?</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="82"/>
-        <location filename="../src/mainwindow.cpp" line="551"/>
+        <location filename="../src/mainwindow.cpp" line="535"/>
+        <location filename="../src/main.cpp" line="155"/>
         <source>File Not Found</source>
         <translation>Kartela S’u Gjet</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="82"/>
-        <location filename="../src/mainwindow.cpp" line="551"/>
+        <location filename="../src/mainwindow.cpp" line="535"/>
+        <location filename="../src/main.cpp" line="156"/>
         <source>The file %1 does not exist.</source>
         <translation>Kartela %1 s’ekziston.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="571"/>
+        <location filename="../src/mainwindow.cpp" line="557"/>
         <source>Could not open file: </source>
         <translation>S’u hap dot kartelë:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="578"/>
-        <location filename="../src/mainwindow.cpp" line="604"/>
+        <location filename="../src/mainwindow.cpp" line="566"/>
+        <location filename="../src/mainwindow.cpp" line="594"/>
         <source>Parse Error</source>
         <translation>Analizo Gabimin</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="579"/>
+        <location filename="../src/mainwindow.cpp" line="567"/>
         <source>The file %1 contains no recognizable launcher entries.</source>
         <translation>Kartela %1 s’përmban zëra të dallueshëm nisësi.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="605"/>
+        <location filename="../src/mainwindow.cpp" line="595"/>
         <source>None of the entries in %1 match an installed application.</source>
         <translation>Asnjë prej zërave në %1 s’përkon me një aplikacion të instaluar.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="643"/>
+        <location filename="../src/mainwindow.cpp" line="635"/>
         <source>Version:</source>
         <translation>Version:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="646"/>
+        <location filename="../src/mainwindow.cpp" line="638"/>
         <source>About %1</source>
         <translation>Mbi %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="693"/>
+        <location filename="../src/mainwindow.cpp" line="685"/>
         <source>Directory Creation Error</source>
         <translation>Gabim Krijimi Drejtorie</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="694"/>
+        <location filename="../src/mainwindow.cpp" line="686"/>
         <source>Could not create directory: %1</source>
         <translation>S’u krijua dot drejtori: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="745"/>
-        <location filename="../src/mainwindow.cpp" line="765"/>
+        <location filename="../src/mainwindow.cpp" line="738"/>
+        <location filename="../src/mainwindow.cpp" line="757"/>
         <source>Error</source>
         <translation>Gabim</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="745"/>
+        <location filename="../src/mainwindow.cpp" line="738"/>
         <source>Editor command is empty.</source>
         <translation>Urdhri për përpunues është i zbrazët.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="765"/>
-        <source>Editor command failed with code %1</source>
-        <translation>Urdhri i përpunuesit dështoi me kod %1</translation>
+        <location filename="../src/mainwindow.cpp" line="757"/>
+        <source>Failed to launch the editor.</source>
+        <translation>S’u arrit të nisej përpunuesi.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="644"/>
+        <location filename="../src/mainwindow.cpp" line="636"/>
         <source>Custom Toolbox is a tool used for creating a custom launcher</source>
         <translation>Grupi Vetjak i Mjeteve është një mjet i përdorur për të krijuar nisës vetjakë</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="644"/>
+        <location filename="../src/mainwindow.cpp" line="636"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Të drejta kopjimi (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="647"/>
+        <location filename="../src/mainwindow.cpp" line="639"/>
         <source>%1 License</source>
         <translation>Licencë %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="652"/>
+        <location filename="../src/mainwindow.cpp" line="644"/>
         <source>%1 Help</source>
         <translation>Ndihmë për %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="727"/>
+        <location filename="../src/mainwindow.cpp" line="719"/>
         <source>Could not write file: %1</source>
         <translation>S’u shkrua dot kartelë: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="732"/>
+        <location filename="../src/mainwindow.cpp" line="725"/>
         <source>File Removal Error</source>
         <translation>Gabim Heqjeje Kartele</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="732"/>
+        <location filename="../src/mainwindow.cpp" line="725"/>
         <source>Could not remove file: %1</source>
         <translation>S’u hoq dot kartelë: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/main.cpp" line="55"/>
+        <source>Open List File</source>
+        <translation>Hap Kartelën Listë</translation>
+    </message>
+    <message>
+        <location filename="../src/main.cpp" line="57"/>
+        <source>List Files (*.list)</source>
+        <translation>Kartela Listë (*.list)</translation>
+    </message>
+    <message>
+        <location filename="../src/main.cpp" line="59"/>
+        <source>File Selection Error</source>
+        <translation>Gabim Përzgjedhjeje Kartele</translation>
+    </message>
+    <message>
+        <location filename="../src/main.cpp" line="60"/>
+        <source>No file selected. Application will now exit.</source>
+        <translation>S’u përzgjodh kartelë. Aplikacioni tani do të mbyllet.</translation>
+    </message>
+    <message>
+        <location filename="../src/main.cpp" line="69"/>
+        <source>Could not open file. Do you want to try again?</source>
+        <translation>S’u hap dot kartelë. Doni të riprovohet?</translation>
     </message>
 </context>
 <context>
@@ -277,27 +277,27 @@
         <translation>&amp;Mbylle</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="86"/>
+        <location filename="../src/main.cpp" line="119"/>
         <source>This app can be used to create custom launchers: box of buttons/icons</source>
         <translation>Ky aplikacion mund të përdoret për të krijuar nisës vetjakë: kuti butonash/ikonash</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="89"/>
+        <location filename="../src/main.cpp" line="122"/>
         <source>Don&apos;t show &apos;show this dialog at startup&apos; checkbox</source>
         <translation>Kutizë për mosshfaqje të “shfaqe këtë dialog gjatë nisjes”</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="91"/>
+        <location filename="../src/main.cpp" line="124"/>
         <source>Full path and name of the .list file you want to load. Supports both custom format (Key=Value) and INI format ([Section]).</source>
         <translation>Shteg i plotë dhe emër i kartelës .list që doni të ngarkohet. Mbulohe që të dy formatet, ai vetjak (Key=Value) dhe formati INI ([Section]).</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="102"/>
+        <location filename="../src/main.cpp" line="135"/>
         <source>Error</source>
         <translation>Gabim</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="103"/>
+        <location filename="../src/main.cpp" line="136"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
         <translation>Duket të jeni futur si rrënjë, ju lutemi, që të përdorni këtë program, dilni nga llogaria dhe hyni si përdorues i zakonshëm.</translation>
     </message>

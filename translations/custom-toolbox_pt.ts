@@ -3,7 +3,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../src/mainwindow.ui" line="20"/>
-        <location filename="../src/mainwindow.cpp" line="110"/>
+        <location filename="../src/mainwindow.cpp" line="100"/>
         <source>Custom Toolbox</source>
         <translation>Ferramentas Personalizadas</translation>
     </message>
@@ -25,7 +25,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="88"/>
         <source>Customize launcher</source>
-        <translation>Customizar o lançador </translation>
+        <translation>Personalizar lançador </translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="91"/>
@@ -78,168 +78,168 @@
         <translation>procurar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="173"/>
-        <location filename="../src/mainwindow.cpp" line="179"/>
-        <location filename="../src/mainwindow.cpp" line="196"/>
-        <location filename="../src/mainwindow.cpp" line="207"/>
+        <location filename="../src/mainwindow.cpp" line="163"/>
+        <location filename="../src/mainwindow.cpp" line="169"/>
+        <location filename="../src/mainwindow.cpp" line="186"/>
+        <location filename="../src/mainwindow.cpp" line="197"/>
         <source>Execution Error</source>
         <translation>Erro de execução</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="196"/>
+        <location filename="../src/mainwindow.cpp" line="186"/>
         <source>Command is empty. Cannot execute.</source>
-        <translation>O comando está em branco, nada a executar.</translation>
+        <translation>O comando está em branco. Não há nada para executar.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="173"/>
+        <location filename="../src/mainwindow.cpp" line="163"/>
         <source>Failed to start command: %1</source>
-        <translation>Falha ao executar o comando: %1</translation>
+        <translation>Falha ao iniciar o comando: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="179"/>
+        <location filename="../src/mainwindow.cpp" line="169"/>
         <source>Failed to execute command: %1</source>
         <translation>Falha ao executar o comando: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="207"/>
+        <location filename="../src/mainwindow.cpp" line="197"/>
         <source>Failed to start program: %1</source>
         <translation>Falha ao iniciar o programa: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="247"/>
-        <source>Open List File</source>
-        <translation>Abrir lista de ficheiros</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="247"/>
-        <source>List Files (*.list)</source>
-        <translation>Listar ficheiros (*.list)</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="249"/>
-        <source>File Selection Error</source>
-        <translation>Erro ao selecionar ficheiro</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="249"/>
-        <source>No file selected. Application will now exit.</source>
-        <translation>Nenhum ficheiro selecionado. O programa irá terminar.</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="255"/>
-        <location filename="../src/mainwindow.cpp" line="571"/>
-        <location filename="../src/mainwindow.cpp" line="727"/>
+        <location filename="../src/mainwindow.cpp" line="557"/>
+        <location filename="../src/mainwindow.cpp" line="719"/>
+        <location filename="../src/main.cpp" line="68"/>
         <source>File Open Error</source>
         <translation>Erro ao abrir ficheiro</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="256"/>
-        <source>Could not open file. Do you want to try again?</source>
-        <translation>Não foi possível abrir o ficheiro. Quer tentar novamente?</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="82"/>
-        <location filename="../src/mainwindow.cpp" line="551"/>
+        <location filename="../src/mainwindow.cpp" line="535"/>
+        <location filename="../src/main.cpp" line="155"/>
         <source>File Not Found</source>
         <translation>Ficheiro não encontrado</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="82"/>
-        <location filename="../src/mainwindow.cpp" line="551"/>
+        <location filename="../src/mainwindow.cpp" line="535"/>
+        <location filename="../src/main.cpp" line="156"/>
         <source>The file %1 does not exist.</source>
         <translation>O ficheiro %1 não existe.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="571"/>
+        <location filename="../src/mainwindow.cpp" line="557"/>
         <source>Could not open file: </source>
         <translation>Não foi possível abrir o ficheiro:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="578"/>
-        <location filename="../src/mainwindow.cpp" line="604"/>
+        <location filename="../src/mainwindow.cpp" line="566"/>
+        <location filename="../src/mainwindow.cpp" line="594"/>
         <source>Parse Error</source>
         <translation>Erro ao analisar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="579"/>
+        <location filename="../src/mainwindow.cpp" line="567"/>
         <source>The file %1 contains no recognizable launcher entries.</source>
-        <translation>O ficheiro %1 não contém entradas de lançamento reconhecíveis.</translation>
+        <translation>O ficheiro %1 não contém entradas de lançador reconhecíveis.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="605"/>
+        <location filename="../src/mainwindow.cpp" line="595"/>
         <source>None of the entries in %1 match an installed application.</source>
         <translation>Nenhuma entrada em %1 corresponde a um programa instalado.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="643"/>
+        <location filename="../src/mainwindow.cpp" line="635"/>
         <source>Version:</source>
         <translation>Versão:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="646"/>
+        <location filename="../src/mainwindow.cpp" line="638"/>
         <source>About %1</source>
         <translation>Sobre o %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="693"/>
+        <location filename="../src/mainwindow.cpp" line="685"/>
         <source>Directory Creation Error</source>
         <translation>Erro ao Criar Directório</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="694"/>
+        <location filename="../src/mainwindow.cpp" line="686"/>
         <source>Could not create directory: %1</source>
         <translation>Não foi possível criar o directório: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="745"/>
-        <location filename="../src/mainwindow.cpp" line="765"/>
+        <location filename="../src/mainwindow.cpp" line="738"/>
+        <location filename="../src/mainwindow.cpp" line="757"/>
         <source>Error</source>
         <translation>Erro</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="745"/>
+        <location filename="../src/mainwindow.cpp" line="738"/>
         <source>Editor command is empty.</source>
         <translation>O editor de comandos está em branco.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="765"/>
-        <source>Editor command failed with code %1</source>
-        <translation>O comando falhou com o código %1</translation>
+        <location filename="../src/mainwindow.cpp" line="757"/>
+        <source>Failed to launch the editor.</source>
+        <translation>Erro ao abrir o editor.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="644"/>
+        <location filename="../src/mainwindow.cpp" line="636"/>
         <source>Custom Toolbox is a tool used for creating a custom launcher</source>
         <translation>Esta ferramenta serve para criar um lançador personalizado </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="644"/>
+        <location filename="../src/mainwindow.cpp" line="636"/>
         <source>Copyright (c) MX Linux</source>
         <translation> Direitos de autor (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="647"/>
+        <location filename="../src/mainwindow.cpp" line="639"/>
         <source>%1 License</source>
         <translation>Licença do %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="652"/>
+        <location filename="../src/mainwindow.cpp" line="644"/>
         <source>%1 Help</source>
         <translation>Ajuda do %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="727"/>
+        <location filename="../src/mainwindow.cpp" line="719"/>
         <source>Could not write file: %1</source>
         <translation>Não foi possível gravar o ficheiro: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="732"/>
+        <location filename="../src/mainwindow.cpp" line="725"/>
         <source>File Removal Error</source>
         <translation>Ocorreu um erro ao remover o ficheiro</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="732"/>
+        <location filename="../src/mainwindow.cpp" line="725"/>
         <source>Could not remove file: %1</source>
         <translation>Não foi possível remover o ficheiro: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/main.cpp" line="55"/>
+        <source>Open List File</source>
+        <translation>Abrir lista de ficheiros</translation>
+    </message>
+    <message>
+        <location filename="../src/main.cpp" line="57"/>
+        <source>List Files (*.list)</source>
+        <translation>Listar ficheiros (*.list)</translation>
+    </message>
+    <message>
+        <location filename="../src/main.cpp" line="59"/>
+        <source>File Selection Error</source>
+        <translation>Erro ao selecionar ficheiro</translation>
+    </message>
+    <message>
+        <location filename="../src/main.cpp" line="60"/>
+        <source>No file selected. Application will now exit.</source>
+        <translation>Nenhum ficheiro selecionado. O programa irá terminar.</translation>
+    </message>
+    <message>
+        <location filename="../src/main.cpp" line="69"/>
+        <source>Could not open file. Do you want to try again?</source>
+        <translation>Não foi possível abrir o ficheiro. Tentar novamente?</translation>
     </message>
 </context>
 <context>
@@ -277,27 +277,27 @@
         <translation>&amp;Fechar</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="86"/>
+        <location filename="../src/main.cpp" line="119"/>
         <source>This app can be used to create custom launchers: box of buttons/icons</source>
         <translation>Esta aplicação pode ser utilizada para criar lançadores personalizados: caixa de botões/ícones</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="89"/>
+        <location filename="../src/main.cpp" line="122"/>
         <source>Don&apos;t show &apos;show this dialog at startup&apos; checkbox</source>
         <translation>Ocultar caixa de seleção &apos;Exibir esta janela ao iniciar&apos;</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="91"/>
+        <location filename="../src/main.cpp" line="124"/>
         <source>Full path and name of the .list file you want to load. Supports both custom format (Key=Value) and INI format ([Section]).</source>
-        <translation>O caminho completo e o nome do ficheiro .list que deseja carregar. Suporta formato personalizado (Key=Value) (Chave=Valor) e o formato ‘NI format ([Section]) (INI formato ([Seção])).</translation>
+        <translation>Caminho completo e nome do ficheiro .list a carregar. Suporta formato personalizado (Key=Value [Tecla=Valor])  e o formato ‘INI format ([Section]) (formato INI ([Secção])).</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="102"/>
+        <location filename="../src/main.cpp" line="135"/>
         <source>Error</source>
         <translation>Erro</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="103"/>
+        <location filename="../src/main.cpp" line="136"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
         <translation>O utilizador parece ser o root; para usar este programa, sair e voltar a entrar como utilizador normal.</translation>
     </message>

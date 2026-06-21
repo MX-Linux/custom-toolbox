@@ -3,7 +3,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../src/mainwindow.ui" line="20"/>
-        <location filename="../src/mainwindow.cpp" line="110"/>
+        <location filename="../src/mainwindow.cpp" line="100"/>
         <source>Custom Toolbox</source>
         <translation>Caixa d&apos;Eines personalitzada</translation>
     </message>
@@ -78,168 +78,168 @@
         <translation>cerca</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="173"/>
-        <location filename="../src/mainwindow.cpp" line="179"/>
-        <location filename="../src/mainwindow.cpp" line="196"/>
-        <location filename="../src/mainwindow.cpp" line="207"/>
+        <location filename="../src/mainwindow.cpp" line="163"/>
+        <location filename="../src/mainwindow.cpp" line="169"/>
+        <location filename="../src/mainwindow.cpp" line="186"/>
+        <location filename="../src/mainwindow.cpp" line="197"/>
         <source>Execution Error</source>
         <translation>Error d&apos;execució</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="196"/>
+        <location filename="../src/mainwindow.cpp" line="186"/>
         <source>Command is empty. Cannot execute.</source>
         <translation>L&apos;ordre és buida. No es pot executar.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="173"/>
+        <location filename="../src/mainwindow.cpp" line="163"/>
         <source>Failed to start command: %1</source>
         <translation>Ha fallat iniciar l&apos;ordre: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="179"/>
+        <location filename="../src/mainwindow.cpp" line="169"/>
         <source>Failed to execute command: %1</source>
         <translation>Ha fallat en executar l&apos;ordre: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="207"/>
+        <location filename="../src/mainwindow.cpp" line="197"/>
         <source>Failed to start program: %1</source>
         <translation>Ha fallat en engegar el programa: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="247"/>
-        <source>Open List File</source>
-        <translation>Obre el fitxer de Llista</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="247"/>
-        <source>List Files (*.list)</source>
-        <translation>Fitxers de Llista (*.list)</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="249"/>
-        <source>File Selection Error</source>
-        <translation>Error de selecció de fitxer</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="249"/>
-        <source>No file selected. Application will now exit.</source>
-        <translation>No heu triat cap fitxer. Ara sortireu de l&apos;aplicació. </translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="255"/>
-        <location filename="../src/mainwindow.cpp" line="571"/>
-        <location filename="../src/mainwindow.cpp" line="727"/>
+        <location filename="../src/mainwindow.cpp" line="557"/>
+        <location filename="../src/mainwindow.cpp" line="719"/>
+        <location filename="../src/main.cpp" line="68"/>
         <source>File Open Error</source>
         <translation>Error en obrir el fitxer</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="256"/>
-        <source>Could not open file. Do you want to try again?</source>
-        <translation>No puc obrir el fitxer, voleu reintentar-ho?</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="82"/>
-        <location filename="../src/mainwindow.cpp" line="551"/>
+        <location filename="../src/mainwindow.cpp" line="535"/>
+        <location filename="../src/main.cpp" line="155"/>
         <source>File Not Found</source>
         <translation>No he trobat el fitxer</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="82"/>
-        <location filename="../src/mainwindow.cpp" line="551"/>
+        <location filename="../src/mainwindow.cpp" line="535"/>
+        <location filename="../src/main.cpp" line="156"/>
         <source>The file %1 does not exist.</source>
         <translation>El fitxer %1 no existeix.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="571"/>
+        <location filename="../src/mainwindow.cpp" line="557"/>
         <source>Could not open file: </source>
         <translation>No s&apos;ha pogut obrir el fitxer: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="578"/>
-        <location filename="../src/mainwindow.cpp" line="604"/>
+        <location filename="../src/mainwindow.cpp" line="566"/>
+        <location filename="../src/mainwindow.cpp" line="594"/>
         <source>Parse Error</source>
         <translation>Analitza l&apos;error</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="579"/>
+        <location filename="../src/mainwindow.cpp" line="567"/>
         <source>The file %1 contains no recognizable launcher entries.</source>
         <translation>El fitxer %1 no conté cap entrada executable identificable.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="605"/>
+        <location filename="../src/mainwindow.cpp" line="595"/>
         <source>None of the entries in %1 match an installed application.</source>
         <translation>Cap de les entrades a %1 coincideix amb una aplicació instal·lada.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="643"/>
+        <location filename="../src/mainwindow.cpp" line="635"/>
         <source>Version:</source>
         <translation>Versió: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="646"/>
+        <location filename="../src/mainwindow.cpp" line="638"/>
         <source>About %1</source>
         <translation>Quant a %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="693"/>
+        <location filename="../src/mainwindow.cpp" line="685"/>
         <source>Directory Creation Error</source>
         <translation>Error de creació del directori</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="694"/>
+        <location filename="../src/mainwindow.cpp" line="686"/>
         <source>Could not create directory: %1</source>
         <translation>No s&apos;ha pogut crear el directori: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="745"/>
-        <location filename="../src/mainwindow.cpp" line="765"/>
+        <location filename="../src/mainwindow.cpp" line="738"/>
+        <location filename="../src/mainwindow.cpp" line="757"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="745"/>
+        <location filename="../src/mainwindow.cpp" line="738"/>
         <source>Editor command is empty.</source>
         <translation>L&apos;ordre de l&apos;editor està buida.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="765"/>
-        <source>Editor command failed with code %1</source>
-        <translation>L&apos;ordre de l&apos;editor ha fallat amb el codi %1</translation>
+        <location filename="../src/mainwindow.cpp" line="757"/>
+        <source>Failed to launch the editor.</source>
+        <translation>Ha fallat en executar l&apos;editor</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="644"/>
+        <location filename="../src/mainwindow.cpp" line="636"/>
         <source>Custom Toolbox is a tool used for creating a custom launcher</source>
         <translation>Custom Toolbox és una eina usada per crear llançadors personalitzats</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="644"/>
+        <location filename="../src/mainwindow.cpp" line="636"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Copyright (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="647"/>
+        <location filename="../src/mainwindow.cpp" line="639"/>
         <source>%1 License</source>
         <translation>Llicència de %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="652"/>
+        <location filename="../src/mainwindow.cpp" line="644"/>
         <source>%1 Help</source>
         <translation>Ajuda de %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="727"/>
+        <location filename="../src/mainwindow.cpp" line="719"/>
         <source>Could not write file: %1</source>
         <translation>No puc escriure al fitxer: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="732"/>
+        <location filename="../src/mainwindow.cpp" line="725"/>
         <source>File Removal Error</source>
         <translation>Error d&apos;eliminació de fitxer</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="732"/>
+        <location filename="../src/mainwindow.cpp" line="725"/>
         <source>Could not remove file: %1</source>
         <translation>No puc eliminar el fitxer: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/main.cpp" line="55"/>
+        <source>Open List File</source>
+        <translation>Obre el fitxer de Llista</translation>
+    </message>
+    <message>
+        <location filename="../src/main.cpp" line="57"/>
+        <source>List Files (*.list)</source>
+        <translation>Fitxers de Llista (*.list)</translation>
+    </message>
+    <message>
+        <location filename="../src/main.cpp" line="59"/>
+        <source>File Selection Error</source>
+        <translation>Error de selecció de fitxer</translation>
+    </message>
+    <message>
+        <location filename="../src/main.cpp" line="60"/>
+        <source>No file selected. Application will now exit.</source>
+        <translation>No heu triat cap fitxer. Ara sortireu de l&apos;aplicació. </translation>
+    </message>
+    <message>
+        <location filename="../src/main.cpp" line="69"/>
+        <source>Could not open file. Do you want to try again?</source>
+        <translation>No puc obrir el fitxer, voleu reintentar-ho?</translation>
     </message>
 </context>
 <context>
@@ -277,27 +277,27 @@
         <translation>Tan&amp;ca </translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="86"/>
+        <location filename="../src/main.cpp" line="119"/>
         <source>This app can be used to create custom launchers: box of buttons/icons</source>
         <translation>Aquesta app es pot usar per crear llançadors personalitzats: capses de botons/icones</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="89"/>
+        <location filename="../src/main.cpp" line="122"/>
         <source>Don&apos;t show &apos;show this dialog at startup&apos; checkbox</source>
         <translation>No mostris la casella de selecció &apos;mostra aquest diàleg en arrencar&apos;</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="91"/>
+        <location filename="../src/main.cpp" line="124"/>
         <source>Full path and name of the .list file you want to load. Supports both custom format (Key=Value) and INI format ([Section]).</source>
         <translation>Camí sencer i nom del fitxer .list que voleu carregar. Admet tant el format personalitzat (Clau=Valor) com l&apos;INI ([Secció]).</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="102"/>
+        <location filename="../src/main.cpp" line="135"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="103"/>
+        <location filename="../src/main.cpp" line="136"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
         <translation>Sembla que esteu connectat com a administrador, si us plau sortiu i connecteu-vos com a usuari normal per a usar aquest programa.</translation>
     </message>

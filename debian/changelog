@@ -1,3 +1,9 @@
+custom-toolbox (26.06.2) mx; urgency=medium
+
+  * Fix: silently exit when file dialog is cancelled
+
+ -- Adrian <adrian@mxlinux.org>  Sun, 21 Jun 2026 01:07:31 -0400
+
 custom-toolbox (26.06.1) mx; urgency=medium
 
   * Settings in custom-toolbox.conf (minimum window size, icon size, editor, and number of columns) are applied again
