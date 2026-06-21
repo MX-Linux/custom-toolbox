@@ -56,9 +56,7 @@ static QString promptForListFile()
                                            Config::ConfigDir,
                                            QCoreApplication::translate("MainWindow", "List Files (*.list)"));
         if (fname.isEmpty()) {
-            QMessageBox::critical(nullptr, QCoreApplication::translate("MainWindow", "File Selection Error"),
-                                  QCoreApplication::translate("MainWindow",
-                                                              "No file selected. Application will now exit."));
+            // User cancelled the dialog — exit silently.
             return {};
         }
         if (QFile::exists(fname)) {
