@@ -38,24 +38,27 @@
 
 namespace
 {
-void setupDocDialog(QDialog &dialog, QTextBrowser *browser, const QString &title, bool largeWindow)
+void setupDocDialog(QDialog &dialog, QWidget *content, const QString &title, bool largeWindow,
+                    const QSize &normalSize = QSize(700, 600))
 {
     dialog.setWindowTitle(title);
     if (largeWindow) {
         dialog.setWindowFlags(Qt::Window);
         dialog.resize(1000, 800);
     } else {
-        dialog.resize(700, 600);
+        dialog.resize(normalSize);
     }
 
-    browser->setOpenExternalLinks(true);
+    if (auto *browser = qobject_cast<QTextBrowser *>(content)) {
+        browser->setOpenExternalLinks(true);
+    }
 
     auto *btnClose = new QPushButton(QObject::tr("&Close"), &dialog);
     btnClose->setIcon(QIcon::fromTheme(QStringLiteral("window-close")));
     QObject::connect(btnClose, &QPushButton::clicked, &dialog, &QDialog::close);
 
     auto *layout = new QVBoxLayout(&dialog);
-    layout->addWidget(browser);
+    layout->addWidget(content);
     layout->addWidget(btnClose);
 }
 
@@ -104,10 +107,9 @@ void displayAboutMsgBox(const QString &title, const QString &message, const QStr
         displayDoc(licenceUrl, licenseTitle);
     } else if (msgBox.clickedButton() == btnChangelog) {
         QDialog changelog;
-        changelog.setWindowTitle(QObject::tr("Changelog"));
-        changelog.resize(dialogWidth, dialogHeight);
 
         auto *text = new QTextEdit(&changelog);
+        setupDocDialog(changelog, text, QObject::tr("Changelog"), false, QSize(dialogWidth, dialogHeight));
         text->setReadOnly(true);
         QProcess proc;
         proc.start(QStringLiteral("zcat"), {Config::ChangelogFile}, QIODevice::ReadOnly);
@@ -117,14 +119,6 @@ void displayAboutMsgBox(const QString &title, const QString &message, const QStr
             text->setText(QObject::tr("Could not load changelog."));
         }
 
-        auto *btnClose = new QPushButton(QObject::tr("&Close"), &changelog);
-        btnClose->setIcon(QIcon::fromTheme("window-close"));
-        QObject::connect(btnClose, &QPushButton::clicked, &changelog, &QDialog::close);
-
-        auto *layout = new QVBoxLayout(&changelog);
-        layout->addWidget(text);
-        layout->addWidget(btnClose);
-        changelog.setLayout(layout);
         changelog.exec();
     }
 }
