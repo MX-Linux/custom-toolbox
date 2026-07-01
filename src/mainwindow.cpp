@@ -181,6 +181,11 @@ void MainWindow::btnClicked()
     if (!button) {
         return;
     }
+    const QString commandError = button->property("commandError").toString();
+    if (!commandError.isEmpty()) {
+        QMessageBox::warning(this, tr("Execution Error"), commandError);
+        return;
+    }
     const QString cmd = button->property("cmd").toString();
     if (cmd.trimmed().isEmpty()) {
         QMessageBox::warning(this, tr("Execution Error"), tr("Command is empty. Cannot execute."));
@@ -432,8 +437,10 @@ void MainWindow::addItemButton(const ItemInfo &item, int &row, int &col, int max
     ui->gridLayout_btn->addWidget(btn, row, col);
     ui->gridLayout_btn->setRowStretch(row, 0);
 
-    prepareCommand(item, cmd);
+    QString commandError;
+    prepareCommand(item, cmd, &commandError);
     btn->setProperty("cmd", cmd);
+    btn->setProperty("commandError", commandError);
     connect(btn, &QPushButton::clicked, this, &MainWindow::btnClicked);
 
     if (++col >= maxCols) {
@@ -472,7 +479,7 @@ QString MainWindow::invokingUser() const
     return {};
 }
 
-void MainWindow::prepareCommand(const ItemInfo &item, QString &cmd) const
+bool MainWindow::prepareCommand(const ItemInfo &item, QString &cmd, QString *errorMessage) const
 {
     if (item.terminal) {
         cmd.prepend("x-terminal-emulator -e ");
@@ -488,9 +495,19 @@ void MainWindow::prepareCommand(const ItemInfo &item, QString &cmd) const
                       .arg(user, userHome)
                   + cmd;
         } else {
-            qWarning() << "Could not determine the unprivileged user; running as root:" << cmd;
+            const QString message
+                = tr("Could not determine the unprivileged user. Refusing to run this launcher as root.");
+            if (errorMessage != nullptr) {
+                *errorMessage = message;
+            }
+            qWarning() << message << cmd;
+            return false;
         }
     }
+    if (errorMessage != nullptr) {
+        errorMessage->clear();
+    }
+    return true;
 }
 
 void MainWindow::addEmptyRowIfNeeded(const QString &category, const QMultiMap<QString, ItemInfo> &map, int &row,
