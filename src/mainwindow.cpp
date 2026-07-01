@@ -596,6 +596,10 @@ bool MainWindow::readFile(const QString &fname, bool showErrors)
         }
 
         ItemInfo info = getDesktopFileInfo(desktopFile);
+        if (info.name.isEmpty() && info.exec.isEmpty() && info.iconName.isEmpty() && info.comment.isEmpty()) {
+            qWarning() << "Skipping unreadable desktop file:" << desktopFile;
+            continue;
+        }
         info.root = p.root;
         info.user = p.user;
         info.terminal = info.terminal || p.terminal;
