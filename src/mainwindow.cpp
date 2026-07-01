@@ -764,7 +764,12 @@ void MainWindow::pushEditClicked()
         return "'" + quoted + "'";
     };
 
-    QStringList cmdParts = buildEditorPrefix(editor);
+    QString editorError;
+    QStringList cmdParts = buildEditorPrefix(editor, &editorError);
+    if (!editorError.isEmpty()) {
+        QMessageBox::warning(this, tr("Error"), editorError);
+        return;
+    }
     for (const auto &part : editorParts) {
         cmdParts << shell_quote(part);
     }
@@ -811,7 +816,7 @@ QString MainWindow::getDefaultEditor() const
     return "nano"; // Fallback to nano
 }
 
-QStringList MainWindow::buildEditorPrefix(const QString &editor) const
+QStringList MainWindow::buildEditorPrefix(const QString &editor, QString *errorMessage) const
 {
     const bool isRoot = getuid() == 0;
     static const QRegularExpression elevatesPattern(R"(\b(kate|kwrite|featherpad|code|codium)$)");
@@ -825,6 +830,14 @@ QStringList MainWindow::buildEditorPrefix(const QString &editor) const
     if (isRoot && isEditorThatElevates) {
         if (const QString user = invokingUser(); !user.isEmpty()) {
             prefix << QStringLiteral("pkexec --user ") + user;
+        } else {
+            const QString message
+                = tr("Could not determine the unprivileged user. Refusing to launch the editor as root.");
+            if (errorMessage != nullptr) {
+                *errorMessage = message;
+            }
+            qWarning() << message << editor;
+            return {};
         }
     } else if (!isEditorThatElevates) {
         const QFileInfo fi(fileName);
@@ -840,6 +853,9 @@ QStringList MainWindow::buildEditorPrefix(const QString &editor) const
         prefix << "x-terminal-emulator -e";
     }
 
+    if (errorMessage != nullptr) {
+        errorMessage->clear();
+    }
     return prefix;
 }
 

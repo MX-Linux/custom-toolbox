@@ -93,7 +93,7 @@ private:
     [[nodiscard]] QIcon findIcon(const QString &iconName) const;
     [[nodiscard]] QString getDefaultEditor() const;
     [[nodiscard]] QString getDesktopFileName(const QString &appName) const;
-    [[nodiscard]] QStringList buildEditorPrefix(const QString &editor) const;
+    [[nodiscard]] QStringList buildEditorPrefix(const QString &editor, QString *errorMessage) const;
     [[nodiscard]] QString invokingUser() const;
     static void fixExecItem(QString *item);
     void addButtons(const QMultiMap<QString, ItemInfo> &map);
