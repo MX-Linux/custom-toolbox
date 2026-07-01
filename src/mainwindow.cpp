@@ -827,9 +827,11 @@ QStringList MainWindow::buildEditorPrefix(const QString &editor, QString *errorM
     const bool isCliEditor = cliPattern.match(editorName).hasMatch();
 
     QStringList prefix;
+    QString xauthorityHome = QStringLiteral("$HOME");
     if (isRoot && isEditorThatElevates) {
         if (const QString user = invokingUser(); !user.isEmpty()) {
             prefix << QStringLiteral("pkexec --user ") + user;
+            xauthorityHome = starting_home();
         } else {
             const QString message
                 = tr("Could not determine the unprivileged user. Refusing to launch the editor as root.");
@@ -847,7 +849,7 @@ QStringList MainWindow::buildEditorPrefix(const QString &editor, QString *errorM
         }
     }
 
-    prefix << "env DISPLAY=$DISPLAY XAUTHORITY=${XAUTHORITY:-$HOME/.Xauthority}";
+    prefix << QStringLiteral("env DISPLAY=$DISPLAY XAUTHORITY=${XAUTHORITY:-%1/.Xauthority}").arg(xauthorityHome);
 
     if (isCliEditor) {
         prefix << "x-terminal-emulator -e";
