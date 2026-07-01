@@ -30,6 +30,7 @@
 
 #include <QDebug>
 #include <QDirIterator>
+#include <QEventLoop>
 #include <QLabel>
 #include <QFile>
 #include <QFileInfo>
@@ -151,6 +152,8 @@ void MainWindow::runSynchronous(const QString &cmd, bool useShell)
     }
 
     QProcess proc;
+    QEventLoop loop;
+    connect(&proc, &QProcess::finished, &loop, &QEventLoop::quit);
     if (useShell) {
         proc.start("/bin/sh", {"-c", cmd});
     } else {
@@ -162,8 +165,8 @@ void MainWindow::runSynchronous(const QString &cmd, bool useShell)
     if (!proc.waitForStarted()) {
         QMessageBox::warning(this, tr("Execution Error"), tr("Failed to start command: %1").arg(cmd));
     } else {
-        while (!proc.waitForFinished(100)) {
-            QApplication::processEvents();
+        if (proc.state() != QProcess::NotRunning) {
+            loop.exec();
         }
         if (proc.exitCode() != 0) {
             QMessageBox::warning(this, tr("Execution Error"), tr("Failed to execute command: %1").arg(cmd));
