@@ -622,16 +622,19 @@ bool MainWindow::readFile(const QString &fname, bool showErrors)
     const QFileInfo fileInfo(fileName);
     customName = fileInfo.baseName();
 
+    const QString newIconTheme = parsed.iconTheme;
+    const QString effectiveOldTheme = iconTheme.isEmpty() ? defaultIconTheme : iconTheme;
+    const QString effectiveNewTheme = newIconTheme.isEmpty() ? defaultIconTheme : newIconTheme;
+
     categoryMap = std::move(newMap);
-    IconLoader::clearCache();
-    desktopFileCache.clear();
-    desktopFileIndex.clear();
-    desktopFileIndexBuilt = false;
-    iconTheme = parsed.iconTheme;
+    if (effectiveNewTheme != effectiveOldTheme) {
+        IconLoader::clearCache();
+    }
+    iconTheme = newIconTheme;
     setWindowTitle(parsed.name);
     ui->commentLabel->setText(parsed.comment);
 
-    QIcon::setThemeName(iconTheme.isEmpty() ? defaultIconTheme : iconTheme);
+    QIcon::setThemeName(effectiveNewTheme);
     return true;
 }
 
