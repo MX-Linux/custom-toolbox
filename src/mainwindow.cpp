@@ -30,7 +30,6 @@
 
 #include <QDebug>
 #include <QDirIterator>
-#include <QEventLoop>
 #include <QLabel>
 #include <QFile>
 #include <QFileInfo>
@@ -153,48 +152,50 @@ void MainWindow::setGui()
     }
 }
 
-void MainWindow::runSynchronous(const QString &cmd, bool useShell)
+// Run a command through a tracked QProcess so its outcome can be reported (and,
+// with hideGUI, the window re-shown) when it finishes. Runs asynchronously — no
+// nested event loop — so the GUI stays responsive while the command is open.
+void MainWindow::runTracked(const QString &cmd, bool useShell)
 {
     if (hideGui) {
         hide();
-    } else {
-        // Block further button clicks while the nested event loop runs, so
-        // commands cannot be launched concurrently from the same window.
-        setEnabled(false);
     }
 
-    QProcess proc;
-    QEventLoop loop;
-    connect(&proc, &QProcess::finished, &loop, &QEventLoop::quit);
+    auto *proc = new QProcess(this);
+    // Forward output to our own stdout/stderr; the default channel mode would
+    // buffer a long-running command's output in memory indefinitely.
+    proc->setProcessChannelMode(QProcess::ForwardedChannels);
+
+    connect(proc, &QProcess::errorOccurred, this, [this, proc, cmd](QProcess::ProcessError error) {
+        // finished() is never emitted for a process that could not start.
+        if (error == QProcess::FailedToStart) {
+            proc->deleteLater();
+            if (hideGui) {
+                show();
+            }
+            QMessageBox::warning(this, tr("Execution Error"), tr("Failed to start command: %1").arg(cmd));
+        }
+    });
+    connect(proc, &QProcess::finished, this, [this, proc, cmd](int exitCode, QProcess::ExitStatus exitStatus) {
+        proc->deleteLater();
+        if (hideGui) {
+            show();
+        }
+        // pkexec exits 126 when the user dismisses the authentication dialog — a
+        // choice, not an error. 127 is still reported: it also means "command not
+        // found" or "no polkit agent", which the user needs to know about.
+        const bool authDeclined = cmd.startsWith("pkexec") && exitCode == 126;
+        if (exitStatus != QProcess::NormalExit || (exitCode != 0 && !authDeclined)) {
+            QMessageBox::warning(this, tr("Execution Error"), tr("Failed to execute command: %1").arg(cmd));
+        }
+    });
+
     if (useShell) {
-        proc.start("/bin/sh", {"-c", cmd});
+        proc->start("/bin/sh", {"-c", cmd});
     } else {
         QStringList arguments = QProcess::splitCommand(cmd);
         const QString program = arguments.takeFirst();
-        proc.start(program, arguments);
-    }
-
-    const bool started = proc.waitForStarted();
-    if (started && proc.state() != QProcess::NotRunning) {
-        loop.exec();
-    }
-
-    if (hideGui) {
-        show();
-    } else {
-        setEnabled(true);
-    }
-
-    if (!started) {
-        QMessageBox::warning(this, tr("Execution Error"), tr("Failed to start command: %1").arg(cmd));
-        return;
-    }
-    // pkexec exits 126 when the user dismisses the authentication dialog — a
-    // choice, not an error. 127 is still reported: it also means "command not
-    // found" or "no polkit agent", which the user needs to know about.
-    const bool authDeclined = cmd.startsWith("pkexec") && proc.exitCode() == 126;
-    if (proc.exitStatus() != QProcess::NormalExit || (proc.exitCode() != 0 && !authDeclined)) {
-        QMessageBox::warning(this, tr("Execution Error"), tr("Failed to execute command: %1").arg(cmd));
+        proc->start(program, arguments);
     }
 }
 
@@ -215,9 +216,10 @@ void MainWindow::btnClicked()
         return;
     }
 
-    // pkexec requires shell for variable expansion; hideGui requires synchronous execution
+    // pkexec requires shell for variable expansion; pkexec and hideGui need a
+    // tracked process to report the outcome / re-show the window on finish.
     if (cmd.startsWith("pkexec") || hideGui) {
-        runSynchronous(cmd, cmd.startsWith("pkexec"));
+        runTracked(cmd, cmd.startsWith("pkexec"));
     } else {
         QStringList arguments = QProcess::splitCommand(cmd);
         const QString program = arguments.takeFirst();

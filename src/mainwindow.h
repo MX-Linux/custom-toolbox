@@ -104,7 +104,7 @@ private:
     void clearGridLayout();
     void migrateLegacyAutostart();
     bool prepareCommand(const ItemInfo &item, QString &cmd, QString *errorMessage) const;
-    void runSynchronous(const QString &cmd, bool useShell);
+    void runTracked(const QString &cmd, bool useShell);
     bool readFile(const QString &fname, bool showErrors = true);
     void saveWindowGeometry() const;
     void setConnections();

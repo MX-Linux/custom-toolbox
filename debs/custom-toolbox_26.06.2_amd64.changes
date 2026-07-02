@@ -1,0 +1,31 @@
+Format: 1.8
+Date: Sun, 21 Jun 2026 01:07:31 -0400
+Source: custom-toolbox
+Binary: custom-toolbox
+Architecture: source amd64
+Version: 26.06.2
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ custom-toolbox - Custom Toolbox
+Changes:
+ custom-toolbox (26.06.2) mx; urgency=medium
+ .
+   * Fix: silently exit when file dialog is cancelled
+Checksums-Sha1:
+ a38210b0d3a10ad2b51f1cdcaa82f74f0da27441 708 custom-toolbox_26.06.2.dsc
+ 958153b3438291c1eabad42f7c12f0b97514848c 238160 custom-toolbox_26.06.2.tar.xz
+ 1739d622ad5e60b93f1c77ad3c3c3ae93922d610 11223 custom-toolbox_26.06.2_amd64.buildinfo
+ 7e39a250abd6ea7b54157bc5b6294b2c0344fd67 102072 custom-toolbox_26.06.2_amd64.deb
+Checksums-Sha256:
+ 610480ac20b336de895ce44c93bee0663be25ede4effea4eaeb2b6011083a59f 708 custom-toolbox_26.06.2.dsc
+ 681aa2f024763448e3f0b2379ea34288f3caee5c0b66e3eec2df11062288d933 238160 custom-toolbox_26.06.2.tar.xz
+ 2fc73ffa05f10351105ca29f68c52e4254816dac2cbcd6e2964630a3080fbc8d 11223 custom-toolbox_26.06.2_amd64.buildinfo
+ cc6ae2332d573f0eefa201458314db4fecd03bc38592271b1e329fff83efa131 102072 custom-toolbox_26.06.2_amd64.deb
+Files:
+ 2e829f86a6b486c44b6a719f0de71209 708 admin optional custom-toolbox_26.06.2.dsc
+ b172b888600f439269431d36f247c964 238160 admin optional custom-toolbox_26.06.2.tar.xz
+ c4ea471f898dc85c721d2f8c58c43dd2 11223 admin optional custom-toolbox_26.06.2_amd64.buildinfo
+ ba475cddade513f2ab71866c972c36ae 102072 admin optional custom-toolbox_26.06.2_amd64.deb
