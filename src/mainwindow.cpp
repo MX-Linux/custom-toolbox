@@ -288,10 +288,11 @@ QString MainWindow::getDesktopFileName(const QString &appName) const
         }
     }
 
-    // If still not found, fallback to finding the executable
+    // If still not found, fallback to finding the executable. Keep the absolute
+    // path: defaultPath includes /usr/sbin, which may be missing from the PATH
+    // the command is eventually launched with.
     if (result.isEmpty()) {
-        const QString executablePath = QStandardPaths::findExecutable(appName, {defaultPath});
-        result = !executablePath.isEmpty() ? QFileInfo(executablePath).fileName() : QString();
+        result = QStandardPaths::findExecutable(appName, {defaultPath});
     }
 
     // Cache the result (even if empty to avoid repeated failed lookups)
@@ -366,10 +367,12 @@ ItemInfo MainWindow::getDesktopFileInfo(const QString &fname) const
 {
     ItemInfo item;
 
-    // If not a .desktop file, initialize all fields explicitly
+    // If not a .desktop file, treat it as an executable (possibly an absolute
+    // path); show and look up the icon by the bare name, launch by full path.
     if (!fname.endsWith(".desktop")) {
-        item.name = fname;
-        item.iconName = fname;
+        const QString displayName = QFileInfo(fname).fileName();
+        item.name = displayName;
+        item.iconName = displayName;
         item.exec = fname;
         item.terminal = true;
         return item;
