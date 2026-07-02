@@ -133,6 +133,8 @@ void MainWindow::setGui()
     }
     addButtons(categoryMap);
 
+    migrateLegacyAutostart();
+
     // Check if .desktop file is in autostart; same customName as .list file
     if (!removeStartupCheckbox
         && QFile::exists(QDir::homePath() + "/.config/autostart/" + customName + ".desktop")) {
@@ -722,6 +724,30 @@ void MainWindow::textSearchTextChanged(const QString &searchText)
 
     // Update the buttons with the filtered map (empty map shows no results)
     addButtons(filteredMap);
+}
+
+// Older versions derived the autostart name with baseName(), truncating
+// multi-dot list names ("my.toolbox.list" -> "my.desktop") and writing an Exec
+// that pointed at a non-existent .list — popping an error box at every login.
+// Replace such an entry with one under the correct name. Skipped when a sibling
+// "<legacy>.list" exists, since the entry may legitimately belong to that list.
+void MainWindow::migrateLegacyAutostart()
+{
+    const QString legacyName = QFileInfo(fileName).baseName();
+    if (legacyName == customName) {
+        return;
+    }
+    const QString legacyDesktop = QDir::homePath() + "/.config/autostart/" + legacyName + ".desktop";
+    if (!QFile::exists(legacyDesktop) || QFile::exists(QDir(fileLocation).filePath(legacyName + ".list"))) {
+        return;
+    }
+    QFile file(legacyDesktop);
+    const bool ours = file.open(QFile::ReadOnly | QFile::Text)
+                      && QString::fromUtf8(file.readAll()).contains(QLatin1String("Exec=custom-toolbox"));
+    file.close();
+    if (ours && QFile::remove(legacyDesktop)) {
+        checkboxStartupClicked(true);
+    }
 }
 
 // Add a .desktop file to the ~/.config/autostart

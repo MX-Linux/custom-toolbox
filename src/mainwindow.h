@@ -102,6 +102,7 @@ private:
     void addItemButton(const ItemInfo &item, int &row, int &col, int maxCols);
     void centerWindow();
     void clearGridLayout();
+    void migrateLegacyAutostart();
     bool prepareCommand(const ItemInfo &item, QString &cmd, QString *errorMessage) const;
     void runSynchronous(const QString &cmd, bool useShell);
     bool readFile(const QString &fname, bool showErrors = true);
