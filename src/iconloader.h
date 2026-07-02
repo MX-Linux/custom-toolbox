@@ -11,5 +11,5 @@ public:
     static void clearCache();
 
 private:
-    static QHash<QString, QIcon> icon_cache;
+    static QHash<QString, QIcon> iconCache;
 };

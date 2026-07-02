@@ -8,7 +8,7 @@
 
 namespace
 {
-QRegularExpression &cached_re(const QString &pattern)
+QRegularExpression &cachedRegex(const QString &pattern)
 {
     static QHash<QString, QRegularExpression> cache;
     auto it = cache.find(pattern);
@@ -47,19 +47,19 @@ QString LauncherParser::extractLocalizedValue(const QString &text, const QString
     // when a .list/.desktop file uses Windows (CRLF) line endings. Without it an
     // Exec value would carry a '\r' and fail to launch.
     const QString fullPattern = QStringLiteral("^%1\\[%2]=(.*)$").arg(key, lang);
-    auto match = cached_re(fullPattern).match(text);
+    auto match = cachedRegex(fullPattern).match(text);
     if (match.hasMatch()) {
         return match.captured(1).trimmed();
     }
 
     const QString shortPattern = QStringLiteral("^%1\\[%2]=(.*)$").arg(key, lang.section('_', 0, 0));
-    match = cached_re(shortPattern).match(text);
+    match = cachedRegex(shortPattern).match(text);
     if (match.hasMatch()) {
         return match.captured(1).trimmed();
     }
 
     const QString fallbackPattern = QStringLiteral("^%1=(.*)$").arg(key);
-    match = cached_re(fallbackPattern).match(text);
+    match = cachedRegex(fallbackPattern).match(text);
     return match.hasMatch() ? match.captured(1).trimmed() : QString();
 }
 

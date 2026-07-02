@@ -23,7 +23,7 @@
 
 #include <QString>
 
-inline const QString &starting_home()
+inline const QString &startingHome()
 {
     static const QString home = qEnvironmentVariable("HOME");
     return home;

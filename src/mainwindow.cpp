@@ -92,8 +92,8 @@ QIcon MainWindow::findIcon(const QString &iconName) const
 // Strip %f, %F, %U, etc. if exec expects a file name since it's called without an argument from this launcher.
 void MainWindow::fixExecItem(QString *item)
 {
-    static const QRegularExpression exec_pattern(QStringLiteral(R"( %[a-zA-Z])"));
-    item->remove(exec_pattern);
+    static const QRegularExpression execPattern(QStringLiteral(R"( %[a-zA-Z])"));
+    item->remove(execPattern);
 }
 
 void MainWindow::setup()
@@ -321,11 +321,11 @@ void MainWindow::buildDesktopFileIndex() const
     }
     desktopFileIndexBuilt = true;
 
-    static const QRegularExpression exec_re(QStringLiteral(R"(^Exec=(.*)$)"),
+    static const QRegularExpression execRegex(QStringLiteral(R"(^Exec=(.*)$)"),
                                             QRegularExpression::MultilineOption);
 
-    QHash<QString, QString> by_suffix;
-    QHash<QString, QString> by_exec;
+    QHash<QString, QString> bySuffix;
+    QHash<QString, QString> byExec;
 
     const QStringList searchPaths = QStandardPaths::standardLocations(QStandardPaths::ApplicationsLocation);
     for (const QString &dir : searchPaths) {
@@ -334,31 +334,31 @@ void MainWindow::buildDesktopFileIndex() const
             it.next();
             const QFileInfo fi = it.fileInfo();
             const QString basename = fi.completeBaseName(); // e.g. "org.gnome.GHex"
-            const QString full_path = fi.absoluteFilePath();
+            const QString fullPath = fi.absoluteFilePath();
 
             // Reverse-DNS suffix: "org.gnome.GHex" -> "ghex"
             const int dot = basename.lastIndexOf('.');
             if (dot >= 0 && dot + 1 < basename.size()) {
                 const QString suffix = basename.mid(dot + 1).toLower();
-                if (!suffix.isEmpty() && !by_suffix.contains(suffix)) {
-                    by_suffix.insert(suffix, full_path);
+                if (!suffix.isEmpty() && !bySuffix.contains(suffix)) {
+                    bySuffix.insert(suffix, fullPath);
                 }
             }
 
             // Exec= first token (basename of any path), e.g. "wireshark %f" -> "wireshark"
-            QFile f(full_path);
+            QFile f(fullPath);
             if (f.open(QFile::ReadOnly | QFile::Text)) {
                 const QString text = QString::fromUtf8(f.readAll());
                 f.close();
-                const auto match = exec_re.match(text);
+                const auto match = execRegex.match(text);
                 if (match.hasMatch()) {
                     QString first = match.captured(1).trimmed().section(' ', 0, 0);
                     if (first.startsWith('"') && first.endsWith('"') && first.size() >= 2) {
                         first = first.mid(1, first.size() - 2);
                     }
                     first = QFileInfo(first).fileName().toLower();
-                    if (!first.isEmpty() && !by_exec.contains(first)) {
-                        by_exec.insert(first, full_path);
+                    if (!first.isEmpty() && !byExec.contains(first)) {
+                        byExec.insert(first, fullPath);
                     }
                 }
             }
@@ -366,8 +366,8 @@ void MainWindow::buildDesktopFileIndex() const
     }
 
     // Apply lowest priority first; higher priority overwrites.
-    desktopFileIndex = std::move(by_suffix);
-    for (auto it = by_exec.constBegin(); it != by_exec.constEnd(); ++it) {
+    desktopFileIndex = std::move(bySuffix);
+    for (auto it = byExec.constBegin(); it != byExec.constEnd(); ++it) {
         desktopFileIndex.insert(it.key(), it.value());
     }
 }
@@ -397,8 +397,8 @@ ItemInfo MainWindow::getDesktopFileInfo(const QString &fname) const
     const QString text = file.readAll();
     file.close();
 
-    static const QRegularExpression mx_prefix("^MX ");
-    item.name = LauncherParser::extractLocalizedValue(text, "Name", lang).remove(mx_prefix);
+    static const QRegularExpression mxPrefix("^MX ");
+    item.name = LauncherParser::extractLocalizedValue(text, "Name", lang).remove(mxPrefix);
     item.comment = LauncherParser::extractLocalizedValue(text, "Comment", lang);
     item.iconName = LauncherParser::extractLocalizedValue(text, "Icon", lang);
     item.exec = LauncherParser::extractLocalizedValue(text, "Exec", lang);
@@ -412,8 +412,8 @@ void MainWindow::addButtons(const QMultiMap<QString, ItemInfo> &map)
     clearGridLayout();
     int col = 0;
     int row = 0;
-    const int max_cols = fixedNumberCol != 0 ? fixedNumberCol : qMax(1, width() / 200);
-    colCount = max_cols;
+    const int maxCols = fixedNumberCol != 0 ? fixedNumberCol : qMax(1, width() / 200);
+    colCount = maxCols;
 
     QString prevCategory;
     for (auto it = map.constBegin(); it != map.constEnd();) {
@@ -428,7 +428,7 @@ void MainWindow::addButtons(const QMultiMap<QString, ItemInfo> &map)
             prevCategory = category;
         }
 
-        addItemButton(it.value(), row, col, max_cols);
+        addItemButton(it.value(), row, col, maxCols);
         ++it;
     }
     if (!prevCategory.isEmpty()) {
@@ -498,8 +498,8 @@ QString MainWindow::invokingUser() const
             }
         }
     }
-    if (const QByteArray sudo_user = qgetenv("SUDO_USER"); !sudo_user.isEmpty()) {
-        return QString::fromLocal8Bit(sudo_user);
+    if (const QByteArray sudoUser = qgetenv("SUDO_USER"); !sudoUser.isEmpty()) {
+        return QString::fromLocal8Bit(sudoUser);
     }
     return {};
 }
@@ -515,7 +515,7 @@ bool MainWindow::prepareCommand(const ItemInfo &item, QString &cmd, QString *err
         if (const QString user = invokingUser(); !user.isEmpty()) {
             // $HOME was overwritten to /root in main(); use the original (pre-root)
             // home so the demoted user reads their own .Xauthority, not root's.
-            const QString userHome = starting_home();
+            const QString userHome = startingHome();
             cmd = QStringLiteral("pkexec --user %1 env DISPLAY=$DISPLAY XAUTHORITY=${XAUTHORITY:-%2/.Xauthority} ")
                       .arg(user, userHome)
                   + cmd;
@@ -826,7 +826,7 @@ void MainWindow::pushEditClicked()
     }
 
     // Helper to shell-quote arguments that may contain spaces or special characters
-    auto shell_quote = [](const QString &arg) -> QString {
+    auto shellQuote = [](const QString &arg) -> QString {
         QString quoted = arg;
         quoted.replace('\\', "\\\\");  // Escape backslashes first
         quoted.replace('\'', "'\\''"); // Escape single quotes
@@ -840,9 +840,9 @@ void MainWindow::pushEditClicked()
         return;
     }
     for (const auto &part : editorParts) {
-        cmdParts << shell_quote(part);
+        cmdParts << shellQuote(part);
     }
-    cmdParts << shell_quote(fileName);
+    cmdParts << shellQuote(fileName);
 
     if (!QProcess::startDetached("/bin/sh", {"-c", cmdParts.join(' ')})) {
         QMessageBox::warning(this, tr("Error"), tr("Failed to launch the editor."));
@@ -900,7 +900,7 @@ QStringList MainWindow::buildEditorPrefix(const QString &editor, QString *errorM
     if (isRoot && isEditorThatElevates) {
         if (const QString user = invokingUser(); !user.isEmpty()) {
             prefix << QStringLiteral("pkexec --user ") + user;
-            xauthorityHome = starting_home();
+            xauthorityHome = startingHome();
         } else {
             const QString message
                 = tr("Could not determine the unprivileged user. Refusing to launch the editor as root.");

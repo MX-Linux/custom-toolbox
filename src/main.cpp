@@ -74,7 +74,7 @@ static QString promptForListFile()
 
 int main(int argc, char *argv[])
 {
-    starting_home(); // Capture original HOME before any modifications
+    startingHome(); // Capture original HOME before any modifications
     if (getuid() == 0) {
         qputenv("XDG_RUNTIME_DIR", "/run/user/0");
         qunsetenv("SESSION_MANAGER");

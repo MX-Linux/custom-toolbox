@@ -7,7 +7,7 @@
 #include <QStandardPaths>
 #include <QStringList>
 
-QHash<QString, QIcon> IconLoader::icon_cache;
+QHash<QString, QIcon> IconLoader::iconCache;
 
 namespace
 {
@@ -67,25 +67,25 @@ QIcon getDefaultIcon()
 
 void IconLoader::clearCache()
 {
-    icon_cache.clear();
+    iconCache.clear();
 }
 
 QIcon IconLoader::loadIcon(const QString &iconName)
 {
-    if (auto it = icon_cache.constFind(iconName); it != icon_cache.constEnd()) {
+    if (auto it = iconCache.constFind(iconName); it != iconCache.constEnd()) {
         return it.value();
     }
 
     if (iconName.isEmpty() || iconName == QLatin1String("utilities-terminal")) {
         const QIcon result = getDefaultIcon();
-        icon_cache.insert(iconName, result);
+        iconCache.insert(iconName, result);
         return result;
     }
 
     const QFileInfo iconInfo(iconName);
     if (iconInfo.isAbsolute() && iconInfo.exists()) {
         QIcon result(iconName);
-        icon_cache.insert(iconName, result);
+        iconCache.insert(iconName, result);
         return result;
     }
 
@@ -95,25 +95,25 @@ QIcon IconLoader::loadIcon(const QString &iconName)
 
     QIcon icon = QIcon::fromTheme(nameNoExt);
     if (!icon.isNull()) {
-        icon_cache.insert(iconName, icon);
+        iconCache.insert(iconName, icon);
         return icon;
     }
 
     icon = searchInPaths(iconName);
     if (!icon.isNull()) {
-        icon_cache.insert(iconName, icon);
+        iconCache.insert(iconName, icon);
         return icon;
     }
 
     for (const auto &ext : iconExtensions()) {
         icon = searchInPaths(nameNoExt + ext);
         if (!icon.isNull()) {
-            icon_cache.insert(iconName, icon);
+            iconCache.insert(iconName, icon);
             return icon;
         }
     }
 
-    const QIcon default_icon = getDefaultIcon();
-    icon_cache.insert(iconName, default_icon);
-    return default_icon;
+    const QIcon defaultIcon = getDefaultIcon();
+    iconCache.insert(iconName, defaultIcon);
+    return defaultIcon;
 }
