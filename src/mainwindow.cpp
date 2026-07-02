@@ -47,6 +47,12 @@
 #include <pwd.h>
 #include <unistd.h>
 
+namespace
+{
+// Approximate width of one button column; determined through trial and error.
+constexpr int buttonColumnWidth = 200;
+} // namespace
+
 
 
 MainWindow::MainWindow(const QCommandLineParser &argParser, const QString &listFile, QWidget *parent)
@@ -101,7 +107,7 @@ void MainWindow::setup()
     setWindowTitle(tr("Custom Toolbox"));
     adjustSize();
 
-    const int defaultIconSize = 40;
+    constexpr int defaultIconSize = 40;
 
     QSettings settings(Config::ConfigFile, QSettings::NativeFormat);
     hideGui = settings.value("hideGUI", false).toBool();
@@ -238,8 +244,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
         return;
     }
 
-    const int itemSize = 200; // Determined through trial and error
-    const int newCount = qMax(1, width() / itemSize);
+    const int newCount = qMax(1, width() / buttonColumnWidth);
 
     if (newCount == colCount) {
         return;
@@ -367,28 +372,25 @@ void MainWindow::buildDesktopFileIndex() const
 
     // Apply lowest priority first; higher priority overwrites.
     desktopFileIndex = std::move(bySuffix);
-    for (auto it = byExec.constBegin(); it != byExec.constEnd(); ++it) {
-        desktopFileIndex.insert(it.key(), it.value());
-    }
+    desktopFileIndex.insert(byExec);
 }
 
 // Return the app info needed for the button
 ItemInfo MainWindow::getDesktopFileInfo(const QString &fname) const
 {
-    ItemInfo item;
-
     // If not a .desktop file, treat it as an executable (possibly an absolute
     // path); show and look up the icon by the bare name, launch by full path.
+    // The exec path is quoted when it contains spaces so QProcess::splitCommand
+    // and the shell keep it as a single argument.
     if (!fname.endsWith(".desktop")) {
         const QString displayName = QFileInfo(fname).fileName();
-        item.name = displayName;
-        item.iconName = displayName;
-        // Quote paths with spaces so QProcess::splitCommand and the shell keep
-        // them as a single argument.
-        item.exec = fname.contains(' ') ? '"' + fname + '"' : fname;
-        item.terminal = true;
-        return item;
+        return {.name = displayName,
+                .iconName = displayName,
+                .exec = fname.contains(' ') ? '"' + fname + '"' : fname,
+                .terminal = true};
     }
+
+    ItemInfo item;
 
     QFile file(fname);
     if (!file.open(QFile::Text | QFile::ReadOnly)) {
@@ -412,7 +414,7 @@ void MainWindow::addButtons(const QMultiMap<QString, ItemInfo> &map)
     clearGridLayout();
     int col = 0;
     int row = 0;
-    const int maxCols = fixedNumberCol != 0 ? fixedNumberCol : qMax(1, width() / 200);
+    const int maxCols = fixedNumberCol != 0 ? fixedNumberCol : qMax(1, width() / buttonColumnWidth);
     colCount = maxCols;
 
     QString prevCategory;
