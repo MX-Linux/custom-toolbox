@@ -383,7 +383,9 @@ ItemInfo MainWindow::getDesktopFileInfo(const QString &fname) const
         const QString displayName = QFileInfo(fname).fileName();
         item.name = displayName;
         item.iconName = displayName;
-        item.exec = fname;
+        // Quote paths with spaces so QProcess::splitCommand and the shell keep
+        // them as a single argument.
+        item.exec = fname.contains(' ') ? '"' + fname + '"' : fname;
         item.terminal = true;
         return item;
     }
