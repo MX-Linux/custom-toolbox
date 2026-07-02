@@ -168,7 +168,11 @@ void MainWindow::runSynchronous(const QString &cmd, bool useShell)
         if (proc.state() != QProcess::NotRunning) {
             loop.exec();
         }
-        if (proc.exitCode() != 0) {
+        // pkexec exits 126 when the user dismisses the authentication dialog and
+        // 127 on authorization failure; neither warrants an error box.
+        const bool authDeclined
+            = cmd.startsWith("pkexec") && (proc.exitCode() == 126 || proc.exitCode() == 127);
+        if (proc.exitStatus() != QProcess::NormalExit || (proc.exitCode() != 0 && !authDeclined)) {
             QMessageBox::warning(this, tr("Execution Error"), tr("Failed to execute command: %1").arg(cmd));
         }
     }
