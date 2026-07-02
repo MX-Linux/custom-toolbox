@@ -238,12 +238,15 @@ LauncherParser::ParseResult LauncherParser::parseIni(QSettings &settings, const 
                 } else if (token == QLatin1String("terminal")) {
                     item.terminal = true;
                 } else if (token.startsWith(QLatin1String("alias="))) {
-                    QString alias = token.mid(6);
+                    // The alias is the last field: rejoin the remaining tokens so
+                    // an alias containing ':' is not truncated by the split above.
+                    QString alias = QStringList(tokens.mid(i)).join(QLatin1Char(':')).mid(6);
                     if ((alias.startsWith(QLatin1Char('"')) && alias.endsWith(QLatin1Char('"')))
                         || (alias.startsWith(QLatin1Char('\'')) && alias.endsWith(QLatin1Char('\'')))) {
                         alias = alias.mid(1, alias.size() - 2);
                     }
                     item.alias = alias;
+                    break;
                 }
             }
             result.items.append(item);
