@@ -148,11 +148,15 @@ LauncherParser::ParseResult LauncherParser::parse(const QString &text, const QSt
         item.category = result.categories.last();
 
         if (keyTokens.size() > 1) {
-            item.root = keyTokens.contains(QLatin1String("root"));
-            item.user = keyTokens.contains(QLatin1String("user"));
-            item.terminal = keyTokens.contains(QLatin1String("terminal"));
-
+            // Everything after the "alias" keyword is alias text, so only the
+            // tokens between the app name and "alias" may act as flags. This
+            // keeps an alias like "run as root" from silently elevating the item.
             const int aliasIndex = keyTokens.indexOf(QLatin1String("alias"));
+            const QStringList flagTokens = aliasIndex >= 0 ? keyTokens.mid(1, aliasIndex - 1) : keyTokens.mid(1);
+            item.root = flagTokens.contains(QLatin1String("root"));
+            item.user = flagTokens.contains(QLatin1String("user"));
+            item.terminal = flagTokens.contains(QLatin1String("terminal"));
+
             if (aliasIndex >= 0) {
                 QString alias;
                 if (aliasIndex + 1 < keyTokens.size()) {
