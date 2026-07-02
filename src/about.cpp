@@ -62,27 +62,26 @@ void setupDocDialog(QDialog &dialog, QWidget *content, const QString &title, boo
     layout->addWidget(btnClose);
 }
 
-void showHtmlDoc(const QString &url, const QString &title, bool largeWindow)
+// QTextBrowser cannot fetch remote URLs, so only local files are supported.
+void showHtmlDoc(const QString &path, const QString &title, bool largeWindow)
 {
     QDialog dialog;
     auto *browser = new QTextBrowser(&dialog);
     setupDocDialog(dialog, browser, title, largeWindow);
 
-    const QUrl sourceUrl = QUrl::fromUserInput(url);
-    const QString localPath = sourceUrl.isLocalFile() ? sourceUrl.toLocalFile() : url;
-    if (sourceUrl.isLocalFile() ? QFileInfo::exists(localPath) : QFileInfo::exists(url)) {
-        browser->setSource(sourceUrl.isLocalFile() ? sourceUrl : QUrl::fromLocalFile(url));
+    if (QFileInfo::exists(path)) {
+        browser->setSource(QUrl::fromLocalFile(path));
     } else {
-        browser->setText(QObject::tr("Could not load %1").arg(url));
+        browser->setText(QObject::tr("Could not load %1").arg(path));
     }
 
     dialog.exec();
 }
 } // namespace
 
-void displayDoc(const QString &url, const QString &title, bool largeWindow)
+void displayDoc(const QString &path, const QString &title, bool largeWindow)
 {
-    showHtmlDoc(url, title, largeWindow);
+    showHtmlDoc(path, title, largeWindow);
 }
 
 void displayHelpDoc(const QString &path, const QString &title)
@@ -90,7 +89,7 @@ void displayHelpDoc(const QString &path, const QString &title)
     showHtmlDoc(path, title, true);
 }
 
-void displayAboutMsgBox(const QString &title, const QString &message, const QString &licenceUrl,
+void displayAboutMsgBox(const QString &title, const QString &message, const QString &licencePath,
                         const QString &licenseTitle)
 {
     constexpr int dialogWidth = 600;
@@ -104,7 +103,7 @@ void displayAboutMsgBox(const QString &title, const QString &message, const QStr
     msgBox.exec();
 
     if (msgBox.clickedButton() == btnLicense) {
-        displayDoc(licenceUrl, licenseTitle);
+        displayDoc(licencePath, licenseTitle);
     } else if (msgBox.clickedButton() == btnChangelog) {
         QDialog changelog;
 
