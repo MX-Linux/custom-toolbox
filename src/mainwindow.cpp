@@ -547,9 +547,11 @@ void MainWindow::addEmptyRowIfNeeded(const QString &category, const QMultiMap<QS
 
 void MainWindow::centerWindow()
 {
-    const QRect screenGeometry = QApplication::primaryScreen()->geometry();
-    const int x = (screenGeometry.width() - width()) / 2;
-    const int y = (screenGeometry.height() - height()) / 2;
+    // Center on the screen the window is on (not necessarily the primary one),
+    // offset by the screen's origin so multi-monitor layouts work.
+    const QRect screenGeometry = screen()->availableGeometry();
+    const int x = screenGeometry.x() + (screenGeometry.width() - width()) / 2;
+    const int y = screenGeometry.y() + (screenGeometry.height() - height()) / 2;
     move(x, y);
 }
 
