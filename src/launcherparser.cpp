@@ -238,15 +238,22 @@ LauncherParser::ParseResult LauncherParser::parseIni(QSettings &settings, const 
                 } else if (token == QLatin1String("terminal")) {
                     item.terminal = true;
                 } else if (token.startsWith(QLatin1String("alias="))) {
-                    // The alias is the last field: rejoin the remaining tokens so
-                    // an alias containing ':' is not truncated by the split above.
-                    QString alias = QStringList(tokens.mid(i)).join(QLatin1Char(':')).mid(6);
+                    QString alias = token.mid(6);
+                    // A quoted alias may contain ':', which the split above cut at;
+                    // rejoin tokens until the closing quote. Flags after the alias
+                    // (e.g. alias="My App":root) are still parsed by the loop.
+                    if (alias.size() >= 1 && (alias.front() == QLatin1Char('"') || alias.front() == QLatin1Char('\''))
+                        && !(alias.size() >= 2 && alias.endsWith(alias.front()))) {
+                        const QChar quote = alias.front();
+                        while (i + 1 < tokens.size() && !alias.endsWith(quote)) {
+                            alias += QLatin1Char(':') + tokens.at(++i);
+                        }
+                    }
                     if ((alias.startsWith(QLatin1Char('"')) && alias.endsWith(QLatin1Char('"')))
                         || (alias.startsWith(QLatin1Char('\'')) && alias.endsWith(QLatin1Char('\'')))) {
                         alias = alias.mid(1, alias.size() - 2);
                     }
                     item.alias = alias;
-                    break;
                 }
             }
             result.items.append(item);
