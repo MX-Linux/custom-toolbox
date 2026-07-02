@@ -630,7 +630,9 @@ bool MainWindow::readFile(const QString &fname, bool showErrors)
 
     // Swap state in. (fileLocation was already set near the top of readFile.)
     const QFileInfo fileInfo(fileName);
-    customName = fileInfo.baseName();
+    // completeBaseName: baseName() would truncate "my.toolbox.list" to "my",
+    // corrupting the settings key and the autostart .desktop name.
+    customName = fileInfo.completeBaseName();
 
     const QString newIconTheme = parsed.iconTheme;
     const QString effectiveOldTheme = iconTheme.isEmpty() ? defaultIconTheme : iconTheme;
@@ -739,7 +741,9 @@ void MainWindow::checkboxStartupClicked(bool checked)
                 return '"' + value + '"';
             };
 
-            const QString listPath = QDir(fileLocation).filePath(customName + ".list");
+            // Use the loaded file's real path; reconstructing it from customName
+            // would break for list files with a different extension.
+            const QString listPath = QFileInfo(fileName).absoluteFilePath();
             QTextStream out(&file);
             out << "[Desktop Entry]\n"
                 << "Name=" << escapeDesktopString(windowTitle()) << '\n'
