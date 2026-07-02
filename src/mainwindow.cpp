@@ -626,13 +626,13 @@ bool MainWindow::readFile(const QString &fname, bool showErrors)
     if (newMap.isEmpty()) {
         if (showErrors) {
             QMessageBox::critical(this, tr("Parse Error"),
-                                  tr("None of the entries in %1 match an installed application.").arg(fileName));
+                                  tr("None of the entries in %1 match an installed application.").arg(fname));
         }
         return false;
     }
 
     // Swap state in. (fileLocation was already set near the top of readFile.)
-    const QFileInfo fileInfo(fileName);
+    const QFileInfo fileInfo(fname);
     // completeBaseName: baseName() would truncate "my.toolbox.list" to "my",
     // corrupting the settings key and the autostart .desktop name.
     customName = fileInfo.completeBaseName();
