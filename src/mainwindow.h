@@ -57,7 +57,6 @@ private slots:
     void textSearchTextChanged(const QString &text);
 
 private:
-    void closeEvent(QCloseEvent * /*unused*/) override;
     void resizeEvent(QResizeEvent *event) override;
 
     Ui::MainWindow *ui;
@@ -106,6 +105,7 @@ private:
     bool prepareCommand(const ItemInfo &item, QString &cmd, QString *errorMessage) const;
     void runSynchronous(const QString &cmd, bool useShell);
     bool readFile(const QString &fname, bool showErrors = true);
+    void saveWindowGeometry() const;
     void setConnections();
     void setGui();
     void setup();

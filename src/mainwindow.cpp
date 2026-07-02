@@ -207,7 +207,10 @@ void MainWindow::btnClicked()
     }
 }
 
-void MainWindow::closeEvent(QCloseEvent * /*unused*/)
+// Connected to QApplication::aboutToQuit so the geometry is saved on every exit
+// path: window-manager close, the Cancel button (QApplication::quit) and the
+// Escape key (QDialog::reject), the latter two of which bypass closeEvent().
+void MainWindow::saveWindowGeometry() const
 {
     QSettings settings(QApplication::organizationName(),
                        QApplication::applicationName() + '_' + customName);
@@ -643,6 +646,7 @@ bool MainWindow::readFile(const QString &fname, bool showErrors)
 
 void MainWindow::setConnections()
 {
+    connect(qApp, &QApplication::aboutToQuit, this, &MainWindow::saveWindowGeometry);
     connect(ui->checkBoxStartup, &QPushButton::clicked, this, &MainWindow::checkboxStartupClicked);
     connect(ui->pushAbout, &QPushButton::clicked, this, &MainWindow::pushAboutClicked);
     connect(ui->pushCancel, &QPushButton::clicked, qApp, &QApplication::quit);
