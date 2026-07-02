@@ -149,6 +149,10 @@ void MainWindow::runSynchronous(const QString &cmd, bool useShell)
 {
     if (hideGui) {
         hide();
+    } else {
+        // Block further button clicks while the nested event loop runs, so
+        // commands cannot be launched concurrently from the same window.
+        setEnabled(false);
     }
 
     QProcess proc;
@@ -162,23 +166,26 @@ void MainWindow::runSynchronous(const QString &cmd, bool useShell)
         proc.start(program, arguments);
     }
 
-    if (!proc.waitForStarted()) {
-        QMessageBox::warning(this, tr("Execution Error"), tr("Failed to start command: %1").arg(cmd));
-    } else {
-        if (proc.state() != QProcess::NotRunning) {
-            loop.exec();
-        }
-        // pkexec exits 126 when the user dismisses the authentication dialog and
-        // 127 on authorization failure; neither warrants an error box.
-        const bool authDeclined
-            = cmd.startsWith("pkexec") && (proc.exitCode() == 126 || proc.exitCode() == 127);
-        if (proc.exitStatus() != QProcess::NormalExit || (proc.exitCode() != 0 && !authDeclined)) {
-            QMessageBox::warning(this, tr("Execution Error"), tr("Failed to execute command: %1").arg(cmd));
-        }
+    const bool started = proc.waitForStarted();
+    if (started && proc.state() != QProcess::NotRunning) {
+        loop.exec();
     }
 
     if (hideGui) {
         show();
+    } else {
+        setEnabled(true);
+    }
+
+    if (!started) {
+        QMessageBox::warning(this, tr("Execution Error"), tr("Failed to start command: %1").arg(cmd));
+        return;
+    }
+    // pkexec exits 126 when the user dismisses the authentication dialog and
+    // 127 on authorization failure; neither warrants an error box.
+    const bool authDeclined = cmd.startsWith("pkexec") && (proc.exitCode() == 126 || proc.exitCode() == 127);
+    if (proc.exitStatus() != QProcess::NormalExit || (proc.exitCode() != 0 && !authDeclined)) {
+        QMessageBox::warning(this, tr("Execution Error"), tr("Failed to execute command: %1").arg(cmd));
     }
 }
 
