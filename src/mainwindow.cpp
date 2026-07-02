@@ -565,8 +565,14 @@ void MainWindow::clearGridLayout()
 {
     QLayoutItem *childItem {};
     while ((childItem = ui->gridLayout_btn->takeAt(0)) != nullptr) {
-        // Delete the widget and the layout item
-        delete childItem->widget();
+        if (QWidget *widget = childItem->widget()) {
+            // deleteLater: a reload triggered from within a nested event loop
+            // (file watcher firing during runSynchronous) can land here while a
+            // button's clicked() emission is still on the stack — deleting it
+            // directly would be a use-after-free.
+            widget->hide();
+            widget->deleteLater();
+        }
         delete childItem;
     }
 }
