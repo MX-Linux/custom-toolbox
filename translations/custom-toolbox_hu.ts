@@ -108,19 +108,19 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="557"/>
         <location filename="../src/mainwindow.cpp" line="719"/>
-        <location filename="../src/main.cpp" line="68"/>
+        <location filename="../src/main.cpp" line="66"/>
         <source>File Open Error</source>
         <translation>Hiba a fájl megnyitásakor</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="535"/>
-        <location filename="../src/main.cpp" line="155"/>
+        <location filename="../src/main.cpp" line="153"/>
         <source>File Not Found</source>
         <translation>A fájl nem található</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="535"/>
-        <location filename="../src/main.cpp" line="156"/>
+        <location filename="../src/main.cpp" line="154"/>
         <source>The file %1 does not exist.</source>
         <translation>A fájl nem létezik: %1.</translation>
     </message>
@@ -227,17 +227,7 @@
         <translation>Lista fájlok (*.list)</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="59"/>
-        <source>File Selection Error</source>
-        <translation>Fájl kiválasztási hiba</translation>
-    </message>
-    <message>
-        <location filename="../src/main.cpp" line="60"/>
-        <source>No file selected. Application will now exit.</source>
-        <translation>Nincs fájl kiválasztva. A program kilép.</translation>
-    </message>
-    <message>
-        <location filename="../src/main.cpp" line="69"/>
+        <location filename="../src/main.cpp" line="67"/>
         <source>Could not open file. Do you want to try again?</source>
         <translation>A fájl megnyitása nem sikerült. Megpróbálja ismét?</translation>
     </message>
@@ -277,27 +267,27 @@
         <translation>&amp;Bezárás</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="119"/>
+        <location filename="../src/main.cpp" line="117"/>
         <source>This app can be used to create custom launchers: box of buttons/icons</source>
         <translation>Ez az alkalmazás saját indítók létrehozására használható: gombok/ikonok egy dobozban</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="122"/>
+        <location filename="../src/main.cpp" line="120"/>
         <source>Don&apos;t show &apos;show this dialog at startup&apos; checkbox</source>
         <translation>Ne jelenjen meg a &apos;Jelenjen meg ez az ablak indításkor&apos; opció</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="124"/>
+        <location filename="../src/main.cpp" line="122"/>
         <source>Full path and name of the .list file you want to load. Supports both custom format (Key=Value) and INI format ([Section]).</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="135"/>
+        <location filename="../src/main.cpp" line="133"/>
         <source>Error</source>
         <translation>Hiba</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="136"/>
+        <location filename="../src/main.cpp" line="134"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
         <translation>Úgy tűnik, hogy root felhasználóként van bejelentkezve. Jelentkezzen ki és jelentkezzen be egyszerű felhasználóként a program használatához.</translation>
     </message>

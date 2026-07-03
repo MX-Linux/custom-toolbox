@@ -108,19 +108,19 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="557"/>
         <location filename="../src/mainwindow.cpp" line="719"/>
-        <location filename="../src/main.cpp" line="68"/>
+        <location filename="../src/main.cpp" line="66"/>
         <source>File Open Error</source>
         <translation>Gabim Hapje Kartele</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="535"/>
-        <location filename="../src/main.cpp" line="155"/>
+        <location filename="../src/main.cpp" line="153"/>
         <source>File Not Found</source>
         <translation>Kartela S’u Gjet</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="535"/>
-        <location filename="../src/main.cpp" line="156"/>
+        <location filename="../src/main.cpp" line="154"/>
         <source>The file %1 does not exist.</source>
         <translation>Kartela %1 s’ekziston.</translation>
     </message>
@@ -227,17 +227,7 @@
         <translation>Kartela Listë (*.list)</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="59"/>
-        <source>File Selection Error</source>
-        <translation>Gabim Përzgjedhjeje Kartele</translation>
-    </message>
-    <message>
-        <location filename="../src/main.cpp" line="60"/>
-        <source>No file selected. Application will now exit.</source>
-        <translation>S’u përzgjodh kartelë. Aplikacioni tani do të mbyllet.</translation>
-    </message>
-    <message>
-        <location filename="../src/main.cpp" line="69"/>
+        <location filename="../src/main.cpp" line="67"/>
         <source>Could not open file. Do you want to try again?</source>
         <translation>S’u hap dot kartelë. Doni të riprovohet?</translation>
     </message>
@@ -277,27 +267,27 @@
         <translation>&amp;Mbylle</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="119"/>
+        <location filename="../src/main.cpp" line="117"/>
         <source>This app can be used to create custom launchers: box of buttons/icons</source>
         <translation>Ky aplikacion mund të përdoret për të krijuar nisës vetjakë: kuti butonash/ikonash</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="122"/>
+        <location filename="../src/main.cpp" line="120"/>
         <source>Don&apos;t show &apos;show this dialog at startup&apos; checkbox</source>
         <translation>Kutizë për mosshfaqje të “shfaqe këtë dialog gjatë nisjes”</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="124"/>
+        <location filename="../src/main.cpp" line="122"/>
         <source>Full path and name of the .list file you want to load. Supports both custom format (Key=Value) and INI format ([Section]).</source>
         <translation>Shteg i plotë dhe emër i kartelës .list që doni të ngarkohet. Mbulohe që të dy formatet, ai vetjak (Key=Value) dhe formati INI ([Section]).</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="135"/>
+        <location filename="../src/main.cpp" line="133"/>
         <source>Error</source>
         <translation>Gabim</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="136"/>
+        <location filename="../src/main.cpp" line="134"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
         <translation>Duket të jeni futur si rrënjë, ju lutemi, që të përdorni këtë program, dilni nga llogaria dhe hyni si përdorues i zakonshëm.</translation>
     </message>

@@ -108,19 +108,19 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="557"/>
         <location filename="../src/mainwindow.cpp" line="719"/>
-        <location filename="../src/main.cpp" line="68"/>
+        <location filename="../src/main.cpp" line="66"/>
         <source>File Open Error</source>
         <translation>Failo atvėrimo klaida</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="535"/>
-        <location filename="../src/main.cpp" line="155"/>
+        <location filename="../src/main.cpp" line="153"/>
         <source>File Not Found</source>
         <translation>Failas nerastas</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="535"/>
-        <location filename="../src/main.cpp" line="156"/>
+        <location filename="../src/main.cpp" line="154"/>
         <source>The file %1 does not exist.</source>
         <translation>Failo %1 nėra.</translation>
     </message>
@@ -158,12 +158,12 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="685"/>
         <source>Directory Creation Error</source>
-        <translation type="unfinished"/>
+        <translation>Katalogo sukūrimo klaida</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="686"/>
         <source>Could not create directory: %1</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko sukurti katalogo: %1</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="738"/>
@@ -174,7 +174,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="738"/>
         <source>Editor command is empty.</source>
-        <translation type="unfinished"/>
+        <translation>Redaktoriaus komanda yra tuščia.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="757"/>
@@ -227,17 +227,7 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="59"/>
-        <source>File Selection Error</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/main.cpp" line="60"/>
-        <source>No file selected. Application will now exit.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/main.cpp" line="69"/>
+        <location filename="../src/main.cpp" line="67"/>
         <source>Could not open file. Do you want to try again?</source>
         <translation>Nepavyko atverti failo. Ar norite bandyti dar kartą?</translation>
     </message>
@@ -247,7 +237,7 @@
     <message>
         <location filename="../src/about.cpp" line="73"/>
         <source>Could not load %1</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko įkelti %1</translation>
     </message>
     <message>
         <location filename="../src/about.cpp" line="96"/>
@@ -268,7 +258,7 @@
     <message>
         <location filename="../src/about.cpp" line="117"/>
         <source>Could not load changelog.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko įkelti keitinių žurnalo.</translation>
     </message>
     <message>
         <location filename="../src/about.cpp" line="53"/>
@@ -277,27 +267,27 @@
         <translation>&amp;Užverti</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="119"/>
+        <location filename="../src/main.cpp" line="117"/>
         <source>This app can be used to create custom launchers: box of buttons/icons</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="122"/>
+        <location filename="../src/main.cpp" line="120"/>
         <source>Don&apos;t show &apos;show this dialog at startup&apos; checkbox</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="124"/>
+        <location filename="../src/main.cpp" line="122"/>
         <source>Full path and name of the .list file you want to load. Supports both custom format (Key=Value) and INI format ([Section]).</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="135"/>
+        <location filename="../src/main.cpp" line="133"/>
         <source>Error</source>
         <translation>Klaida</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="136"/>
+        <location filename="../src/main.cpp" line="134"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
         <translation type="unfinished"/>
     </message>

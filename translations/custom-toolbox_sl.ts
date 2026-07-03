@@ -108,19 +108,19 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="557"/>
         <location filename="../src/mainwindow.cpp" line="719"/>
-        <location filename="../src/main.cpp" line="68"/>
+        <location filename="../src/main.cpp" line="66"/>
         <source>File Open Error</source>
         <translation>Napaka pri odpiranju datoteke</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="535"/>
-        <location filename="../src/main.cpp" line="155"/>
+        <location filename="../src/main.cpp" line="153"/>
         <source>File Not Found</source>
         <translation>Datoteka ni bila najdena</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="535"/>
-        <location filename="../src/main.cpp" line="156"/>
+        <location filename="../src/main.cpp" line="154"/>
         <source>The file %1 does not exist.</source>
         <translation>Datoteka %1 ne obstaja.</translation>
     </message>
@@ -227,17 +227,7 @@
         <translation>Datoteke seznamov (*.list)</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="59"/>
-        <source>File Selection Error</source>
-        <translation>Napaka pri izbiri datoteke</translation>
-    </message>
-    <message>
-        <location filename="../src/main.cpp" line="60"/>
-        <source>No file selected. Application will now exit.</source>
-        <translation>Nobena datoteka ni izbrana. Program se bo zaprl.</translation>
-    </message>
-    <message>
-        <location filename="../src/main.cpp" line="69"/>
+        <location filename="../src/main.cpp" line="67"/>
         <source>Could not open file. Do you want to try again?</source>
         <translation>Datoteke ni bilo mogoče odpreti. Ponovni poskus?</translation>
     </message>
@@ -277,27 +267,27 @@
         <translation>&amp;Zapri</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="119"/>
+        <location filename="../src/main.cpp" line="117"/>
         <source>This app can be used to create custom launchers: box of buttons/icons</source>
         <translation>Ta program omogoča ustvarjanje zaganjalnikov po meri: slkupek gumbov/ikon</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="122"/>
+        <location filename="../src/main.cpp" line="120"/>
         <source>Don&apos;t show &apos;show this dialog at startup&apos; checkbox</source>
         <translation>Ne prikaži izbirnika &apos;ob zagonu prikaži ta dialog&apos;</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="124"/>
+        <location filename="../src/main.cpp" line="122"/>
         <source>Full path and name of the .list file you want to load. Supports both custom format (Key=Value) and INI format ([Section]).</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="135"/>
+        <location filename="../src/main.cpp" line="133"/>
         <source>Error</source>
         <translation>Napaka</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="136"/>
+        <location filename="../src/main.cpp" line="134"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
         <translation>Prijavljeni ste kot korenski (root) uporabnik. Odjavite se in se ponovno prijavite kot običajen uporabnik, če želite uporabljati ta program.</translation>
     </message>

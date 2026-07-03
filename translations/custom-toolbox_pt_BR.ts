@@ -108,19 +108,19 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="557"/>
         <location filename="../src/mainwindow.cpp" line="719"/>
-        <location filename="../src/main.cpp" line="68"/>
+        <location filename="../src/main.cpp" line="66"/>
         <source>File Open Error</source>
         <translation>Ocorreu um erro ao abrir o arquivo</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="535"/>
-        <location filename="../src/main.cpp" line="155"/>
+        <location filename="../src/main.cpp" line="153"/>
         <source>File Not Found</source>
         <translation>O arquivo não foi encontrado</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="535"/>
-        <location filename="../src/main.cpp" line="156"/>
+        <location filename="../src/main.cpp" line="154"/>
         <source>The file %1 does not exist.</source>
         <translation>O arquivo %1 não existe.</translation>
     </message>
@@ -227,17 +227,7 @@
         <translation>Arquivo da Lista (*.list)</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="59"/>
-        <source>File Selection Error</source>
-        <translation>Ocorreu um erro ao selecionar o arquivo</translation>
-    </message>
-    <message>
-        <location filename="../src/main.cpp" line="60"/>
-        <source>No file selected. Application will now exit.</source>
-        <translation>Nenhum arquivo foi selecionado. O programa será finalizado agora.</translation>
-    </message>
-    <message>
-        <location filename="../src/main.cpp" line="69"/>
+        <location filename="../src/main.cpp" line="67"/>
         <source>Could not open file. Do you want to try again?</source>
         <translation>Não foi possível abrir o arquivo. Você quer tentar novamente?</translation>
     </message>
@@ -277,27 +267,27 @@
         <translation>&amp;Fechar</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="119"/>
+        <location filename="../src/main.cpp" line="117"/>
         <source>This app can be used to create custom launchers: box of buttons/icons</source>
         <translation>Este programa pode ser utilizado para criar iniciadores ou lançadores personalizados para caixa de botões ou ícones de atalho</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="122"/>
+        <location filename="../src/main.cpp" line="120"/>
         <source>Don&apos;t show &apos;show this dialog at startup&apos; checkbox</source>
         <translation>Não exibir a caixa de seleção ‘Exibir esta caixa de diálogo na inicialização’</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="124"/>
+        <location filename="../src/main.cpp" line="122"/>
         <source>Full path and name of the .list file you want to load. Supports both custom format (Key=Value) and INI format ([Section]).</source>
         <translation>O caminho completo e nome do arquivo ‘.list’ que você quer carregar. São compatíveis os formatos personalizados ‘Key=Value’ (Chave=Valor) e o formato ‘INI format ([Section])’ (INI formato ([Seção])).</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="135"/>
+        <location filename="../src/main.cpp" line="133"/>
         <source>Error</source>
         <translation>Ocorreu um erro</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="136"/>
+        <location filename="../src/main.cpp" line="134"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
         <translation>Ao que parece, você está acessando a sessão atual com o usuário ‘root’ (administrador). Por favor, saia da sessão atual e entre novamente com o usuário normal para utilizar este programa.</translation>
     </message>

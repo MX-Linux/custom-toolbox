@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ka">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="id">
 <context>
     <name>MainWindow</name>
     <message>
@@ -10,17 +10,17 @@
     <message>
         <location filename="../src/mainwindow.ui" line="63"/>
         <source>About this application</source>
-        <translation>ამ აპლიკაციის შესახებ</translation>
+        <translation>Tentang aplikasi ini</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="66"/>
         <source>About...</source>
-        <translation>შესახებ...</translation>
+        <translation>Tentang</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="72"/>
         <source>Alt+A</source>
-        <translation>Alt+A</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="88"/>
@@ -30,17 +30,17 @@
     <message>
         <location filename="../src/mainwindow.ui" line="91"/>
         <source>Edit</source>
-        <translation>ჩასწორება</translation>
+        <translation>Edit</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="97"/>
         <source>Alt+E</source>
-        <translation>Alt+E</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="161"/>
         <source>Help</source>
-        <translation>დახმარება</translation>
+        <translation>Bantuan</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="167"/>
@@ -55,12 +55,12 @@
     <message>
         <location filename="../src/mainwindow.ui" line="183"/>
         <source>Close</source>
-        <translation>დახურვა</translation>
+        <translation>Tutup</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="189"/>
         <source>Alt+C</source>
-        <translation>Alt+C</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="303"/>
@@ -70,12 +70,12 @@
     <message>
         <location filename="../src/mainwindow.ui" line="319"/>
         <source>Show this dialog at start up</source>
-        <translation>ამ დიალოგის ჩვენება გაშვებისას</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="341"/>
         <source>search</source>
-        <translation>ძებნა</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="163"/>
@@ -148,12 +148,12 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="635"/>
         <source>Version:</source>
-        <translation>ვერსია:</translation>
+        <translation>Versi:</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="638"/>
         <source>About %1</source>
-        <translation>%1-ის შესახებ</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="685"/>
@@ -169,7 +169,7 @@
         <location filename="../src/mainwindow.cpp" line="738"/>
         <location filename="../src/mainwindow.cpp" line="757"/>
         <source>Error</source>
-        <translation>შეცდომა</translation>
+        <translation>Galat</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="738"/>
@@ -189,17 +189,17 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="636"/>
         <source>Copyright (c) MX Linux</source>
-        <translation>(c) MX Linux საავტორო ფულებები დაცულია</translation>
+        <translation>Copyright (c) MX Linux</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="639"/>
         <source>%1 License</source>
-        <translation>ლიცენზია %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="644"/>
         <source>%1 Help</source>
-        <translation>%1-ის დახმარება</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="719"/>
@@ -242,18 +242,18 @@
     <message>
         <location filename="../src/about.cpp" line="96"/>
         <source>License</source>
-        <translation>ლიცენზია</translation>
+        <translation>Lisensi</translation>
     </message>
     <message>
         <location filename="../src/about.cpp" line="97"/>
         <location filename="../src/about.cpp" line="107"/>
         <source>Changelog</source>
-        <translation>ცვლილებების ჟურნალი</translation>
+        <translation>Changelog</translation>
     </message>
     <message>
         <location filename="../src/about.cpp" line="98"/>
         <source>Cancel</source>
-        <translation>გაუქმება</translation>
+        <translation>Batal</translation>
     </message>
     <message>
         <location filename="../src/about.cpp" line="117"/>
@@ -264,7 +264,7 @@
         <location filename="../src/about.cpp" line="53"/>
         <location filename="../src/about.cpp" line="120"/>
         <source>&amp;Close</source>
-        <translation>&amp;დახურვა</translation>
+        <translation>&amp;Tutup</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="117"/>
@@ -284,12 +284,12 @@
     <message>
         <location filename="../src/main.cpp" line="133"/>
         <source>Error</source>
-        <translation>შეცდომა</translation>
+        <translation>Galat</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="134"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
-        <translation>როგორც ჩანს, root-ით ბრძანდებით შესული. ამ პროგრამის გამოსაყენებლად გადით, და შემოდით ჩვეულებრივი მომხმარებლით.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

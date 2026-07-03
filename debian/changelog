@@ -1,3 +1,29 @@
+custom-toolbox (26.07) mx; urgency=medium
+
+  * Commands that ask for administrator permission no longer freeze the toolbox
+    window while they are open
+  * Cancelling an administrator permission prompt no longer shows a failure message
+  * When running as administrator, launchers and the Edit button refuse to run
+    unsafely if the original user cannot be detected
+  * The Edit button works more reliably from administrator sessions when it needs
+    to connect to the user's display
+  * Launcher reloads are faster and no longer crash when a reload happens while a
+    command is running
+  * Application entries that can only be found by their executable path now
+    launch correctly, including paths outside the usual menu search path or paths
+    containing spaces
+  * List files with multiple dots in their name now keep the correct settings and
+    autostart entry, and older broken autostart entries are repaired
+    automatically
+  * Aliases in list files are parsed more accurately, including aliases that
+    contain flag words or colons and aliases followed by flags
+  * Unreadable application menu entries are skipped instead of creating empty
+    launcher buttons
+  * Window size and position are saved on every normal exit path, and new windows
+    are centered on the correct monitor
+
+ -- Adrian <adrian@mxlinux.org>  Thu, 02 Jul 2026 20:04:40 -0400
+
 custom-toolbox (26.06.2) mx; urgency=medium
 
   * Fix: silently exit when file dialog is cancelled
