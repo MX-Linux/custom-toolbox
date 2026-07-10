@@ -3,7 +3,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../src/mainwindow.ui" line="20"/>
-        <location filename="../src/mainwindow.cpp" line="100"/>
+        <location filename="../src/mainwindow.cpp" line="106"/>
         <source>Custom Toolbox</source>
         <translation>Caixa d&apos;Eines personalitzada</translation>
     </message>
@@ -78,141 +78,153 @@
         <translation>cerca</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="163"/>
-        <location filename="../src/mainwindow.cpp" line="169"/>
-        <location filename="../src/mainwindow.cpp" line="186"/>
-        <location filename="../src/mainwindow.cpp" line="197"/>
+        <location filename="../src/mainwindow.cpp" line="176"/>
+        <location filename="../src/mainwindow.cpp" line="189"/>
+        <location filename="../src/mainwindow.cpp" line="210"/>
+        <location filename="../src/mainwindow.cpp" line="215"/>
+        <location filename="../src/mainwindow.cpp" line="227"/>
         <source>Execution Error</source>
         <translation>Error d&apos;execució</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="186"/>
+        <location filename="../src/mainwindow.cpp" line="215"/>
         <source>Command is empty. Cannot execute.</source>
         <translation>L&apos;ordre és buida. No es pot executar.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="163"/>
+        <location filename="../src/mainwindow.cpp" line="176"/>
         <source>Failed to start command: %1</source>
         <translation>Ha fallat iniciar l&apos;ordre: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="169"/>
+        <location filename="../src/mainwindow.cpp" line="189"/>
         <source>Failed to execute command: %1</source>
         <translation>Ha fallat en executar l&apos;ordre: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="197"/>
+        <location filename="../src/mainwindow.cpp" line="227"/>
         <source>Failed to start program: %1</source>
         <translation>Ha fallat en engegar el programa: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="557"/>
-        <location filename="../src/mainwindow.cpp" line="719"/>
+        <location filename="../src/mainwindow.cpp" line="611"/>
+        <location filename="../src/mainwindow.cpp" line="809"/>
         <location filename="../src/main.cpp" line="66"/>
         <source>File Open Error</source>
         <translation>Error en obrir el fitxer</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="535"/>
+        <location filename="../src/mainwindow.cpp" line="589"/>
         <location filename="../src/main.cpp" line="153"/>
         <source>File Not Found</source>
         <translation>No he trobat el fitxer</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="535"/>
+        <location filename="../src/mainwindow.cpp" line="528"/>
+        <source>Could not determine the unprivileged user. Refusing to run this launcher as root.</source>
+        <translation>No he pogut determinar l&apos;usuari sense privilegis. S&apos;evita executar aquest llançador com a administrador.</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="589"/>
         <location filename="../src/main.cpp" line="154"/>
         <source>The file %1 does not exist.</source>
         <translation>El fitxer %1 no existeix.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="557"/>
+        <location filename="../src/mainwindow.cpp" line="611"/>
         <source>Could not open file: </source>
         <translation>No s&apos;ha pogut obrir el fitxer: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="566"/>
-        <location filename="../src/mainwindow.cpp" line="594"/>
+        <location filename="../src/mainwindow.cpp" line="620"/>
+        <location filename="../src/mainwindow.cpp" line="652"/>
         <source>Parse Error</source>
         <translation>Analitza l&apos;error</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="567"/>
+        <location filename="../src/mainwindow.cpp" line="621"/>
         <source>The file %1 contains no recognizable launcher entries.</source>
         <translation>El fitxer %1 no conté cap entrada executable identificable.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="595"/>
+        <location filename="../src/mainwindow.cpp" line="653"/>
         <source>None of the entries in %1 match an installed application.</source>
         <translation>Cap de les entrades a %1 coincideix amb una aplicació instal·lada.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="635"/>
+        <location filename="../src/mainwindow.cpp" line="699"/>
         <source>Version:</source>
         <translation>Versió: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="638"/>
+        <location filename="../src/mainwindow.cpp" line="702"/>
         <source>About %1</source>
         <translation>Quant a %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="685"/>
+        <location filename="../src/mainwindow.cpp" line="773"/>
         <source>Directory Creation Error</source>
         <translation>Error de creació del directori</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="686"/>
+        <location filename="../src/mainwindow.cpp" line="774"/>
         <source>Could not create directory: %1</source>
         <translation>No s&apos;ha pogut crear el directori: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="738"/>
-        <location filename="../src/mainwindow.cpp" line="757"/>
+        <location filename="../src/mainwindow.cpp" line="828"/>
+        <location filename="../src/mainwindow.cpp" line="843"/>
+        <location filename="../src/mainwindow.cpp" line="852"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="738"/>
+        <location filename="../src/mainwindow.cpp" line="828"/>
         <source>Editor command is empty.</source>
         <translation>L&apos;ordre de l&apos;editor està buida.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="757"/>
+        <location filename="../src/mainwindow.cpp" line="852"/>
         <source>Failed to launch the editor.</source>
         <translation>Ha fallat en executar l&apos;editor</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="636"/>
+        <location filename="../src/mainwindow.cpp" line="910"/>
+        <source>Could not determine the unprivileged user. Refusing to launch the editor as root.</source>
+        <translation>No he pogut determinar l&apos;usuari sense privilegis. S&apos;evita executar aquest editor com a administrador.</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="700"/>
         <source>Custom Toolbox is a tool used for creating a custom launcher</source>
         <translation>Custom Toolbox és una eina usada per crear llançadors personalitzats</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="636"/>
+        <location filename="../src/mainwindow.cpp" line="700"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Copyright (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="639"/>
+        <location filename="../src/mainwindow.cpp" line="703"/>
         <source>%1 License</source>
         <translation>Llicència de %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="644"/>
+        <location filename="../src/mainwindow.cpp" line="708"/>
         <source>%1 Help</source>
         <translation>Ajuda de %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="719"/>
+        <location filename="../src/mainwindow.cpp" line="809"/>
         <source>Could not write file: %1</source>
         <translation>No puc escriure al fitxer: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="725"/>
+        <location filename="../src/mainwindow.cpp" line="815"/>
         <source>File Removal Error</source>
         <translation>Error d&apos;eliminació de fitxer</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="725"/>
+        <location filename="../src/mainwindow.cpp" line="815"/>
         <source>Could not remove file: %1</source>
         <translation>No puc eliminar el fitxer: %1</translation>
     </message>
@@ -235,34 +247,33 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/about.cpp" line="73"/>
+        <location filename="../src/about.cpp" line="75"/>
         <source>Could not load %1</source>
         <translation>No s&apos;ha pogut carregar %1</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="96"/>
+        <location filename="../src/about.cpp" line="98"/>
         <source>License</source>
         <translation>Llicència</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="97"/>
-        <location filename="../src/about.cpp" line="107"/>
+        <location filename="../src/about.cpp" line="99"/>
+        <location filename="../src/about.cpp" line="111"/>
         <source>Changelog</source>
         <translation>Registre de canvis</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="98"/>
+        <location filename="../src/about.cpp" line="100"/>
         <source>Cancel</source>
         <translation>Cancel·la</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="117"/>
+        <location filename="../src/about.cpp" line="118"/>
         <source>Could not load changelog.</source>
         <translation>No s&apos;ha pogut carregar el registre de canvis.</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="53"/>
-        <location filename="../src/about.cpp" line="120"/>
+        <location filename="../src/about.cpp" line="56"/>
         <source>&amp;Close</source>
         <translation>Tan&amp;ca </translation>
     </message>

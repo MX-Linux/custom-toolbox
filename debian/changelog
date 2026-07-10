@@ -1,3 +1,22 @@
+custom-toolbox (26.07.1) mx; urgency=medium
+
+  * The window title and description now update right away when the list file
+    is edited
+  * Apps can now be listed by their full menu entry ID (for example
+    org.gnome.DiskUtility), and the right menu entry is picked more reliably
+    when several match
+  * The "start automatically" checkbox no longer touches autostart entries it
+    did not create
+  * List entries marked to run both as administrator and as a normal user are
+    now skipped instead of guessing which was meant
+  * Launcher names with special characters now display correctly in the About
+    window, and the About window no longer pauses while loading the version
+    history
+  * Commands are launched in a safer way that keeps special characters from
+    being misinterpreted
+
+ -- Adrian <adrian@mxlinux.org>  Fri, 10 Jul 2026 14:05:24 -0400
+
 custom-toolbox (26.07) mx; urgency=medium
 
   * Commands that ask for administrator permission no longer freeze the toolbox

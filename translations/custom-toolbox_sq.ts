@@ -3,7 +3,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../src/mainwindow.ui" line="20"/>
-        <location filename="../src/mainwindow.cpp" line="100"/>
+        <location filename="../src/mainwindow.cpp" line="106"/>
         <source>Custom Toolbox</source>
         <translation>Grup Vetjak Mjetesh</translation>
     </message>
@@ -78,141 +78,153 @@
         <translation>kërko</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="163"/>
-        <location filename="../src/mainwindow.cpp" line="169"/>
-        <location filename="../src/mainwindow.cpp" line="186"/>
-        <location filename="../src/mainwindow.cpp" line="197"/>
+        <location filename="../src/mainwindow.cpp" line="176"/>
+        <location filename="../src/mainwindow.cpp" line="189"/>
+        <location filename="../src/mainwindow.cpp" line="210"/>
+        <location filename="../src/mainwindow.cpp" line="215"/>
+        <location filename="../src/mainwindow.cpp" line="227"/>
         <source>Execution Error</source>
         <translation>Gabim Ekzekutimi</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="186"/>
+        <location filename="../src/mainwindow.cpp" line="215"/>
         <source>Command is empty. Cannot execute.</source>
         <translation>Urdhri është i zbrazët. S’mund të përmbushet.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="163"/>
+        <location filename="../src/mainwindow.cpp" line="176"/>
         <source>Failed to start command: %1</source>
         <translation>S’u arrit të nisej urdhër: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="169"/>
+        <location filename="../src/mainwindow.cpp" line="189"/>
         <source>Failed to execute command: %1</source>
         <translation>S’u arrit të ekzekutohet urdhër: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="197"/>
+        <location filename="../src/mainwindow.cpp" line="227"/>
         <source>Failed to start program: %1</source>
         <translation>S’u arrit të nisej program: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="557"/>
-        <location filename="../src/mainwindow.cpp" line="719"/>
+        <location filename="../src/mainwindow.cpp" line="611"/>
+        <location filename="../src/mainwindow.cpp" line="809"/>
         <location filename="../src/main.cpp" line="66"/>
         <source>File Open Error</source>
         <translation>Gabim Hapje Kartele</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="535"/>
+        <location filename="../src/mainwindow.cpp" line="589"/>
         <location filename="../src/main.cpp" line="153"/>
         <source>File Not Found</source>
         <translation>Kartela S’u Gjet</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="535"/>
+        <location filename="../src/mainwindow.cpp" line="528"/>
+        <source>Could not determine the unprivileged user. Refusing to run this launcher as root.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="589"/>
         <location filename="../src/main.cpp" line="154"/>
         <source>The file %1 does not exist.</source>
         <translation>Kartela %1 s’ekziston.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="557"/>
+        <location filename="../src/mainwindow.cpp" line="611"/>
         <source>Could not open file: </source>
         <translation>S’u hap dot kartelë:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="566"/>
-        <location filename="../src/mainwindow.cpp" line="594"/>
+        <location filename="../src/mainwindow.cpp" line="620"/>
+        <location filename="../src/mainwindow.cpp" line="652"/>
         <source>Parse Error</source>
         <translation>Analizo Gabimin</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="567"/>
+        <location filename="../src/mainwindow.cpp" line="621"/>
         <source>The file %1 contains no recognizable launcher entries.</source>
         <translation>Kartela %1 s’përmban zëra të dallueshëm nisësi.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="595"/>
+        <location filename="../src/mainwindow.cpp" line="653"/>
         <source>None of the entries in %1 match an installed application.</source>
         <translation>Asnjë prej zërave në %1 s’përkon me një aplikacion të instaluar.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="635"/>
+        <location filename="../src/mainwindow.cpp" line="699"/>
         <source>Version:</source>
         <translation>Version:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="638"/>
+        <location filename="../src/mainwindow.cpp" line="702"/>
         <source>About %1</source>
         <translation>Mbi %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="685"/>
+        <location filename="../src/mainwindow.cpp" line="773"/>
         <source>Directory Creation Error</source>
         <translation>Gabim Krijimi Drejtorie</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="686"/>
+        <location filename="../src/mainwindow.cpp" line="774"/>
         <source>Could not create directory: %1</source>
         <translation>S’u krijua dot drejtori: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="738"/>
-        <location filename="../src/mainwindow.cpp" line="757"/>
+        <location filename="../src/mainwindow.cpp" line="828"/>
+        <location filename="../src/mainwindow.cpp" line="843"/>
+        <location filename="../src/mainwindow.cpp" line="852"/>
         <source>Error</source>
         <translation>Gabim</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="738"/>
+        <location filename="../src/mainwindow.cpp" line="828"/>
         <source>Editor command is empty.</source>
         <translation>Urdhri për përpunues është i zbrazët.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="757"/>
+        <location filename="../src/mainwindow.cpp" line="852"/>
         <source>Failed to launch the editor.</source>
         <translation>S’u arrit të nisej përpunuesi.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="636"/>
+        <location filename="../src/mainwindow.cpp" line="910"/>
+        <source>Could not determine the unprivileged user. Refusing to launch the editor as root.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="700"/>
         <source>Custom Toolbox is a tool used for creating a custom launcher</source>
         <translation>Grupi Vetjak i Mjeteve është një mjet i përdorur për të krijuar nisës vetjakë</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="636"/>
+        <location filename="../src/mainwindow.cpp" line="700"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Të drejta kopjimi (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="639"/>
+        <location filename="../src/mainwindow.cpp" line="703"/>
         <source>%1 License</source>
         <translation>Licencë %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="644"/>
+        <location filename="../src/mainwindow.cpp" line="708"/>
         <source>%1 Help</source>
         <translation>Ndihmë për %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="719"/>
+        <location filename="../src/mainwindow.cpp" line="809"/>
         <source>Could not write file: %1</source>
         <translation>S’u shkrua dot kartelë: %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="725"/>
+        <location filename="../src/mainwindow.cpp" line="815"/>
         <source>File Removal Error</source>
         <translation>Gabim Heqjeje Kartele</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="725"/>
+        <location filename="../src/mainwindow.cpp" line="815"/>
         <source>Could not remove file: %1</source>
         <translation>S’u hoq dot kartelë: %1</translation>
     </message>
@@ -235,34 +247,33 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/about.cpp" line="73"/>
+        <location filename="../src/about.cpp" line="75"/>
         <source>Could not load %1</source>
         <translation>S’u ngarkua dot %1</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="96"/>
+        <location filename="../src/about.cpp" line="98"/>
         <source>License</source>
         <translation>Licencë</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="97"/>
-        <location filename="../src/about.cpp" line="107"/>
+        <location filename="../src/about.cpp" line="99"/>
+        <location filename="../src/about.cpp" line="111"/>
         <source>Changelog</source>
         <translation>Regjistër ndryshimesh</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="98"/>
+        <location filename="../src/about.cpp" line="100"/>
         <source>Cancel</source>
         <translation>Anuloje</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="117"/>
+        <location filename="../src/about.cpp" line="118"/>
         <source>Could not load changelog.</source>
         <translation>S’u ngarkua dot regjistër ndryshimesh.</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="53"/>
-        <location filename="../src/about.cpp" line="120"/>
+        <location filename="../src/about.cpp" line="56"/>
         <source>&amp;Close</source>
         <translation>&amp;Mbylle</translation>
     </message>
