@@ -1070,7 +1070,11 @@ void MainWindow::pushEditClicked()
         return;
     }
 
-    if (!QProcess::startDetached(program, arguments)) {
+    // pkexec must run as a tracked child: a detached pkexec is reparented and
+    // refuses to serve a dead parent, and its failure would be silent.
+    if (program == QLatin1String("pkexec")) {
+        runTracked(program, arguments);
+    } else if (!QProcess::startDetached(program, arguments)) {
         QMessageBox::warning(this, tr("Error"), tr("Failed to launch the editor."));
     }
 
