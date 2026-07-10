@@ -437,7 +437,8 @@ QString MainWindow::getDesktopFileName(const QString &appName) const
     const QStringList searchPaths = QStandardPaths::standardLocations(QStandardPaths::ApplicationsLocation);
 
     // Search for .desktop file in each path
-    const QString desktopFileName = appName + ".desktop";
+    const QString desktopFileName
+        = appName.endsWith(QLatin1String(".desktop")) ? appName : appName + QLatin1String(".desktop");
     QString result;
 
     for (const QString &searchPath : searchPaths) {
