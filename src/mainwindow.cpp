@@ -948,7 +948,7 @@ void MainWindow::pushAboutClicked()
                   "<p align=\"center\"><h3>%4</h3></p>"
                   "<p align=\"center\"><a href=\"http://mxlinux.org\">http://mxlinux.org</a><br /></p>"
                   "<p align=\"center\">%5<br /><br /></p>")
-              .arg(windowTitle(), tr("Version:"), QApplication::applicationVersion(),
+              .arg(windowTitle().toHtmlEscaped(), tr("Version:"), QApplication::applicationVersion(),
                    tr("Custom Toolbox is a tool used for creating a custom launcher"), tr("Copyright (c) MX Linux"));
 
     displayAboutMsgBox(tr("About %1").arg(windowTitle()), aboutText, Config::LicenseFile,
