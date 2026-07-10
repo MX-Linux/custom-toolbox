@@ -110,13 +110,19 @@ void displayAboutMsgBox(const QString &title, const QString &message, const QStr
         auto *text = new QTextEdit(&changelog);
         setupDocDialog(changelog, text, QObject::tr("Changelog"), false, QSize(dialogWidth, dialogHeight));
         text->setReadOnly(true);
-        QProcess proc;
-        proc.start(QStringLiteral("zcat"), {Config::ChangelogFile}, QIODevice::ReadOnly);
-        if (proc.waitForStarted(3000) && proc.waitForFinished(3000)) {
-            text->setText(proc.readAllStandardOutput());
-        } else {
+        auto *proc = new QProcess(&changelog);
+        QObject::connect(proc, &QProcess::errorOccurred, text, [text](QProcess::ProcessError) {
             text->setText(QObject::tr("Could not load changelog."));
-        }
+        });
+        QObject::connect(proc, &QProcess::finished, text,
+                         [text, proc](int exitCode, QProcess::ExitStatus exitStatus) {
+                             if (exitStatus == QProcess::NormalExit && exitCode == 0) {
+                                 text->setText(QString::fromUtf8(proc->readAllStandardOutput()));
+                             } else {
+                                 text->setText(QObject::tr("Could not load changelog."));
+                             }
+                         });
+        proc->start(QStringLiteral("zcat"), {Config::ChangelogFile}, QIODevice::ReadOnly);
 
         changelog.exec();
     }
