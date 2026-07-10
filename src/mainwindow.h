@@ -92,7 +92,8 @@ private:
     [[nodiscard]] QIcon findIcon(const QString &iconName) const;
     [[nodiscard]] QString getDefaultEditor() const;
     [[nodiscard]] QString getDesktopFileName(const QString &appName) const;
-    [[nodiscard]] QStringList buildEditorPrefix(const QString &editor, QString *errorMessage) const;
+    bool prepareEditorCommand(const QString &editor, QString *program, QStringList *arguments,
+                              QString *errorMessage) const;
     [[nodiscard]] QString invokingUser() const;
     static void fixExecItem(QString *item);
     void addButtons(const QMultiMap<QString, ItemInfo> &map);
@@ -103,8 +104,9 @@ private:
     void centerWindow();
     void clearGridLayout();
     void migrateLegacyAutostart();
-    bool prepareCommand(const ItemInfo &item, QString &cmd, QString *errorMessage) const;
-    void runTracked(const QString &cmd, bool useShell);
+    bool prepareCommand(const ItemInfo &item, const QString &cmd, QString *program, QStringList *arguments,
+                        QString *errorMessage) const;
+    void runTracked(const QString &program, const QStringList &arguments);
     bool readFile(const QString &fname, bool showErrors = true);
     void saveWindowGeometry() const;
     void setConnections();

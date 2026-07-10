@@ -50,6 +50,21 @@ namespace
 {
 // Approximate width of one button column; determined through trial and error.
 constexpr int buttonColumnWidth = 200;
+
+QString commandDescription(const QString &program, const QStringList &arguments)
+{
+    QStringList parts {program};
+    parts.append(arguments);
+    return parts.join(QLatin1Char(' '));
+}
+
+QString homeDirectoryForUser(const QString &user)
+{
+    if (const passwd *pw = getpwnam(user.toLocal8Bit().constData())) {
+        return QString::fromLocal8Bit(pw->pw_dir);
+    }
+    return {};
+}
 } // namespace
 
 
@@ -155,28 +170,30 @@ void MainWindow::setGui()
 // Run a command through a tracked QProcess so its outcome can be reported (and,
 // with hideGUI, the window re-shown) when it finishes. Runs asynchronously — no
 // nested event loop — so the GUI stays responsive while the command is open.
-void MainWindow::runTracked(const QString &cmd, bool useShell)
+void MainWindow::runTracked(const QString &program, const QStringList &arguments)
 {
     if (hideGui) {
         hide();
     }
 
+    const QString command = commandDescription(program, arguments);
+    const bool isPkexec = program == QLatin1String("pkexec");
     auto *proc = new QProcess(this);
     // Forward output to our own stdout/stderr; the default channel mode would
     // buffer a long-running command's output in memory indefinitely.
     proc->setProcessChannelMode(QProcess::ForwardedChannels);
 
-    connect(proc, &QProcess::errorOccurred, this, [this, proc, cmd](QProcess::ProcessError error) {
+    connect(proc, &QProcess::errorOccurred, this, [this, proc, command](QProcess::ProcessError error) {
         // finished() is never emitted for a process that could not start.
         if (error == QProcess::FailedToStart) {
             proc->deleteLater();
             if (hideGui) {
                 show();
             }
-            QMessageBox::warning(this, tr("Execution Error"), tr("Failed to start command: %1").arg(cmd));
+            QMessageBox::warning(this, tr("Execution Error"), tr("Failed to start command: %1").arg(command));
         }
     });
-    connect(proc, &QProcess::finished, this, [this, proc, cmd](int exitCode, QProcess::ExitStatus exitStatus) {
+    connect(proc, &QProcess::finished, this, [this, proc, command, isPkexec](int exitCode, QProcess::ExitStatus exitStatus) {
         proc->deleteLater();
         if (hideGui) {
             show();
@@ -184,19 +201,13 @@ void MainWindow::runTracked(const QString &cmd, bool useShell)
         // pkexec exits 126 when the user dismisses the authentication dialog — a
         // choice, not an error. 127 is still reported: it also means "command not
         // found" or "no polkit agent", which the user needs to know about.
-        const bool authDeclined = cmd.startsWith("pkexec") && exitCode == 126;
+        const bool authDeclined = isPkexec && exitCode == 126;
         if (exitStatus != QProcess::NormalExit || (exitCode != 0 && !authDeclined)) {
-            QMessageBox::warning(this, tr("Execution Error"), tr("Failed to execute command: %1").arg(cmd));
+            QMessageBox::warning(this, tr("Execution Error"), tr("Failed to execute command: %1").arg(command));
         }
     });
 
-    if (useShell) {
-        proc->start("/bin/sh", {"-c", cmd});
-    } else {
-        QStringList arguments = QProcess::splitCommand(cmd);
-        const QString program = arguments.takeFirst();
-        proc->start(program, arguments);
-    }
+    proc->start(program, arguments);
 }
 
 void MainWindow::btnClicked()
@@ -210,19 +221,19 @@ void MainWindow::btnClicked()
         QMessageBox::warning(this, tr("Execution Error"), commandError);
         return;
     }
-    const QString cmd = button->property("cmd").toString();
-    if (cmd.trimmed().isEmpty()) {
+    const QString program = button->property("program").toString();
+    const QStringList arguments = button->property("arguments").toStringList();
+    if (program.trimmed().isEmpty()) {
         QMessageBox::warning(this, tr("Execution Error"), tr("Command is empty. Cannot execute."));
         return;
     }
 
-    // pkexec requires shell for variable expansion; pkexec and hideGui need a
-    // tracked process to report the outcome / re-show the window on finish.
-    if (cmd.startsWith("pkexec") || hideGui) {
-        runTracked(cmd, cmd.startsWith("pkexec"));
+    // pkexec and hideGui need a tracked process to report the outcome / re-show
+    // the window on finish. Arguments are always launched directly: Desktop
+    // Entry Exec values are not shell programs.
+    if (program == QLatin1String("pkexec") || hideGui) {
+        runTracked(program, arguments);
     } else {
-        QStringList arguments = QProcess::splitCommand(cmd);
-        const QString program = arguments.takeFirst();
         if (!QProcess::startDetached(program, arguments)) {
             QMessageBox::warning(this, tr("Execution Error"), tr("Failed to start program: %1").arg(program));
         }
@@ -467,8 +478,11 @@ void MainWindow::addItemButton(const ItemInfo &item, int &row, int &col, int max
     ui->gridLayout_btn->setRowStretch(row, 0);
 
     QString commandError;
-    prepareCommand(item, cmd, &commandError);
-    btn->setProperty("cmd", cmd);
+    QString program;
+    QStringList arguments;
+    prepareCommand(item, cmd, &program, &arguments, &commandError);
+    btn->setProperty("program", program);
+    btn->setProperty("arguments", arguments);
     btn->setProperty("commandError", commandError);
     connect(btn, &QPushButton::clicked, this, &MainWindow::btnClicked);
 
@@ -508,21 +522,53 @@ QString MainWindow::invokingUser() const
     return {};
 }
 
-bool MainWindow::prepareCommand(const ItemInfo &item, QString &cmd, QString *errorMessage) const
+bool MainWindow::prepareCommand(const ItemInfo &item, const QString &cmd, QString *program, QStringList *arguments,
+                                QString *errorMessage) const
 {
-    if (item.terminal) {
-        cmd.prepend("x-terminal-emulator -e ");
+    QStringList commandParts = QProcess::splitCommand(cmd);
+    if (commandParts.isEmpty()) {
+        if (errorMessage != nullptr) {
+            *errorMessage = tr("Command is empty. Cannot execute.");
+        }
+        return false;
     }
+
+    QString commandProgram = commandParts.takeFirst();
+    if (item.terminal) {
+        commandParts.prepend(commandProgram);
+        commandParts.prepend(QStringLiteral("-e"));
+        commandProgram = QStringLiteral("x-terminal-emulator");
+    }
+
+    QStringList environmentArgs;
+    environmentArgs << QStringLiteral("env")
+                    << QStringLiteral("DISPLAY=") + qEnvironmentVariable("DISPLAY")
+                    << QStringLiteral("XAUTHORITY=")
+                           + qEnvironmentVariable("XAUTHORITY", QDir::homePath() + QStringLiteral("/.Xauthority"));
+
     if (item.root && getuid() != 0) {
-        cmd.prepend("pkexec env DISPLAY=$DISPLAY XAUTHORITY=${XAUTHORITY:-$HOME/.Xauthority} ");
+        commandParts.prepend(commandProgram);
+        commandParts = environmentArgs + commandParts;
+        commandProgram = QStringLiteral("pkexec");
     } else if (item.user && getuid() == 0) {
         if (const QString user = invokingUser(); !user.isEmpty()) {
-            // $HOME was overwritten to /root in main(); use the original (pre-root)
-            // home so the demoted user reads their own .Xauthority, not root's.
-            const QString userHome = startingHome();
-            cmd = QStringLiteral("pkexec --user %1 env DISPLAY=$DISPLAY XAUTHORITY=${XAUTHORITY:-%2/.Xauthority} ")
-                      .arg(user, userHome)
-                  + cmd;
+            const QString userHome = homeDirectoryForUser(user);
+            if (userHome.isEmpty()) {
+                const QString message = tr("Could not determine the unprivileged user's home directory.");
+                if (errorMessage != nullptr) {
+                    *errorMessage = message;
+                }
+                qWarning() << message << user;
+                return false;
+            }
+            environmentArgs[2] = QStringLiteral("XAUTHORITY=")
+                                 + qEnvironmentVariable("XAUTHORITY", userHome + QStringLiteral("/.Xauthority"));
+            commandParts.prepend(commandProgram);
+            QStringList prefix {QStringLiteral("--user"), user};
+            prefix += environmentArgs;
+            prefix += commandParts;
+            commandParts = std::move(prefix);
+            commandProgram = QStringLiteral("pkexec");
         } else {
             const QString message
                 = tr("Could not determine the unprivileged user. Refusing to run this launcher as root.");
@@ -535,6 +581,12 @@ bool MainWindow::prepareCommand(const ItemInfo &item, QString &cmd, QString *err
     }
     if (errorMessage != nullptr) {
         errorMessage->clear();
+    }
+    if (program != nullptr) {
+        *program = commandProgram;
+    }
+    if (arguments != nullptr) {
+        *arguments = commandParts;
     }
     return true;
 }
@@ -829,26 +881,16 @@ void MainWindow::pushEditClicked()
         return;
     }
 
-    // Helper to shell-quote arguments that may contain spaces or special characters
-    auto shellQuote = [](const QString &arg) -> QString {
-        QString quoted = arg;
-        quoted.replace('\\', "\\\\");  // Escape backslashes first
-        quoted.replace('\'', "'\\''"); // Escape single quotes
-        return "'" + quoted + "'";
-    };
-
     QString editorError;
-    QStringList cmdParts = buildEditorPrefix(editor, &editorError);
+    QString program;
+    QStringList arguments;
+    prepareEditorCommand(editor, &program, &arguments, &editorError);
     if (!editorError.isEmpty()) {
         QMessageBox::warning(this, tr("Error"), editorError);
         return;
     }
-    for (const auto &part : editorParts) {
-        cmdParts << shellQuote(part);
-    }
-    cmdParts << shellQuote(fileName);
 
-    if (!QProcess::startDetached("/bin/sh", {"-c", cmdParts.join(' ')})) {
+    if (!QProcess::startDetached(program, arguments)) {
         QMessageBox::warning(this, tr("Error"), tr("Failed to launch the editor."));
     }
 
@@ -889,22 +931,57 @@ QString MainWindow::getDefaultEditor() const
     return "nano"; // Fallback to nano
 }
 
-QStringList MainWindow::buildEditorPrefix(const QString &editor, QString *errorMessage) const
+bool MainWindow::prepareEditorCommand(const QString &editor, QString *program, QStringList *arguments,
+                                      QString *errorMessage) const
 {
+    QStringList commandParts = QProcess::splitCommand(editor);
+    if (commandParts.isEmpty()) {
+        if (errorMessage != nullptr) {
+            *errorMessage = tr("Editor command is empty.");
+        }
+        return false;
+    }
+
     const bool isRoot = getuid() == 0;
     static const QRegularExpression elevatesPattern(R"(\b(kate|kwrite|featherpad|code|codium)$)");
     static const QRegularExpression cliPattern(R"(\b(nano|vi|vim|nvim|micro|emacs)\b)");
-    const QString editorProgram = QProcess::splitCommand(editor).value(0);
+    QString editorProgram = commandParts.takeFirst();
     const QString editorName = QFileInfo(editorProgram).baseName();
     const bool isEditorThatElevates = elevatesPattern.match(editorName).hasMatch();
     const bool isCliEditor = cliPattern.match(editorName).hasMatch();
 
-    QStringList prefix;
-    QString xauthorityHome = QStringLiteral("$HOME");
+    commandParts << fileName;
+    if (isCliEditor) {
+        commandParts.prepend(editorProgram);
+        commandParts.prepend(QStringLiteral("-e"));
+        editorProgram = QStringLiteral("x-terminal-emulator");
+    }
+
+    QStringList environmentArgs;
+    environmentArgs << QStringLiteral("env")
+                    << QStringLiteral("DISPLAY=") + qEnvironmentVariable("DISPLAY")
+                    << QStringLiteral("XAUTHORITY=")
+                           + qEnvironmentVariable("XAUTHORITY", QDir::homePath() + QStringLiteral("/.Xauthority"));
+
     if (isRoot && isEditorThatElevates) {
         if (const QString user = invokingUser(); !user.isEmpty()) {
-            prefix << QStringLiteral("pkexec --user ") + user;
-            xauthorityHome = startingHome();
+            const QString userHome = homeDirectoryForUser(user);
+            if (userHome.isEmpty()) {
+                const QString message = tr("Could not determine the unprivileged user's home directory.");
+                if (errorMessage != nullptr) {
+                    *errorMessage = message;
+                }
+                qWarning() << message << user;
+                return false;
+            }
+            environmentArgs[2] = QStringLiteral("XAUTHORITY=")
+                                 + qEnvironmentVariable("XAUTHORITY", userHome + QStringLiteral("/.Xauthority"));
+            commandParts.prepend(editorProgram);
+            QStringList prefix {QStringLiteral("--user"), user};
+            prefix += environmentArgs;
+            prefix += commandParts;
+            commandParts = std::move(prefix);
+            editorProgram = QStringLiteral("pkexec");
         } else {
             const QString message
                 = tr("Could not determine the unprivileged user. Refusing to launch the editor as root.");
@@ -912,26 +989,28 @@ QStringList MainWindow::buildEditorPrefix(const QString &editor, QString *errorM
                 *errorMessage = message;
             }
             qWarning() << message << editor;
-            return {};
+            return false;
         }
     } else if (!isEditorThatElevates) {
         const QFileInfo fi(fileName);
         const bool needsElevation = fi.exists() ? !fi.isWritable() : !QFileInfo(fi.path()).isWritable();
         if (needsElevation) {
-            prefix << "pkexec";
+            commandParts.prepend(editorProgram);
+            commandParts = environmentArgs + commandParts;
+            editorProgram = QStringLiteral("pkexec");
         }
-    }
-
-    prefix << QStringLiteral("env DISPLAY=$DISPLAY XAUTHORITY=${XAUTHORITY:-%1/.Xauthority}").arg(xauthorityHome);
-
-    if (isCliEditor) {
-        prefix << "x-terminal-emulator -e";
     }
 
     if (errorMessage != nullptr) {
         errorMessage->clear();
     }
-    return prefix;
+    if (program != nullptr) {
+        *program = editorProgram;
+    }
+    if (arguments != nullptr) {
+        *arguments = commandParts;
+    }
+    return true;
 }
 
 void MainWindow::handleFileChanged(const QString &path)

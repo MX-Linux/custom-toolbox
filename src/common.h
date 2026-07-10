@@ -23,12 +23,6 @@
 
 #include <QString>
 
-inline const QString &startingHome()
-{
-    static const QString home = qEnvironmentVariable("HOME");
-    return home;
-}
-
 namespace Config {
     inline const QString ConfigDir = "/etc/custom-toolbox";
     inline const QString ConfigFile = ConfigDir + "/custom-toolbox.conf";
