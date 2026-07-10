@@ -29,6 +29,7 @@
 #include "ui_mainwindow.h"
 
 #include <QDebug>
+#include <QCryptographicHash>
 #include <QDirIterator>
 #include <QLabel>
 #include <QFile>
@@ -37,6 +38,7 @@
 #include <QRegularExpression>
 #include <QResizeEvent>
 #include <QScreen>
+#include <QSaveFile>
 #include <QSettings>
 #include <QStandardPaths>
 #include <QStringView>
@@ -155,11 +157,9 @@ void MainWindow::setGui()
 
     migrateLegacyAutostart();
 
-    // Check if .desktop file is in autostart; same customName as .list file
-    if (!removeStartupCheckbox
-        && QFile::exists(QDir::homePath() + "/.config/autostart/" + customName + ".desktop")) {
+    if (!removeStartupCheckbox) {
         ui->checkBoxStartup->show();
-        ui->checkBoxStartup->setChecked(true);
+        ui->checkBoxStartup->setChecked(isManagedAutostartFile(autostartFilePath()));
     }
     ui->textSearch->setFocus();
     for (auto *button : findChildren<QPushButton *>()) {
@@ -790,35 +790,140 @@ void MainWindow::textSearchTextChanged(const QString &searchText)
     addButtons(filteredMap);
 }
 
-// Older versions derived the autostart name with baseName(), truncating
-// multi-dot list names ("my.toolbox.list" -> "my.desktop") and writing an Exec
-// that pointed at a non-existent .list — popping an error box at every login.
-// Replace such an entry with one under the correct name. Skipped when a sibling
-// "<legacy>.list" exists, since the entry may legitimately belong to that list.
+QString MainWindow::autostartSourceHash() const
+{
+    const QFileInfo info(fileName);
+    const QString sourcePath = info.canonicalFilePath().isEmpty() ? info.absoluteFilePath() : info.canonicalFilePath();
+    return QString::fromLatin1(QCryptographicHash::hash(sourcePath.toUtf8(), QCryptographicHash::Sha256).toHex());
+}
+
+QString MainWindow::autostartFilePath() const
+{
+    return QDir::homePath() + QStringLiteral("/.config/autostart/custom-toolbox-") + autostartSourceHash().left(16)
+           + QStringLiteral(".desktop");
+}
+
+bool MainWindow::isManagedAutostartFile(const QString &path) const
+{
+    if (!QFile::exists(path)) {
+        return false;
+    }
+
+    QSettings settings(path, QSettings::IniFormat);
+    return settings.status() == QSettings::NoError
+           && settings.value(QStringLiteral("Desktop Entry/X-Custom-Toolbox-Managed")).toBool()
+           && settings.value(QStringLiteral("Desktop Entry/X-Custom-Toolbox-Source-SHA256")).toString()
+                  == autostartSourceHash();
+}
+
+bool MainWindow::isLegacyAutostartFile(const QString &path) const
+{
+    if (!QFile::exists(path)) {
+        return false;
+    }
+
+    QSettings settings(path, QSettings::IniFormat);
+    if (settings.status() != QSettings::NoError) {
+        return false;
+    }
+
+    const QStringList execParts
+        = QProcess::splitCommand(settings.value(QStringLiteral("Desktop Entry/Exec")).toString());
+    if (execParts.size() < 2 || execParts.first() != QLatin1String("custom-toolbox")) {
+        return false;
+    }
+
+    const QFileInfo info(fileName);
+    const QString absolutePath = info.absoluteFilePath();
+    const QString canonicalPath = info.canonicalFilePath();
+    const QString listPath = execParts.mid(1).join(QLatin1Char(' '));
+    return listPath == absolutePath || (!canonicalPath.isEmpty() && listPath == canonicalPath);
+}
+
+bool MainWindow::writeAutostartFile(QString *errorMessage) const
+{
+    const QString autostartPath = autostartFilePath();
+    if (QFile::exists(autostartPath) && !isManagedAutostartFile(autostartPath)) {
+        if (errorMessage != nullptr) {
+            *errorMessage = tr("Refusing to overwrite a non-Custom Toolbox autostart file: %1").arg(autostartPath);
+        }
+        return false;
+    }
+
+    auto escapeDesktopString = [](QString value) {
+        value.replace('\\', "\\\\");
+        value.replace('\n', "\\n");
+        value.replace('\r', "\\r");
+        value.replace('\t', "\\t");
+        return value;
+    };
+    auto quoteExecArg = [](QString value) {
+        value.replace('\\', "\\\\");
+        value.replace('"', "\\\"");
+        value.replace('$', "\\$");
+        value.replace('`', "\\`");
+        return '"' + value + '"';
+    };
+
+    QSaveFile file(autostartPath);
+    if (!file.open(QFile::WriteOnly | QFile::Text)) {
+        if (errorMessage != nullptr) {
+            *errorMessage = tr("Could not write file: %1").arg(autostartPath);
+        }
+        return false;
+    }
+
+    const QString listPath = QFileInfo(fileName).absoluteFilePath();
+    QTextStream out(&file);
+    out << "[Desktop Entry]\n"
+        << "Name=" << escapeDesktopString(windowTitle()) << '\n'
+        << "Comment=" << escapeDesktopString(ui->commentLabel->text()) << '\n'
+        << "Exec=custom-toolbox " << quoteExecArg(listPath) << '\n'
+        << "Terminal=false\n"
+        << "Type=Application\n"
+        << "Icon=custom-toolbox\n"
+        << "Categories=XFCE;System\n"
+        << "StartupNotify=false\n"
+        << "X-Custom-Toolbox-Managed=true\n"
+        << "X-Custom-Toolbox-Source-SHA256=" << autostartSourceHash() << '\n';
+
+    if (!file.commit()) {
+        if (errorMessage != nullptr) {
+            *errorMessage = tr("Could not write file: %1").arg(autostartPath);
+        }
+        return false;
+    }
+    return true;
+}
+
+// Older versions used the list basename as the autostart name. Migrate only
+// entries whose exact Exec command points to this list; unrelated files are
+// never overwritten or removed.
 void MainWindow::migrateLegacyAutostart()
 {
-    const QString legacyName = QFileInfo(fileName).baseName();
-    if (legacyName == customName) {
-        return;
-    }
-    const QString legacyDesktop = QDir::homePath() + "/.config/autostart/" + legacyName + ".desktop";
-    if (!QFile::exists(legacyDesktop) || QFile::exists(QDir(fileLocation).filePath(legacyName + ".list"))) {
-        return;
-    }
-    QFile file(legacyDesktop);
-    const bool ours = file.open(QFile::ReadOnly | QFile::Text)
-                      && QString::fromUtf8(file.readAll()).contains(QLatin1String("Exec=custom-toolbox"));
-    file.close();
-    if (ours && QFile::remove(legacyDesktop)) {
-        checkboxStartupClicked(true);
+    const QString autostartDir = QDir::homePath() + QStringLiteral("/.config/autostart/");
+    const QFileInfo info(fileName);
+    const QStringList legacyNames {customName, info.baseName()};
+    for (const QString &name : legacyNames) {
+        const QString legacyPath = autostartDir + name + QStringLiteral(".desktop");
+        if (legacyPath == autostartFilePath() || !isLegacyAutostartFile(legacyPath)) {
+            continue;
+        }
+
+        QString errorMessage;
+        if (writeAutostartFile(&errorMessage) && !QFile::remove(legacyPath)) {
+            qWarning() << "Could not remove migrated legacy autostart file:" << legacyPath;
+        } else if (!errorMessage.isEmpty()) {
+            qWarning() << errorMessage;
+        }
     }
 }
 
 // Add a .desktop file to the ~/.config/autostart
 void MainWindow::checkboxStartupClicked(bool checked)
 {
-    const QString autostartDir = QDir::homePath() + "/.config/autostart/";
-    const QString autostartFileName = autostartDir + customName + ".desktop"; // Same name as .list file
+    const QString autostartDir = QDir::homePath() + QStringLiteral("/.config/autostart/");
+    const QString autostartPath = autostartFilePath();
     if (checked) {
         // Ensure the autostart directory exists
         if (!QDir(autostartDir).exists() && !QDir().mkpath(autostartDir)) {
@@ -828,43 +933,15 @@ void MainWindow::checkboxStartupClicked(bool checked)
             return;
         }
 
-        if (QFile file(autostartFileName); file.open(QFile::WriteOnly | QFile::Text)) {
-            auto escapeDesktopString = [](QString value) {
-                value.replace('\\', "\\\\");
-                value.replace('\n', "\\n");
-                value.replace('\r', "\\r");
-                value.replace('\t', "\\t");
-                return value;
-            };
-            auto quoteExecArg = [](QString value) {
-                value.replace('\\', "\\\\");
-                value.replace('"', "\\\"");
-                value.replace('$', "\\$");
-                value.replace('`', "\\`");
-                return '"' + value + '"';
-            };
-
-            // Use the loaded file's real path; reconstructing it from customName
-            // would break for list files with a different extension.
-            const QString listPath = QFileInfo(fileName).absoluteFilePath();
-            QTextStream out(&file);
-            out << "[Desktop Entry]\n"
-                << "Name=" << escapeDesktopString(windowTitle()) << '\n'
-                << "Comment=" << escapeDesktopString(ui->commentLabel->text()) << '\n'
-                << "Exec=custom-toolbox " << quoteExecArg(listPath) << '\n'
-                << "Terminal=false\n"
-                << "Type=Application\n"
-                << "Icon=custom-toolbox\n"
-                << "Categories=XFCE;System\n"
-                << "StartupNotify=false";
-        } else {
-            QMessageBox::critical(this, tr("File Open Error"), tr("Could not write file: %1").arg(autostartFileName));
+        QString errorMessage;
+        if (!writeAutostartFile(&errorMessage)) {
+            QMessageBox::critical(this, tr("File Open Error"), errorMessage);
             ui->checkBoxStartup->setChecked(false);
         }
     } else {
-        // Only warn on a genuine removal failure; an absent file is not an error.
-        if (QFile::exists(autostartFileName) && !QFile::remove(autostartFileName)) {
-            QMessageBox::warning(this, tr("File Removal Error"), tr("Could not remove file: %1").arg(autostartFileName));
+        // Never remove a file that does not carry this launcher's ownership marker.
+        if (isManagedAutostartFile(autostartPath) && !QFile::remove(autostartPath)) {
+            QMessageBox::warning(this, tr("File Removal Error"), tr("Could not remove file: %1").arg(autostartPath));
         }
     }
 }

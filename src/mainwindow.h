@@ -101,8 +101,12 @@ private:
     void addEmptyRowIfNeeded(const QString &category, const QMultiMap<QString, ItemInfo> &map, int &row,
                                  int &col);
     void addItemButton(const ItemInfo &item, int &row, int &col, int maxCols);
+    [[nodiscard]] QString autostartFilePath() const;
+    [[nodiscard]] QString autostartSourceHash() const;
     void centerWindow();
     void clearGridLayout();
+    [[nodiscard]] bool isLegacyAutostartFile(const QString &path) const;
+    [[nodiscard]] bool isManagedAutostartFile(const QString &path) const;
     void migrateLegacyAutostart();
     bool prepareCommand(const ItemInfo &item, const QString &cmd, QString *program, QStringList *arguments,
                         QString *errorMessage) const;
@@ -116,4 +120,5 @@ private:
     void handleFileChanged(const QString &path);
     void refreshIfFileChanged();
     void watchFile(const QString &path);
+    bool writeAutostartFile(QString *errorMessage) const;
 };
