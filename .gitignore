@@ -42,3 +42,6 @@ Makefile*
 build/
 
 custom-toolbox
+
+# The install-layout CMake script is source, not a generated build file.
+!tests/verify-install.cmake

@@ -71,6 +71,7 @@ project(custom-toolbox
 )
 
 include(GNUInstallDirs)
+include(CTest)
 
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 20)
@@ -96,6 +97,10 @@ find_package(Qt6 REQUIRED COMPONENTS
     Widgets
     LinguistTools
 )
+
+if(BUILD_TESTING)
+    find_package(Qt6 REQUIRED COMPONENTS Test)
+endif()
 
 # Enable automatic MOC, UIC, and RCC processing
 set(CMAKE_AUTOMOC ON)
@@ -237,3 +242,44 @@ install(DIRECTORY help/
 install(FILES debian/changelog
     DESTINATION ${CMAKE_INSTALL_DATADIR}/doc/custom-toolbox
 )
+
+if(BUILD_TESTING)
+    add_executable(test-launcherparser
+        tests/test_launcherparser.cpp
+        src/launcherparser.cpp
+        src/launcherparser.h
+    )
+    target_link_libraries(test-launcherparser PRIVATE Qt6::Core Qt6::Test)
+    target_compile_options(test-launcherparser PRIVATE
+        -Wpedantic
+        -pedantic
+        -Werror=return-type
+        -Werror=switch
+        -Werror=uninitialized
+        -Werror
+    )
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR USE_CLANG)
+        target_compile_options(test-launcherparser PRIVATE -Werror=return-stack-address)
+    else()
+        target_compile_options(test-launcherparser PRIVATE -Werror=return-local-addr)
+    endif()
+    target_include_directories(test-launcherparser PRIVATE src)
+    add_test(NAME launcherparser COMMAND test-launcherparser)
+
+    add_custom_target(check-install
+        COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/install-smoke"
+        COMMAND ${CMAKE_COMMAND} -E env "DESTDIR=${CMAKE_BINARY_DIR}/install-smoke"
+                ${CMAKE_COMMAND} --install "${CMAKE_BINARY_DIR}"
+        COMMAND ${CMAKE_COMMAND}
+                "-DINSTALL_ROOT=${CMAKE_BINARY_DIR}/install-smoke"
+                "-DINSTALL_BINDIR=${CMAKE_INSTALL_FULL_BINDIR}"
+                "-DINSTALL_SYSCONFDIR=${CMAKE_INSTALL_FULL_SYSCONFDIR}"
+                "-DINSTALL_DATADIR=${CMAKE_INSTALL_FULL_DATADIR}"
+                -P "${CMAKE_SOURCE_DIR}/tests/verify-install.cmake"
+        DEPENDS custom-toolbox
+        USES_TERMINAL
+    )
+    add_test(NAME install-layout
+        COMMAND ${CMAKE_COMMAND} --build "${CMAKE_BINARY_DIR}" --target check-install
+    )
+endif()
