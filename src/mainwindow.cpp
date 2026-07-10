@@ -67,6 +67,150 @@ QString homeDirectoryForUser(const QString &user)
     }
     return {};
 }
+
+QString desktopEntryValue(const QString &text, const QString &key, const QString &lang)
+{
+    const QString exactKey = key + QLatin1Char('[') + lang + QLatin1String("]=");
+    const QString shortKey = key + QLatin1Char('[') + lang.section('_', 0, 0) + QLatin1String("]=");
+    const QString fallbackKey = key + QLatin1Char('=');
+    QString exactValue;
+    QString shortValue;
+    QString fallbackValue;
+    bool inDesktopEntry {};
+
+    QStringView textView(text);
+    qsizetype pos = 0;
+    while (pos < textView.size()) {
+        qsizetype endPos = textView.indexOf(QLatin1Char('\n'), pos);
+        if (endPos < 0) {
+            endPos = textView.size();
+        }
+        const QStringView line = textView.mid(pos, endPos - pos).trimmed();
+        pos = endPos + 1;
+
+        if (line.startsWith(QLatin1Char('[')) && line.endsWith(QLatin1Char(']'))) {
+            inDesktopEntry = line == QLatin1String("[Desktop Entry]");
+            continue;
+        }
+        if (!inDesktopEntry) {
+            continue;
+        }
+
+        if (line.startsWith(exactKey)) {
+            exactValue = line.mid(exactKey.size()).toString();
+        } else if (line.startsWith(shortKey)) {
+            shortValue = line.mid(shortKey.size()).toString();
+        } else if (line.startsWith(fallbackKey)) {
+            fallbackValue = line.mid(fallbackKey.size()).toString();
+        }
+    }
+
+    if (!exactValue.isEmpty()) {
+        return exactValue;
+    }
+    if (!shortValue.isEmpty()) {
+        return shortValue;
+    }
+    return fallbackValue;
+}
+
+bool parseDesktopExec(const QString &exec, const QString &applicationName, const QString &iconName,
+                      const QString &desktopFile, QString *program, QStringList *arguments)
+{
+    QStringList parts;
+    QString current;
+    bool inQuotes {};
+    bool tokenStarted {};
+
+    auto appendCurrent = [&]() {
+        if (tokenStarted) {
+            parts.append(current);
+            current.clear();
+            tokenStarted = false;
+        }
+    };
+
+    for (qsizetype i = 0; i < exec.size(); ++i) {
+        const QChar c = exec.at(i);
+        if (c == QLatin1Char('"')) {
+            inQuotes = !inQuotes;
+            tokenStarted = true;
+            continue;
+        }
+        if (c == QLatin1Char('\\')) {
+            if (++i >= exec.size()) {
+                return false;
+            }
+            current.append(exec.at(i));
+            tokenStarted = true;
+            continue;
+        }
+        if (c.isSpace() && !inQuotes) {
+            appendCurrent();
+            continue;
+        }
+        if (c != QLatin1Char('%')) {
+            current.append(c);
+            tokenStarted = true;
+            continue;
+        }
+        if (++i >= exec.size()) {
+            return false;
+        }
+
+        switch (exec.at(i).unicode()) {
+        case '%':
+            current.append(QLatin1Char('%'));
+            tokenStarted = true;
+            break;
+        case 'f':
+        case 'F':
+        case 'u':
+        case 'U':
+        case 'd':
+        case 'D':
+        case 'n':
+        case 'N':
+        case 'v':
+        case 'm':
+            break;
+        case 'c':
+            current.append(applicationName);
+            tokenStarted = true;
+            break;
+        case 'k':
+            current.append(desktopFile);
+            tokenStarted = true;
+            break;
+        case 'i':
+            if (inQuotes || tokenStarted) {
+                return false;
+            }
+            if (!iconName.isEmpty()) {
+                parts << QStringLiteral("--icon") << iconName;
+            }
+            break;
+        default:
+            return false;
+        }
+    }
+
+    if (inQuotes) {
+        return false;
+    }
+    appendCurrent();
+    if (parts.isEmpty()) {
+        return false;
+    }
+
+    if (program != nullptr) {
+        *program = parts.takeFirst();
+    }
+    if (arguments != nullptr) {
+        *arguments = parts;
+    }
+    return true;
+}
 } // namespace
 
 
@@ -109,13 +253,6 @@ MainWindow::~MainWindow()
 QIcon MainWindow::findIcon(const QString &iconName) const
 {
     return IconLoader::loadIcon(iconName);
-}
-
-// Strip %f, %F, %U, etc. if exec expects a file name since it's called without an argument from this launcher.
-void MainWindow::fixExecItem(QString *item)
-{
-    static const QRegularExpression execPattern(QStringLiteral(R"( %[a-zA-Z])"));
-    item->remove(execPattern);
 }
 
 void MainWindow::setup()
@@ -399,7 +536,7 @@ ItemInfo MainWindow::getDesktopFileInfo(const QString &fname) const
         const QString displayName = QFileInfo(fname).fileName();
         return {.name = displayName,
                 .iconName = displayName,
-                .exec = fname.contains(' ') ? '"' + fname + '"' : fname,
+                .exec = fname,
                 .terminal = true};
     }
 
@@ -409,15 +546,37 @@ ItemInfo MainWindow::getDesktopFileInfo(const QString &fname) const
     if (!file.open(QFile::Text | QFile::ReadOnly)) {
         return {};
     }
-    const QString text = file.readAll();
+    const QString text = QString::fromUtf8(file.readAll());
     file.close();
 
+    const QString type = desktopEntryValue(text, QStringLiteral("Type"), lang);
+    const bool hidden = desktopEntryValue(text, QStringLiteral("Hidden"), lang).compare(QLatin1String("true"),
+                                                                                         Qt::CaseInsensitive)
+                        == 0;
+    if (type != QLatin1String("Application") || hidden) {
+        return {};
+    }
+
+    const QString tryExec = desktopEntryValue(text, QStringLiteral("TryExec"), lang);
+    if (!tryExec.isEmpty()) {
+        const QString tryExecProgram = QProcess::splitCommand(tryExec).value(0);
+        if (tryExecProgram.isEmpty() || QStandardPaths::findExecutable(tryExecProgram, defaultPath).isEmpty()) {
+            return {};
+        }
+    }
+
     static const QRegularExpression mxPrefix("^MX ");
-    item.name = LauncherParser::extractLocalizedValue(text, "Name", lang).remove(mxPrefix);
-    item.comment = LauncherParser::extractLocalizedValue(text, "Comment", lang);
-    item.iconName = LauncherParser::extractLocalizedValue(text, "Icon", lang);
-    item.exec = LauncherParser::extractLocalizedValue(text, "Exec", lang);
-    item.terminal = LauncherParser::extractLocalizedValue(text, "Terminal", lang).toLower() == "true";
+    item.name = desktopEntryValue(text, QStringLiteral("Name"), lang).remove(mxPrefix);
+    item.comment = desktopEntryValue(text, QStringLiteral("Comment"), lang);
+    item.iconName = desktopEntryValue(text, QStringLiteral("Icon"), lang);
+    item.terminal = desktopEntryValue(text, QStringLiteral("Terminal"), lang).compare(QLatin1String("true"),
+                                                                                         Qt::CaseInsensitive)
+                    == 0;
+    if (item.name.isEmpty()
+        || !parseDesktopExec(desktopEntryValue(text, QStringLiteral("Exec"), lang), item.name, item.iconName, fname,
+                             &item.exec, &item.execArgs)) {
+        return {};
+    }
 
     return item;
 }
@@ -466,8 +625,6 @@ void MainWindow::addCategoryLabel(const QString &category, int &row, int &col)
 void MainWindow::addItemButton(const ItemInfo &item, int &row, int &col, int maxCols)
 {
     QString name = item.name;
-    QString cmd = item.exec;
-    fixExecItem(&cmd);
 
     auto *btn = new FlatButton(name);
     btn->setIconSize(iconSize);
@@ -480,7 +637,7 @@ void MainWindow::addItemButton(const ItemInfo &item, int &row, int &col, int max
     QString commandError;
     QString program;
     QStringList arguments;
-    prepareCommand(item, cmd, &program, &arguments, &commandError);
+    prepareCommand(item, item.exec, item.execArgs, &program, &arguments, &commandError);
     btn->setProperty("program", program);
     btn->setProperty("arguments", arguments);
     btn->setProperty("commandError", commandError);
@@ -522,22 +679,23 @@ QString MainWindow::invokingUser() const
     return {};
 }
 
-bool MainWindow::prepareCommand(const ItemInfo &item, const QString &cmd, QString *program, QStringList *arguments,
+bool MainWindow::prepareCommand(const ItemInfo &item, const QString &commandProgram,
+                                const QStringList &commandArguments, QString *program, QStringList *arguments,
                                 QString *errorMessage) const
 {
-    QStringList commandParts = QProcess::splitCommand(cmd);
-    if (commandParts.isEmpty()) {
+    if (commandProgram.isEmpty()) {
         if (errorMessage != nullptr) {
             *errorMessage = tr("Command is empty. Cannot execute.");
         }
         return false;
     }
 
-    QString commandProgram = commandParts.takeFirst();
+    QString programName = commandProgram;
+    QStringList commandParts = commandArguments;
     if (item.terminal) {
-        commandParts.prepend(commandProgram);
+        commandParts.prepend(programName);
         commandParts.prepend(QStringLiteral("-e"));
-        commandProgram = QStringLiteral("x-terminal-emulator");
+        programName = QStringLiteral("x-terminal-emulator");
     }
 
     QStringList environmentArgs;
@@ -547,9 +705,9 @@ bool MainWindow::prepareCommand(const ItemInfo &item, const QString &cmd, QStrin
                            + qEnvironmentVariable("XAUTHORITY", QDir::homePath() + QStringLiteral("/.Xauthority"));
 
     if (item.root && getuid() != 0) {
-        commandParts.prepend(commandProgram);
+        commandParts.prepend(programName);
         commandParts = environmentArgs + commandParts;
-        commandProgram = QStringLiteral("pkexec");
+        programName = QStringLiteral("pkexec");
     } else if (item.user && getuid() == 0) {
         if (const QString user = invokingUser(); !user.isEmpty()) {
             const QString userHome = homeDirectoryForUser(user);
@@ -563,19 +721,19 @@ bool MainWindow::prepareCommand(const ItemInfo &item, const QString &cmd, QStrin
             }
             environmentArgs[2] = QStringLiteral("XAUTHORITY=")
                                  + qEnvironmentVariable("XAUTHORITY", userHome + QStringLiteral("/.Xauthority"));
-            commandParts.prepend(commandProgram);
+            commandParts.prepend(programName);
             QStringList prefix {QStringLiteral("--user"), user};
             prefix += environmentArgs;
             prefix += commandParts;
             commandParts = std::move(prefix);
-            commandProgram = QStringLiteral("pkexec");
+            programName = QStringLiteral("pkexec");
         } else {
             const QString message
                 = tr("Could not determine the unprivileged user. Refusing to run this launcher as root.");
             if (errorMessage != nullptr) {
                 *errorMessage = message;
             }
-            qWarning() << message << cmd;
+            qWarning() << message << commandProgram;
             return false;
         }
     }
@@ -583,7 +741,7 @@ bool MainWindow::prepareCommand(const ItemInfo &item, const QString &cmd, QStrin
         errorMessage->clear();
     }
     if (program != nullptr) {
-        *program = commandProgram;
+        *program = programName;
     }
     if (arguments != nullptr) {
         *arguments = commandParts;

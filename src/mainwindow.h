@@ -95,7 +95,6 @@ private:
     bool prepareEditorCommand(const QString &editor, QString *program, QStringList *arguments,
                               QString *errorMessage) const;
     [[nodiscard]] QString invokingUser() const;
-    static void fixExecItem(QString *item);
     void addButtons(const QMultiMap<QString, ItemInfo> &map);
     void addCategoryLabel(const QString &category, int &row, int &col);
     void addEmptyRowIfNeeded(const QString &category, const QMultiMap<QString, ItemInfo> &map, int &row,
@@ -108,7 +107,8 @@ private:
     [[nodiscard]] bool isLegacyAutostartFile(const QString &path) const;
     [[nodiscard]] bool isManagedAutostartFile(const QString &path) const;
     void migrateLegacyAutostart();
-    bool prepareCommand(const ItemInfo &item, const QString &cmd, QString *program, QStringList *arguments,
+    bool prepareCommand(const ItemInfo &item, const QString &commandProgram, const QStringList &commandArguments,
+                        QString *program, QStringList *arguments,
                         QString *errorMessage) const;
     void runTracked(const QString &program, const QStringList &arguments);
     bool readFile(const QString &fname, bool showErrors = true);
