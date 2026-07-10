@@ -157,6 +157,11 @@ LauncherParser::ParseResult LauncherParser::parse(const QString &text, const QSt
             item.user = flagTokens.contains(QLatin1String("user"));
             item.terminal = flagTokens.contains(QLatin1String("terminal"));
 
+            if (item.root && item.user) {
+                qWarning() << "Skipping launcher entry with conflicting root and user flags:" << item.appName;
+                continue;
+            }
+
             if (aliasIndex >= 0) {
                 QString alias;
                 if (aliasIndex + 1 < keyTokens.size()) {
@@ -255,6 +260,10 @@ LauncherParser::ParseResult LauncherParser::parseIni(QSettings &settings, const 
                     }
                     item.alias = alias;
                 }
+            }
+            if (item.root && item.user) {
+                qWarning() << "Skipping launcher entry with conflicting root and user flags:" << item.appName;
+                continue;
             }
             result.items.append(item);
         }
