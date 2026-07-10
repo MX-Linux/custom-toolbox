@@ -25,6 +25,6 @@ Name=Custom Toolbox
 Exec=custom-toolbox
 Terminal=false
 Type=Application
-Icon=/usr/share/pixmaps/custom-toolbox.svg
+Icon=custom-toolbox
 Categories=GNOME;GTK;System;
 NoDisplay=false

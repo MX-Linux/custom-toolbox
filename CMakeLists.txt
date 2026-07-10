@@ -70,6 +70,8 @@ project(custom-toolbox
     LANGUAGES CXX
 )
 
+include(GNUInstallDirs)
+
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -167,6 +169,8 @@ endif()
 target_compile_definitions(custom-toolbox PRIVATE
     QT_DEPRECATED_WARNINGS
     VERSION="${PROJECT_VERSION}"
+    CUSTOM_TOOLBOX_SYSCONFDIR="${CMAKE_INSTALL_FULL_SYSCONFDIR}"
+    CUSTOM_TOOLBOX_DATADIR="${CMAKE_INSTALL_FULL_DATADIR}"
 )
 
 # Release-specific optimizations
@@ -200,5 +204,36 @@ set_target_properties(custom-toolbox PROPERTIES
 # Install target (required by Debian build system)
 # Other files are handled by debian/install
 install(TARGETS custom-toolbox
-    RUNTIME DESTINATION bin
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+
+install(FILES ${qm_files}
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/custom-toolbox/locale
+)
+
+install(FILES
+    custom-toolbox.conf
+    example.list
+    example-ini.list
+    DESTINATION ${CMAKE_INSTALL_FULL_SYSCONFDIR}/custom-toolbox
+)
+
+install(FILES custom-toolbox.desktop
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/applications
+)
+
+install(FILES icons/custom-toolbox.svg
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/pixmaps
+)
+
+install(FILES icons/custom-toolbox.svg
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps
+)
+
+install(DIRECTORY help/
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/doc/custom-toolbox
+)
+
+install(FILES debian/changelog
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/doc/custom-toolbox
 )

@@ -23,11 +23,20 @@
 
 #include <QString>
 
+#ifndef CUSTOM_TOOLBOX_SYSCONFDIR
+    #define CUSTOM_TOOLBOX_SYSCONFDIR "/etc"
+#endif
+
+#ifndef CUSTOM_TOOLBOX_DATADIR
+    #define CUSTOM_TOOLBOX_DATADIR "/usr/share"
+#endif
+
 namespace Config {
-    inline const QString ConfigDir = "/etc/custom-toolbox";
+    inline const QString ConfigDir = QStringLiteral(CUSTOM_TOOLBOX_SYSCONFDIR) + "/custom-toolbox";
     inline const QString ConfigFile = ConfigDir + "/custom-toolbox.conf";
-    inline const QString DocDir = "/usr/share/doc/custom-toolbox";
+    inline const QString DocDir = QStringLiteral(CUSTOM_TOOLBOX_DATADIR) + "/doc/custom-toolbox";
     inline const QString HelpFile = DocDir + "/help.html";
     inline const QString LicenseFile = DocDir + "/license.html";
     inline const QString ChangelogFile = DocDir + "/changelog.gz";
+    inline const QString ChangelogTextFile = DocDir + "/changelog";
 }
