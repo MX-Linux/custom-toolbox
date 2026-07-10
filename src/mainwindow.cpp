@@ -229,6 +229,10 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, const QString &listF
       removeStartupCheckbox {argParser.isSet("remove-checkbox")}
 {
     ui->setupUi(this);
+    reloadStatus = new QLabel(this);
+    reloadStatus->setWordWrap(true);
+    ui->gridLayout_2->addWidget(reloadStatus, 3, 0, 1, 2);
+    reloadStatus->hide();
     setConnections();
     connect(&fileWatcher, &QFileSystemWatcher::fileChanged, this, &MainWindow::handleFileChanged);
     connect(&fileWatcher, &QFileSystemWatcher::directoryChanged, this, &MainWindow::handleDirectoryChanged);
@@ -247,6 +251,7 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, const QString &listF
 
     readFile(fileName);
     watchFile(fileName);
+    watchDesktopApplicationDirectories();
     setGui();
 }
 
@@ -551,6 +556,13 @@ void MainWindow::buildDesktopFileIndex() const
     for (auto it = resolved.constBegin(); it != resolved.constEnd(); ++it) {
         desktopFileIndex.insert(it.key(), it->path);
     }
+}
+
+void MainWindow::clearDesktopFileCaches()
+{
+    desktopFileCache.clear();
+    desktopFileIndex.clear();
+    desktopFileIndexBuilt = false;
 }
 
 // Return the app info needed for the button
@@ -860,6 +872,8 @@ bool MainWindow::readFile(const QString &fname, bool showErrors)
         }
         return false;
     }
+
+    clearDesktopFileCaches();
 
     // Resolve items against installed .desktop files into a temporary map.
     // If nothing resolves, the launcher would be empty — bail without touching state.
@@ -1291,6 +1305,11 @@ void MainWindow::handleFileChanged(const QString &path)
 
 void MainWindow::handleDirectoryChanged(const QString &path)
 {
+    if (desktopApplicationDirs.contains(path)) {
+        fileReloadTimer.start();
+        return;
+    }
+
     if (path != fileLocation) {
         return;
     }
@@ -1307,12 +1326,22 @@ void MainWindow::handleDirectoryChanged(const QString &path)
 void MainWindow::refreshIfFileChanged()
 {
     if (!QFile::exists(fileName)) {
+        showReloadStatus(tr("Could not reload the configuration. The previous configuration is still in use."));
         return;
     }
 
     if (readFile(fileName, false)) {
         setGui();
+        reloadStatus->hide();
+    } else {
+        showReloadStatus(tr("Could not reload the configuration. The previous configuration is still in use."));
     }
+}
+
+void MainWindow::showReloadStatus(const QString &message)
+{
+    reloadStatus->setText(message);
+    reloadStatus->show();
 }
 
 void MainWindow::watchFile(const QString &path)
@@ -1334,6 +1363,16 @@ void MainWindow::watchFile(const QString &path)
     if (!fileLocation.isEmpty() && !fileWatcher.directories().contains(fileLocation)) {
         if (!fileWatcher.addPath(fileLocation)) {
             qWarning() << "Failed to add watch for directory:" << fileLocation;
+        }
+    }
+}
+
+void MainWindow::watchDesktopApplicationDirectories()
+{
+    desktopApplicationDirs = QStandardPaths::standardLocations(QStandardPaths::ApplicationsLocation);
+    for (const QString &path : desktopApplicationDirs) {
+        if (!fileWatcher.directories().contains(path) && !fileWatcher.addPath(path)) {
+            qWarning() << "Failed to add watch for application directory:" << path;
         }
     }
 }

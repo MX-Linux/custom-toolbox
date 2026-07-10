@@ -72,11 +72,13 @@ private:
     QString lang;
     QFileSystemWatcher fileWatcher;
     QTimer fileReloadTimer;
+    QLabel *reloadStatus {};
     bool firstRun {true};
     bool geometryRestored {};
     bool hideGui {};
     bool removeStartupCheckbox {};
     const QStringList defaultPath {qEnvironmentVariable("PATH").split(':') << "/usr/sbin"};
+    QStringList desktopApplicationDirs;
     int colCount {};
     int fixedNumberCol {};
     int minHeight {};
@@ -104,6 +106,7 @@ private:
     [[nodiscard]] QString autostartSourceHash() const;
     void centerWindow();
     void clearGridLayout();
+    void clearDesktopFileCaches();
     [[nodiscard]] bool isLegacyAutostartFile(const QString &path) const;
     [[nodiscard]] bool isManagedAutostartFile(const QString &path) const;
     void migrateLegacyAutostart();
@@ -119,6 +122,8 @@ private:
     void handleDirectoryChanged(const QString &path);
     void handleFileChanged(const QString &path);
     void refreshIfFileChanged();
+    void showReloadStatus(const QString &message);
     void watchFile(const QString &path);
+    void watchDesktopApplicationDirectories();
     bool writeAutostartFile(QString *errorMessage) const;
 };
