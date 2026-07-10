@@ -68,6 +68,11 @@ QString homeDirectoryForUser(const QString &user)
     return {};
 }
 
+struct DesktopFileCandidate {
+    QString path;
+    int sourcePriority {};
+};
+
 QString desktopEntryValue(const QString &text, const QString &key, const QString &lang)
 {
     const QString exactKey = key + QLatin1Char('[') + lang + QLatin1String("]=");
@@ -479,11 +484,21 @@ void MainWindow::buildDesktopFileIndex() const
     static const QRegularExpression execRegex(QStringLiteral(R"(^Exec=(.*)$)"),
                                             QRegularExpression::MultilineOption);
 
-    QHash<QString, QString> bySuffix;
-    QHash<QString, QString> byExec;
+    QHash<QString, DesktopFileCandidate> bySuffix;
+    QHash<QString, DesktopFileCandidate> byExec;
+    auto insertCandidate = [](QHash<QString, DesktopFileCandidate> &index, const QString &key, const QString &path,
+                              int sourcePriority) {
+        const DesktopFileCandidate candidate {.path = path, .sourcePriority = sourcePriority};
+        const auto existing = index.constFind(key);
+        if (existing == index.constEnd() || candidate.sourcePriority < existing->sourcePriority
+            || (candidate.sourcePriority == existing->sourcePriority && candidate.path < existing->path)) {
+            index.insert(key, candidate);
+        }
+    };
 
     const QStringList searchPaths = QStandardPaths::standardLocations(QStandardPaths::ApplicationsLocation);
-    for (const QString &dir : searchPaths) {
+    for (qsizetype sourcePriority = 0; sourcePriority < searchPaths.size(); ++sourcePriority) {
+        const QString &dir = searchPaths.at(sourcePriority);
         QDirIterator it(dir, {"*.desktop"}, QDir::Files, QDirIterator::Subdirectories);
         while (it.hasNext()) {
             it.next();
@@ -495,8 +510,8 @@ void MainWindow::buildDesktopFileIndex() const
             const int dot = basename.lastIndexOf('.');
             if (dot >= 0 && dot + 1 < basename.size()) {
                 const QString suffix = basename.mid(dot + 1).toLower();
-                if (!suffix.isEmpty() && !bySuffix.contains(suffix)) {
-                    bySuffix.insert(suffix, fullPath);
+                if (!suffix.isEmpty()) {
+                    insertCandidate(bySuffix, suffix, fullPath, sourcePriority);
                 }
             }
 
@@ -512,17 +527,29 @@ void MainWindow::buildDesktopFileIndex() const
                         first = first.mid(1, first.size() - 2);
                     }
                     first = QFileInfo(first).fileName().toLower();
-                    if (!first.isEmpty() && !byExec.contains(first)) {
-                        byExec.insert(first, fullPath);
+                    if (!first.isEmpty()) {
+                        insertCandidate(byExec, first, fullPath, sourcePriority);
                     }
                 }
             }
         }
     }
 
-    // Apply lowest priority first; higher priority overwrites.
-    desktopFileIndex = std::move(bySuffix);
-    desktopFileIndex.insert(byExec);
+    // Source-directory priority wins over match type. If two candidates come
+    // from the same directory, prefer an Exec-token match over a suffix match.
+    QHash<QString, DesktopFileCandidate> resolved = std::move(bySuffix);
+    for (auto it = byExec.constBegin(); it != byExec.constEnd(); ++it) {
+        const auto existing = resolved.constFind(it.key());
+        if (existing == resolved.constEnd() || it->sourcePriority < existing->sourcePriority
+            || it->sourcePriority == existing->sourcePriority) {
+            resolved.insert(it.key(), it.value());
+        }
+    }
+
+    desktopFileIndex.clear();
+    for (auto it = resolved.constBegin(); it != resolved.constEnd(); ++it) {
+        desktopFileIndex.insert(it.key(), it->path);
+    }
 }
 
 // Return the app info needed for the button
