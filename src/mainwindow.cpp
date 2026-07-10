@@ -119,103 +119,6 @@ QString desktopEntryValue(const QString &text, const QString &key, const QString
     return fallbackValue;
 }
 
-bool parseDesktopExec(const QString &exec, const QString &applicationName, const QString &iconName,
-                      const QString &desktopFile, QString *program, QStringList *arguments)
-{
-    QStringList parts;
-    QString current;
-    bool inQuotes {};
-    bool tokenStarted {};
-
-    auto appendCurrent = [&]() {
-        if (tokenStarted) {
-            parts.append(current);
-            current.clear();
-            tokenStarted = false;
-        }
-    };
-
-    for (qsizetype i = 0; i < exec.size(); ++i) {
-        const QChar c = exec.at(i);
-        if (c == QLatin1Char('"')) {
-            inQuotes = !inQuotes;
-            tokenStarted = true;
-            continue;
-        }
-        if (c == QLatin1Char('\\')) {
-            if (++i >= exec.size()) {
-                return false;
-            }
-            current.append(exec.at(i));
-            tokenStarted = true;
-            continue;
-        }
-        if (c.isSpace() && !inQuotes) {
-            appendCurrent();
-            continue;
-        }
-        if (c != QLatin1Char('%')) {
-            current.append(c);
-            tokenStarted = true;
-            continue;
-        }
-        if (++i >= exec.size()) {
-            return false;
-        }
-
-        switch (exec.at(i).unicode()) {
-        case '%':
-            current.append(QLatin1Char('%'));
-            tokenStarted = true;
-            break;
-        case 'f':
-        case 'F':
-        case 'u':
-        case 'U':
-        case 'd':
-        case 'D':
-        case 'n':
-        case 'N':
-        case 'v':
-        case 'm':
-            break;
-        case 'c':
-            current.append(applicationName);
-            tokenStarted = true;
-            break;
-        case 'k':
-            current.append(desktopFile);
-            tokenStarted = true;
-            break;
-        case 'i':
-            if (inQuotes || tokenStarted) {
-                return false;
-            }
-            if (!iconName.isEmpty()) {
-                parts << QStringLiteral("--icon") << iconName;
-            }
-            break;
-        default:
-            return false;
-        }
-    }
-
-    if (inQuotes) {
-        return false;
-    }
-    appendCurrent();
-    if (parts.isEmpty()) {
-        return false;
-    }
-
-    if (program != nullptr) {
-        *program = parts.takeFirst();
-    }
-    if (arguments != nullptr) {
-        *arguments = parts;
-    }
-    return true;
-}
 } // namespace
 
 
@@ -613,8 +516,8 @@ ItemInfo MainWindow::getDesktopFileInfo(const QString &fname) const
                                                                                          Qt::CaseInsensitive)
                     == 0;
     if (item.name.isEmpty()
-        || !parseDesktopExec(desktopEntryValue(text, QStringLiteral("Exec"), lang), item.name, item.iconName, fname,
-                             &item.exec, &item.execArgs)) {
+        || !LauncherParser::parseDesktopExec(desktopEntryValue(text, QStringLiteral("Exec"), lang), item.name,
+                                             item.iconName, fname, &item.exec, &item.execArgs)) {
         return {};
     }
 

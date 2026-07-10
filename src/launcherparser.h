@@ -29,4 +29,6 @@ public:
     static ParseResult parse(const QString &text, const QString &lang);
     static ParseResult parseIni(QSettings &settings, const QString &lang);
     static QString extractLocalizedValue(const QString &text, const QString &key, const QString &lang);
+    static bool parseDesktopExec(const QString &exec, const QString &applicationName, const QString &iconName,
+                                 const QString &desktopFile, QString *program, QStringList *arguments);
 };
