@@ -109,8 +109,15 @@ endif()
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC OFF)
 set(CMAKE_AUTORCC ON)
-qt_policy(SET QTP0004 NEW)
-qt_policy(SET QTP0001 NEW)
+# These policies were introduced after the minimum Qt version available on
+# some supported distributions. Only set them when the installed Qt knows
+# about them.
+if(Qt6_VERSION VERSION_GREATER_EQUAL 6.5)
+    qt6_policy(SET QTP0001 NEW)
+endif()
+if(Qt6_VERSION VERSION_GREATER_EQUAL 6.8)
+    qt6_policy(SET QTP0004 NEW)
+endif()
 
 # Define source files
 set(SOURCES
@@ -138,7 +145,7 @@ add_executable(custom-toolbox
     ${HEADERS}
 )
 
-qt_add_qml_module(custom-toolbox
+qt6_add_qml_module(custom-toolbox
     URI CustomToolbox
     VERSION 1.0
     QML_FILES

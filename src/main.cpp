@@ -34,6 +34,8 @@
 #include <QProcess>
 #include <QQmlApplicationEngine>
 #include <QTranslator>
+#include <QUrl>
+#include <QtGlobal>
 
 #include "common.h"
 #include "launchermodel.h"
@@ -93,9 +95,14 @@ int main(int argc, char *argv[])
 
     QApplication::setApplicationName("custom-toolbox");
     QApplication::setApplicationDisplayName(QObject::tr("Custom Toolbox"));
-    QApplication::setWindowIcon(QIcon::fromTheme(
-        QApplication::applicationName(),
-        QIcon(QStringLiteral(":/qt/qml/CustomToolbox/icons/custom-toolbox.svg"))));
+    const auto bundledIcon =
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+        QStringLiteral(":/qt/qml/CustomToolbox/icons/custom-toolbox.svg");
+#else
+        QStringLiteral(":/CustomToolbox/icons/custom-toolbox.svg");
+#endif
+    QApplication::setWindowIcon(
+        QIcon::fromTheme(QApplication::applicationName(), QIcon(bundledIcon)));
     QApplication::setOrganizationName("MX-Linux");
     QApplication::setApplicationVersion(VERSION);
 
@@ -167,6 +174,10 @@ int main(int argc, char *argv[])
                                  {QStringLiteral("version"), QStringLiteral(VERSION)}});
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed, &app,
                      [] { QCoreApplication::exit(EXIT_FAILURE); }, Qt::QueuedConnection);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
     engine.loadFromModule(QStringLiteral("CustomToolbox"), QStringLiteral("Main"));
+#else
+    engine.load(QUrl(QStringLiteral("qrc:/CustomToolbox/qml/Main.qml")));
+#endif
     return QApplication::exec();
 }
