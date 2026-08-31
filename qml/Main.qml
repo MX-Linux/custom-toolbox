@@ -367,12 +367,15 @@ ApplicationWindow {
                     elide: Text.ElideRight
                 }
                 ModernSwitch {
+                    id: condensedSwitch
                     checked: root.condensedView
                     accentColor: root.accentColor
                     inactiveColor: root.inactiveControlColor
                     Accessible.name: qsTr("Use condensed launcher view")
-                    ToolTip.visible: hovered
-                    ToolTip.text: qsTr("Show more launchers at once")
+                    ThemeToolTip {
+                        visible: condensedSwitch.hovered
+                        text: qsTr("Show more launchers at once")
+                    }
                     onToggled: root.condensedView = checked
                 }
             }
@@ -404,6 +407,9 @@ ApplicationWindow {
                 cellWidth: width / Math.max(1, Math.floor(width / (root.condensedView ? 230 : 300)))
                 cellHeight: root.condensedView ? 112 : 154
 
+                onCellWidthChanged: Qt.callLater(launcherGrid.returnToBounds)
+                onCellHeightChanged: Qt.callLater(launcherGrid.returnToBounds)
+
                 // See the comment on the compact category Flickable above: bypass the default
                 // flick-momentum wheel handling so touchpad scrolling can reverse direction
                 // immediately instead of needing a full stop first.
@@ -411,8 +417,11 @@ ApplicationWindow {
                     target: null
                     acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
                     onWheel: (event) => {
-                        launcherGrid.contentY = Math.max(0, Math.min(
-                            Math.max(0, launcherGrid.contentHeight - launcherGrid.height),
+                        const minimumY = launcherGrid.originY
+                        const maximumY = Math.max(minimumY,
+                                                  minimumY + launcherGrid.contentHeight - launcherGrid.height)
+                        launcherGrid.contentY = Math.max(minimumY, Math.min(
+                            maximumY,
                             launcherGrid.contentY - event.angleDelta.y))
                     }
                 }

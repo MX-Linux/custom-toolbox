@@ -91,7 +91,9 @@ Button {
             font.weight: Font.Light
         }
     }
-    ToolTip.visible: hovered && descriptionText.truncated
-    ToolTip.text: descriptionText.text
-    ToolTip.delay: 600
+    ThemeToolTip {
+        visible: control.hovered && descriptionText.truncated
+        text: descriptionText.text
+        delay: 600
+    }
 }
