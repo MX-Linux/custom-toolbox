@@ -563,6 +563,11 @@ ApplicationWindow {
         property string message: ""
         modal: true
         anchors.centerIn: Overlay.overlay
+        background: Rectangle {
+            color: root.surfaceColor
+            radius: 16
+            border.color: root.borderColor
+        }
         footer: DialogButtonBox {
             standardButtons: DialogButtonBox.Ok
             alignment: Qt.AlignRight
