@@ -3,7 +3,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import QtCore
+import Qt.labs.settings
 import "components"
 
 ApplicationWindow {
@@ -407,8 +407,14 @@ ApplicationWindow {
                 cellWidth: width / Math.max(1, Math.floor(width / (root.condensedView ? 230 : 300)))
                 cellHeight: root.condensedView ? 112 : 154
 
-                onCellWidthChanged: Qt.callLater(launcherGrid.returnToBounds)
-                onCellHeightChanged: Qt.callLater(launcherGrid.returnToBounds)
+                Timer {
+                    id: returnToBoundsTimer
+                    interval: 0
+                    onTriggered: launcherGrid.returnToBounds()
+                }
+
+                onCellWidthChanged: returnToBoundsTimer.restart()
+                onCellHeightChanged: returnToBoundsTimer.restart()
 
                 // See the comment on the compact category Flickable above: bypass the default
                 // flick-momentum wheel handling so touchpad scrolling can reverse direction
@@ -507,7 +513,7 @@ ApplicationWindow {
         title: qsTr("About %1").arg(root.backend.title)
         background: Rectangle { color: root.surfaceColor; radius: 16; border.color: root.borderColor }
         footer: DialogButtonBox {
-            standardButtons: DialogButtonBox.Close
+            standardButtons: Dialog.Close
             alignment: Qt.AlignRight
             padding: 12
             background: Item {}
@@ -578,7 +584,7 @@ ApplicationWindow {
             border.color: root.borderColor
         }
         footer: DialogButtonBox {
-            standardButtons: DialogButtonBox.Ok
+            standardButtons: Dialog.Ok
             alignment: Qt.AlignRight
             padding: 12
             background: Item {}

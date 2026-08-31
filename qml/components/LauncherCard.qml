@@ -34,7 +34,10 @@ Button {
         Behavior on border.color { ColorAnimation { duration: 130 } }
     }
 
+    // The child IDs intentionally make this deferred control property immediate.
+    // qmllint disable deferred-property-id
     contentItem: RowLayout {
+        // qmllint enable deferred-property-id
         spacing: control.condensed ? 10 : 15
         Rectangle {
             Layout.alignment: Qt.AlignTop
@@ -47,7 +50,8 @@ Button {
                 width: control.condensed ? 30 : 38
                 height: control.condensed ? 30 : 38
                 source: control.iconSource
-                sourceSize: Qt.size(48, 48)
+                sourceSize.width: 48
+                sourceSize.height: 48
                 fillMode: Image.PreserveAspectFit
             }
         }

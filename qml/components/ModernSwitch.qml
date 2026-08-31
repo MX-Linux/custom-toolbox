@@ -18,7 +18,10 @@ AbstractButton {
     Accessible.checked: checked
     background: Item {}
 
+    // The track ID intentionally makes this deferred control property immediate.
+    // qmllint disable deferred-property-id
     contentItem: Item {
+        // qmllint enable deferred-property-id
         Rectangle {
             id: track
             anchors.centerIn: parent
