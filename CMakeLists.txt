@@ -197,7 +197,7 @@ target_compile_definitions(custom-toolbox PRIVATE
 # Release-specific optimizations
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
     target_compile_definitions(custom-toolbox PRIVATE NDEBUG)
-    target_compile_options(custom-toolbox PRIVATE -O3)
+    target_compile_options(custom-toolbox PRIVATE -Os)
 
     # Add LTO - different flags for different compilers
     if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR USE_CLANG)
