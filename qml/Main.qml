@@ -81,7 +81,7 @@ ApplicationWindow {
             Rectangle {
                 Layout.preferredWidth: 48
                 Layout.preferredHeight: 48
-                radius: 12
+                radius: 6
                 color: root.accentWash
                 Image {
                     anchors.centerIn: parent
@@ -131,7 +131,7 @@ ApplicationWindow {
                 Accessible.name: qsTr("Search launchers")
 
                 background: Rectangle {
-                    radius: 12
+                    radius: 6
                     color: root.backgroundColor
                     border.width: searchField.activeFocus ? 2 : 1
                     border.color: searchField.activeFocus ? root.accentColor : root.borderColor
@@ -198,7 +198,7 @@ ApplicationWindow {
             visible: !root.compactNavigation
             Layout.preferredWidth: 218
             Layout.fillHeight: true
-            radius: 16
+            radius: 6
             color: root.surfaceColor
             border.color: root.borderColor
 
@@ -384,7 +384,7 @@ ApplicationWindow {
                 visible: root.backend.reloadMessage.length > 0
                 Layout.fillWidth: true
                 Layout.preferredHeight: reloadText.implicitHeight + 20
-                radius: 10
+                radius: 6
                 color: root.accentWash
                 Text {
                     id: reloadText
@@ -511,7 +511,7 @@ ApplicationWindow {
         x: (root.width - width) / 2
         y: (root.height - height) / 2
         title: qsTr("About %1").arg(root.backend.title)
-        background: Rectangle { color: root.surfaceColor; radius: 16; border.color: root.borderColor }
+        background: Rectangle { color: root.surfaceColor; radius: 6; border.color: root.borderColor }
         footer: DialogButtonBox {
             standardButtons: Dialog.Close
             alignment: Qt.AlignRight
@@ -580,7 +580,7 @@ ApplicationWindow {
         anchors.centerIn: Overlay.overlay
         background: Rectangle {
             color: root.surfaceColor
-            radius: 16
+            radius: 6
             border.color: root.borderColor
         }
         footer: DialogButtonBox {
