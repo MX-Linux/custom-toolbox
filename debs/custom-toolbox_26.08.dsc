@@ -10,8 +10,8 @@ Build-Depends: debhelper-compat (= 12), cmake (>= 3.16), ninja-build, qt6-base-d
 Package-List:
  custom-toolbox deb admin optional arch=any
 Checksums-Sha1:
- b2d488f0e6ff599b3529192409e9309d004ad07d 1905972 custom-toolbox_26.08.tar.xz
+ 8ccab8f42230240df621d45c1796c9ec629479ba 2275420 custom-toolbox_26.08.tar.xz
 Checksums-Sha256:
- 90c03d14f700447cdfcb6574e9f4998c0c915b767cf4b8dd1127397e0885adce 1905972 custom-toolbox_26.08.tar.xz
+ 37928ce70cb269d872546e1efbcc53f68aa7a80f3cd39d351c91b64ca044845e 2275420 custom-toolbox_26.08.tar.xz
 Files:
- 022786145ffeac3bc68ef514cf7bdb4a 1905972 custom-toolbox_26.08.tar.xz
+ 4d8ebb59200a361769b94ea0e31c4602 2275420 custom-toolbox_26.08.tar.xz
