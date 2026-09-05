@@ -18,6 +18,8 @@ AbstractButton {
     Accessible.checked: checked
     background: Item {}
 
+    HoverHandler { cursorShape: Qt.PointingHandCursor }
+
     // The track ID intentionally makes this deferred control property immediate.
     // qmllint disable deferred-property-id
     contentItem: Item {

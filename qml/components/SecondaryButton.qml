@@ -18,6 +18,8 @@ Button {
     rightPadding: 13
     Accessible.name: text
 
+    HoverHandler { cursorShape: Qt.PointingHandCursor }
+
     contentItem: Text {
         text: control.text
         color: control.textColor

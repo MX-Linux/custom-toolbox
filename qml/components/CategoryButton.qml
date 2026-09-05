@@ -16,6 +16,8 @@ Button {
     hoverEnabled: true
     Accessible.name: text
 
+    HoverHandler { cursorShape: Qt.PointingHandCursor }
+
     contentItem: Text {
         text: control.text
         color: control.selected ? control.accentColor : control.mutedTextColor

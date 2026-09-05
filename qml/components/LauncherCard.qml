@@ -22,6 +22,9 @@ Button {
     padding: condensed ? 12 : 18
     Accessible.name: launcherName
     Accessible.description: description
+
+    HoverHandler { cursorShape: Qt.PointingHandCursor }
+
     scale: down ? 0.985 : 1
     Behavior on scale { NumberAnimation { duration: 90 } }
 
@@ -86,13 +89,6 @@ Button {
                 font.weight: Font.DemiBold
                 font.letterSpacing: 0.7
             }
-        }
-        Text {
-            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-            text: "›"
-            color: control.hovered ? control.accentColor : control.secondaryTextColor
-            font.pixelSize: control.font.pixelSize + 12
-            font.weight: Font.Light
         }
     }
     ThemeToolTip {
