@@ -4,9 +4,9 @@
 <context>
     <name>LauncherCard</name>
     <message>
-        <location filename="../qml/components/LauncherCard.qml" line="70"/>
+        <location filename="../qml/components/LauncherCard.qml" line="77"/>
         <source>Open this launcher</source>
-        <translation type="unfinished"></translation>
+        <translation>Obre aquest llançador</translation>
     </message>
 </context>
 <context>
@@ -14,118 +14,118 @@
     <message>
         <location filename="../qml/Main.qml" line="43"/>
         <source>Configuration error</source>
-        <translation type="unfinished"></translation>
+        <translation>Error de configuració</translation>
     </message>
     <message>
         <location filename="../qml/Main.qml" line="131"/>
         <source>Search launchers</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerca llançadors</translation>
     </message>
     <message>
         <location filename="../qml/Main.qml" line="154"/>
         <source>Search launchers and tasks…</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerca llançadors i tasques...</translation>
     </message>
     <message>
         <location filename="../qml/Main.qml" line="166"/>
         <source>Clear search</source>
-        <translation type="unfinished"></translation>
+        <translation>Esborra la cerca</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="213"/>
+        <location filename="../qml/Main.qml" line="215"/>
         <source>CATEGORIES</source>
-        <translation type="unfinished"></translation>
+        <translation>CATEGORIES</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="249"/>
-        <location filename="../qml/Main.qml" line="459"/>
+        <location filename="../qml/Main.qml" line="251"/>
+        <location filename="../qml/Main.qml" line="476"/>
         <source>Launch at login</source>
-        <translation type="unfinished"></translation>
+        <translation>Llança en iniciar la sessió</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="256"/>
+        <location filename="../qml/Main.qml" line="258"/>
         <source>Open this toolbox automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Obre aquesta caixa d&apos;eines automàticament</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="266"/>
-        <location filename="../qml/Main.qml" line="468"/>
+        <location filename="../qml/Main.qml" line="268"/>
+        <location filename="../qml/Main.qml" line="485"/>
         <source>Launch this toolbox at login</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/Main.qml" line="332"/>
-        <source>Search results</source>
-        <translation type="unfinished"></translation>
+        <translation>Obre aquesta caixa d&apos;eines en iniciar la sessió</translation>
     </message>
     <message>
         <location filename="../qml/Main.qml" line="334"/>
+        <source>Search results</source>
+        <translation>Resultats de la cerca</translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="336"/>
         <source>All launchers</source>
-        <translation type="unfinished"></translation>
+        <translation>Tots els llançadors</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="341"/>
+        <location filename="../qml/Main.qml" line="343"/>
         <source>Results matching “%1”</source>
-        <translation type="unfinished"></translation>
+        <translation>Resultats que coincideixen amb «%1»</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="342"/>
+        <location filename="../qml/Main.qml" line="344"/>
         <source>Choose a launcher to start an application or task</source>
-        <translation type="unfinished"></translation>
+        <translation>Tria un llançador per iniciar una aplicació o tasca</translation>
     </message>
     <message numerus="yes">
-        <location filename="../qml/Main.qml" line="349"/>
+        <location filename="../qml/Main.qml" line="351"/>
         <source>%n launcher(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n llançador(s)</numerusform>
+            <numerusform>%n llançador(s)</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="364"/>
+        <location filename="../qml/Main.qml" line="366"/>
         <source>Condensed view</source>
-        <translation type="unfinished"></translation>
+        <translation>Vista condensada</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="373"/>
+        <location filename="../qml/Main.qml" line="376"/>
         <source>Use condensed launcher view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="375"/>
+        <location filename="../qml/Main.qml" line="379"/>
         <source>Show more launchers at once</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra més llançadors d&apos;un cop</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="447"/>
+        <location filename="../qml/Main.qml" line="464"/>
         <source>No launchers found
 Try a different search or category.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="498"/>
+        <location filename="../qml/Main.qml" line="515"/>
         <source>About %1</source>
-        <translation type="unfinished">Quant a %1</translation>
+        <translation>Quant a %1</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="531"/>
+        <location filename="../qml/Main.qml" line="548"/>
         <source>Version %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Versió %1</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="537"/>
+        <location filename="../qml/Main.qml" line="554"/>
         <source>Custom Toolbox creates focused collections of application launchers and system tasks.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="545"/>
+        <location filename="../qml/Main.qml" line="562"/>
         <source>License</source>
-        <translation type="unfinished">Llicència</translation>
+        <translation>Llicència</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="554"/>
+        <location filename="../qml/Main.qml" line="571"/>
         <source>Copyright © MX Linux</source>
-        <translation type="unfinished"></translation>
+        <translation>Copyright © MX Linux</translation>
     </message>
 </context>
 <context>
@@ -136,66 +136,30 @@ Try a different search or category.</source>
         <translation>Caixa d&apos;Eines personalitzada</translation>
     </message>
     <message>
-        <source>About this application</source>
-        <translation type="vanished">Quant a aquest programa</translation>
-    </message>
-    <message>
-        <location filename="../qml/Main.qml" line="182"/>
+        <location filename="../qml/Main.qml" line="184"/>
         <source>About...</source>
         <translation>Quant a...</translation>
     </message>
     <message>
-        <source>Alt+A</source>
-        <translation type="vanished">Alt+A</translation>
-    </message>
-    <message>
-        <source>Customize launcher</source>
-        <translation type="vanished">Personalitza el llançador</translation>
-    </message>
-    <message>
-        <location filename="../qml/Main.qml" line="473"/>
+        <location filename="../qml/Main.qml" line="490"/>
         <source>Edit</source>
         <translation>Edita</translation>
     </message>
     <message>
-        <source>Alt+E</source>
-        <translation type="vanished">Alt+E</translation>
-    </message>
-    <message>
-        <location filename="../qml/Main.qml" line="174"/>
+        <location filename="../qml/Main.qml" line="176"/>
         <location filename="../src/launchermodel.cpp" line="727"/>
         <source>Help</source>
         <translation>Ajuda </translation>
     </message>
     <message>
-        <source>Alt+H</source>
-        <translation type="vanished">Alt+H</translation>
-    </message>
-    <message>
-        <source>Close application</source>
-        <translation type="vanished">Surt de l&apos;aplicació </translation>
-    </message>
-    <message>
-        <location filename="../qml/Main.qml" line="481"/>
+        <location filename="../qml/Main.qml" line="498"/>
         <source>Close</source>
         <translation>Tanca</translation>
-    </message>
-    <message>
-        <source>Alt+C</source>
-        <translation type="vanished">Alt+C </translation>
     </message>
     <message>
         <location filename="../src/launchermodel.h" line="100"/>
         <source>This is a custom launcher</source>
         <translation>Aquest és un llançador personalitzat</translation>
-    </message>
-    <message>
-        <source>Show this dialog at start up</source>
-        <translation type="vanished">Mostra aquest diàleg en engegar</translation>
-    </message>
-    <message>
-        <source>search</source>
-        <translation type="vanished">cerca</translation>
     </message>
     <message>
         <location filename="../src/launchermodel.cpp" line="553"/>
@@ -234,13 +198,13 @@ Try a different search or category.</source>
     <message>
         <location filename="../src/launchermodel.cpp" line="414"/>
         <location filename="../src/launchermodel.cpp" line="858"/>
-        <location filename="../src/main.cpp" line="67"/>
+        <location filename="../src/main.cpp" line="70"/>
         <source>File Open Error</source>
         <translation>Error en obrir el fitxer</translation>
     </message>
     <message>
         <location filename="../src/launchermodel.cpp" line="401"/>
-        <location filename="../src/main.cpp" line="156"/>
+        <location filename="../src/main.cpp" line="171"/>
         <source>File Not Found</source>
         <translation>No he trobat el fitxer</translation>
     </message>
@@ -251,7 +215,7 @@ Try a different search or category.</source>
     </message>
     <message>
         <location filename="../src/launchermodel.cpp" line="401"/>
-        <location filename="../src/main.cpp" line="157"/>
+        <location filename="../src/main.cpp" line="172"/>
         <source>The file %1 does not exist.</source>
         <translation>El fitxer %1 no existeix.</translation>
     </message>
@@ -274,7 +238,7 @@ Try a different search or category.</source>
     <message>
         <location filename="../src/launchermodel.cpp" line="426"/>
         <source>All launchers</source>
-        <translation type="unfinished"></translation>
+        <translation>Tots els llançadors</translation>
     </message>
     <message>
         <location filename="../src/launchermodel.cpp" line="449"/>
@@ -284,40 +248,17 @@ Try a different search or category.</source>
     <message>
         <location filename="../src/launchermodel.cpp" line="568"/>
         <source>Launcher already running</source>
-        <translation type="unfinished"></translation>
+        <translation>El llançador ja s&apos;està executant</translation>
     </message>
     <message>
         <location filename="../src/launchermodel.cpp" line="569"/>
         <source>%1 is already running.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/launchermodel.cpp" line="727"/>
-        <location filename="../src/launchermodel.cpp" line="734"/>
-        <source>Could not open %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ja s&apos;executa.</translation>
     </message>
     <message>
         <location filename="../src/launchermodel.cpp" line="781"/>
         <source>Refusing to overwrite a non-Custom Toolbox autostart file: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/launchermodel.cpp" line="887"/>
-        <source>Could not reload the configuration. The previous configuration is still in use.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Version:</source>
-        <translation type="vanished">Versió: </translation>
-    </message>
-    <message>
-        <source>About %1</source>
-        <translation type="vanished">Quant a %1</translation>
-    </message>
-    <message>
-        <source>Directory Creation Error</source>
-        <translation type="vanished">Error de creació del directori</translation>
+        <translation>Es rebutja sobreescriure el fitxer d&apos;auto-inici d&apos;una Caixa d&apos;Eines no personalitzada: %1</translation>
     </message>
     <message>
         <location filename="../src/launchermodel.cpp" line="849"/>
@@ -347,20 +288,15 @@ Try a different search or category.</source>
         <translation>No he pogut determinar l&apos;usuari sense privilegis. S&apos;evita executar aquest editor com a administrador.</translation>
     </message>
     <message>
-        <source>Custom Toolbox is a tool used for creating a custom launcher</source>
-        <translation type="vanished">Custom Toolbox és una eina usada per crear llançadors personalitzats</translation>
+        <location filename="../src/launchermodel.cpp" line="727"/>
+        <location filename="../src/launchermodel.cpp" line="734"/>
+        <source>Could not open %1.</source>
+        <translation>No s&apos;ha pogut obrir %1.</translation>
     </message>
     <message>
-        <source>Copyright (c) MX Linux</source>
-        <translation type="vanished">Copyright (c) MX Linux</translation>
-    </message>
-    <message>
-        <source>%1 License</source>
-        <translation type="vanished">Llicència de %1</translation>
-    </message>
-    <message>
-        <source>%1 Help</source>
-        <translation type="vanished">Ajuda de %1</translation>
+        <location filename="../src/launchermodel.cpp" line="887"/>
+        <source>Could not reload the configuration. The previous configuration is still in use.</source>
+        <translation>No puc tornar a carregar la configuració. La configuració anterior encara s&apos;està usant.</translation>
     </message>
     <message>
         <location filename="../src/launchermodel.cpp" line="800"/>
@@ -369,26 +305,22 @@ Try a different search or category.</source>
         <translation>No puc escriure al fitxer: %1</translation>
     </message>
     <message>
-        <source>File Removal Error</source>
-        <translation type="vanished">Error d&apos;eliminació de fitxer</translation>
-    </message>
-    <message>
         <location filename="../src/launchermodel.cpp" line="854"/>
         <source>Could not remove file: %1</source>
         <translation>No puc eliminar el fitxer: %1</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="56"/>
+        <location filename="../src/main.cpp" line="59"/>
         <source>Open List File</source>
         <translation>Obre el fitxer de Llista</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="58"/>
+        <location filename="../src/main.cpp" line="61"/>
         <source>List Files (*.list)</source>
         <translation>Fitxers de Llista (*.list)</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="68"/>
+        <location filename="../src/main.cpp" line="71"/>
         <source>Could not open file. Do you want to try again?</source>
         <translation>No puc obrir el fitxer, voleu reintentar-ho?</translation>
     </message>
@@ -396,56 +328,32 @@ Try a different search or category.</source>
 <context>
     <name>QObject</name>
     <message>
-        <source>Could not load %1</source>
-        <translation type="vanished">No s&apos;ha pogut carregar %1</translation>
-    </message>
-    <message>
-        <source>License</source>
-        <translation type="vanished">Llicència</translation>
-    </message>
-    <message>
-        <source>Changelog</source>
-        <translation type="vanished">Registre de canvis</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Cancel·la</translation>
-    </message>
-    <message>
-        <source>Could not load changelog.</source>
-        <translation type="vanished">No s&apos;ha pogut carregar el registre de canvis.</translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation type="vanished">Tan&amp;ca </translation>
-    </message>
-    <message>
-        <location filename="../src/main.cpp" line="95"/>
+        <location filename="../src/main.cpp" line="105"/>
         <source>Custom Toolbox</source>
-        <translation type="unfinished">Caixa d&apos;Eines personalitzada</translation>
+        <translation>Caixa d&apos;Eines personalitzada</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="120"/>
+        <location filename="../src/main.cpp" line="135"/>
         <source>This app can be used to create custom launchers: box of buttons/icons</source>
         <translation>Aquesta app es pot usar per crear llançadors personalitzats: capses de botons/icones</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="123"/>
+        <location filename="../src/main.cpp" line="138"/>
         <source>Don&apos;t show &apos;show this dialog at startup&apos; checkbox</source>
         <translation>No mostris la casella de selecció &apos;mostra aquest diàleg en arrencar&apos;</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="125"/>
+        <location filename="../src/main.cpp" line="140"/>
         <source>Full path and name of the .list file you want to load. Supports both custom format (Key=Value) and INI format ([Section]).</source>
         <translation>Camí sencer i nom del fitxer .list que voleu carregar. Admet tant el format personalitzat (Clau=Valor) com l&apos;INI ([Secció]).</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="136"/>
+        <location filename="../src/main.cpp" line="151"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="137"/>
+        <location filename="../src/main.cpp" line="152"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
         <translation>Sembla que esteu connectat com a administrador, si us plau sortiu i connecteu-vos com a usuari normal per a usar aquest programa.</translation>
     </message>

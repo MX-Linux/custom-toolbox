@@ -4,9 +4,9 @@
 <context>
     <name>LauncherCard</name>
     <message>
-        <location filename="../qml/components/LauncherCard.qml" line="70"/>
+        <location filename="../qml/components/LauncherCard.qml" line="77"/>
         <source>Open this launcher</source>
-        <translation type="unfinished"></translation>
+        <translation>Otwórz program uruchamiający</translation>
     </message>
 </context>
 <context>
@@ -14,119 +14,120 @@
     <message>
         <location filename="../qml/Main.qml" line="43"/>
         <source>Configuration error</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd konfiguracji</translation>
     </message>
     <message>
         <location filename="../qml/Main.qml" line="131"/>
         <source>Search launchers</source>
-        <translation type="unfinished"></translation>
+        <translation>Wyszukaj programy uruchamiające</translation>
     </message>
     <message>
         <location filename="../qml/Main.qml" line="154"/>
         <source>Search launchers and tasks…</source>
-        <translation type="unfinished"></translation>
+        <translation>Wyszukaj programy uruchamiające i zadania…</translation>
     </message>
     <message>
         <location filename="../qml/Main.qml" line="166"/>
         <source>Clear search</source>
-        <translation type="unfinished"></translation>
+        <translation>Wyczyść wyszukiwanie</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="213"/>
+        <location filename="../qml/Main.qml" line="215"/>
         <source>CATEGORIES</source>
-        <translation type="unfinished"></translation>
+        <translation>KATEGORIE</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="249"/>
-        <location filename="../qml/Main.qml" line="459"/>
+        <location filename="../qml/Main.qml" line="251"/>
+        <location filename="../qml/Main.qml" line="476"/>
         <source>Launch at login</source>
-        <translation type="unfinished"></translation>
+        <translation>Uruchom przy logowaniu</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="256"/>
+        <location filename="../qml/Main.qml" line="258"/>
         <source>Open this toolbox automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Otwórz ten zestaw narzędzi automatycznie</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="266"/>
-        <location filename="../qml/Main.qml" line="468"/>
+        <location filename="../qml/Main.qml" line="268"/>
+        <location filename="../qml/Main.qml" line="485"/>
         <source>Launch this toolbox at login</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/Main.qml" line="332"/>
-        <source>Search results</source>
-        <translation type="unfinished"></translation>
+        <translation>Uruchom ten zestaw narzędzi po zalogowaniu</translation>
     </message>
     <message>
         <location filename="../qml/Main.qml" line="334"/>
+        <source>Search results</source>
+        <translation>Wyniki wyszukiwania</translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="336"/>
         <source>All launchers</source>
-        <translation type="unfinished"></translation>
+        <translation>Wszystkie programy uruchamiające</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="341"/>
+        <location filename="../qml/Main.qml" line="343"/>
         <source>Results matching “%1”</source>
-        <translation type="unfinished"></translation>
+        <translation>Wyniki pasujące do „%1”</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="342"/>
+        <location filename="../qml/Main.qml" line="344"/>
         <source>Choose a launcher to start an application or task</source>
-        <translation type="unfinished"></translation>
+        <translation>Wybierz program uruchamiający, aby uruchomić program lub zadanie</translation>
     </message>
     <message numerus="yes">
-        <location filename="../qml/Main.qml" line="349"/>
+        <location filename="../qml/Main.qml" line="351"/>
         <source>%n launcher(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n program uruchamiający</numerusform>
+            <numerusform>%n programy uruchamiające</numerusform>
+            <numerusform>%n programów uruchamiających</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="364"/>
+        <location filename="../qml/Main.qml" line="366"/>
         <source>Condensed view</source>
-        <translation type="unfinished"></translation>
+        <translation>Widok zwięzły</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="373"/>
+        <location filename="../qml/Main.qml" line="376"/>
         <source>Use condensed launcher view</source>
-        <translation type="unfinished"></translation>
+        <translation>Użyj zwięzłego widoku programu uruchamiającego</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="375"/>
+        <location filename="../qml/Main.qml" line="379"/>
         <source>Show more launchers at once</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokaż więcej programów uruchamiających jednocześnie</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="447"/>
+        <location filename="../qml/Main.qml" line="464"/>
         <source>No launchers found
 Try a different search or category.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie znaleziono programów uruchamiających.
+Spróbuj innego wyszukiwania lub kategorii.</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="498"/>
+        <location filename="../qml/Main.qml" line="515"/>
         <source>About %1</source>
-        <translation type="unfinished">O %1</translation>
+        <translation>O %1</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="531"/>
+        <location filename="../qml/Main.qml" line="548"/>
         <source>Version %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/Main.qml" line="537"/>
-        <source>Custom Toolbox creates focused collections of application launchers and system tasks.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/Main.qml" line="545"/>
-        <source>License</source>
-        <translation type="unfinished">Licencja</translation>
+        <translation>Wersja %1</translation>
     </message>
     <message>
         <location filename="../qml/Main.qml" line="554"/>
+        <source>Custom Toolbox creates focused collections of application launchers and system tasks.</source>
+        <translation>Niestandardowy zestaw narzędzi tworzy wyspecjalizowane zbiory programów uruchamiających aplikacje i zadania systemowe.</translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="562"/>
+        <source>License</source>
+        <translation>Licencja</translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="571"/>
         <source>Copyright © MX Linux</source>
-        <translation type="unfinished"></translation>
+        <translation>Prawa autorskie © MX Linux</translation>
     </message>
 </context>
 <context>
@@ -137,66 +138,30 @@ Try a different search or category.</source>
         <translation>Niestandardowy zestaw narzędzi</translation>
     </message>
     <message>
-        <source>About this application</source>
-        <translation type="vanished">O programie</translation>
-    </message>
-    <message>
-        <location filename="../qml/Main.qml" line="182"/>
+        <location filename="../qml/Main.qml" line="184"/>
         <source>About...</source>
         <translation>O...</translation>
     </message>
     <message>
-        <source>Alt+A</source>
-        <translation type="vanished">Alt+A</translation>
-    </message>
-    <message>
-        <source>Customize launcher</source>
-        <translation type="vanished">Dostosuj program uruchamiający</translation>
-    </message>
-    <message>
-        <location filename="../qml/Main.qml" line="473"/>
+        <location filename="../qml/Main.qml" line="490"/>
         <source>Edit</source>
         <translation>Edytuj</translation>
     </message>
     <message>
-        <source>Alt+E</source>
-        <translation type="vanished">Alt+E</translation>
-    </message>
-    <message>
-        <location filename="../qml/Main.qml" line="174"/>
+        <location filename="../qml/Main.qml" line="176"/>
         <location filename="../src/launchermodel.cpp" line="727"/>
         <source>Help</source>
         <translation>Pomoc</translation>
     </message>
     <message>
-        <source>Alt+H</source>
-        <translation type="vanished">Alt+H</translation>
-    </message>
-    <message>
-        <source>Close application</source>
-        <translation type="vanished">Zamknij program</translation>
-    </message>
-    <message>
-        <location filename="../qml/Main.qml" line="481"/>
+        <location filename="../qml/Main.qml" line="498"/>
         <source>Close</source>
         <translation>Zamknij</translation>
-    </message>
-    <message>
-        <source>Alt+C</source>
-        <translation type="vanished">Alt+C</translation>
     </message>
     <message>
         <location filename="../src/launchermodel.h" line="100"/>
         <source>This is a custom launcher</source>
         <translation>To jest niestandardowy program uruchamiający</translation>
-    </message>
-    <message>
-        <source>Show this dialog at start up</source>
-        <translation type="vanished">Pokaż to okno podczas uruchamiania</translation>
-    </message>
-    <message>
-        <source>search</source>
-        <translation type="vanished">szukaj</translation>
     </message>
     <message>
         <location filename="../src/launchermodel.cpp" line="553"/>
@@ -215,7 +180,7 @@ Try a different search or category.</source>
     <message>
         <location filename="../src/launchermodel.cpp" line="553"/>
         <source>The selected launcher is no longer available.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wybrany program uruchamiający nie jest już dostępny.</translation>
     </message>
     <message>
         <location filename="../src/launchermodel.cpp" line="611"/>
@@ -235,13 +200,13 @@ Try a different search or category.</source>
     <message>
         <location filename="../src/launchermodel.cpp" line="414"/>
         <location filename="../src/launchermodel.cpp" line="858"/>
-        <location filename="../src/main.cpp" line="67"/>
+        <location filename="../src/main.cpp" line="70"/>
         <source>File Open Error</source>
         <translation>Błąd otwierania pliku</translation>
     </message>
     <message>
         <location filename="../src/launchermodel.cpp" line="401"/>
-        <location filename="../src/main.cpp" line="156"/>
+        <location filename="../src/main.cpp" line="171"/>
         <source>File Not Found</source>
         <translation>Nie znaleziono pliku</translation>
     </message>
@@ -252,7 +217,7 @@ Try a different search or category.</source>
     </message>
     <message>
         <location filename="../src/launchermodel.cpp" line="401"/>
-        <location filename="../src/main.cpp" line="157"/>
+        <location filename="../src/main.cpp" line="172"/>
         <source>The file %1 does not exist.</source>
         <translation>Plik %1 nie istnieje.</translation>
     </message>
@@ -275,7 +240,7 @@ Try a different search or category.</source>
     <message>
         <location filename="../src/launchermodel.cpp" line="426"/>
         <source>All launchers</source>
-        <translation type="unfinished"></translation>
+        <translation>Wszystkie programy uruchamiające</translation>
     </message>
     <message>
         <location filename="../src/launchermodel.cpp" line="449"/>
@@ -285,40 +250,17 @@ Try a different search or category.</source>
     <message>
         <location filename="../src/launchermodel.cpp" line="568"/>
         <source>Launcher already running</source>
-        <translation type="unfinished"></translation>
+        <translation>Program uruchamiający już działa</translation>
     </message>
     <message>
         <location filename="../src/launchermodel.cpp" line="569"/>
         <source>%1 is already running.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/launchermodel.cpp" line="727"/>
-        <location filename="../src/launchermodel.cpp" line="734"/>
-        <source>Could not open %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 jest już uruchomiony.</translation>
     </message>
     <message>
         <location filename="../src/launchermodel.cpp" line="781"/>
         <source>Refusing to overwrite a non-Custom Toolbox autostart file: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/launchermodel.cpp" line="887"/>
-        <source>Could not reload the configuration. The previous configuration is still in use.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Version:</source>
-        <translation type="vanished">Wersja:</translation>
-    </message>
-    <message>
-        <source>About %1</source>
-        <translation type="vanished">O %1</translation>
-    </message>
-    <message>
-        <source>Directory Creation Error</source>
-        <translation type="vanished">Błąd tworzenia katalogu</translation>
+        <translation>Odmowa nadpisania pliku autostartu innego niż Niestandardowy zestaw narzędzi: %1</translation>
     </message>
     <message>
         <location filename="../src/launchermodel.cpp" line="849"/>
@@ -348,20 +290,15 @@ Try a different search or category.</source>
         <translation>Nie udało się ustalić użytkownika bez uprawnień. Odmowa uruchomienia edytora jako root.</translation>
     </message>
     <message>
-        <source>Custom Toolbox is a tool used for creating a custom launcher</source>
-        <translation type="vanished">Custom Toolbox to narzędzie służące do tworzenia niestandardowego programu uruchamiającego</translation>
+        <location filename="../src/launchermodel.cpp" line="727"/>
+        <location filename="../src/launchermodel.cpp" line="734"/>
+        <source>Could not open %1.</source>
+        <translation>Nie udało się otworzyć %1.</translation>
     </message>
     <message>
-        <source>Copyright (c) MX Linux</source>
-        <translation type="vanished">Prawa autorskie © MX Linux</translation>
-    </message>
-    <message>
-        <source>%1 License</source>
-        <translation type="vanished">%1 Licencja</translation>
-    </message>
-    <message>
-        <source>%1 Help</source>
-        <translation type="vanished">%1 Pomoc</translation>
+        <location filename="../src/launchermodel.cpp" line="887"/>
+        <source>Could not reload the configuration. The previous configuration is still in use.</source>
+        <translation>Nie udało się przeładować konfiguracji. Poprzednia konfiguracja jest nadal używana.</translation>
     </message>
     <message>
         <location filename="../src/launchermodel.cpp" line="800"/>
@@ -370,26 +307,22 @@ Try a different search or category.</source>
         <translation>Nie można zapisać pliku: %1</translation>
     </message>
     <message>
-        <source>File Removal Error</source>
-        <translation type="vanished">Błąd usuwania pliku</translation>
-    </message>
-    <message>
         <location filename="../src/launchermodel.cpp" line="854"/>
         <source>Could not remove file: %1</source>
         <translation>Nie można usunąć pliku: %1</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="56"/>
+        <location filename="../src/main.cpp" line="59"/>
         <source>Open List File</source>
         <translation>Otwórz plik listy</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="58"/>
+        <location filename="../src/main.cpp" line="61"/>
         <source>List Files (*.list)</source>
         <translation>Pliki list (*.list)</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="68"/>
+        <location filename="../src/main.cpp" line="71"/>
         <source>Could not open file. Do you want to try again?</source>
         <translation>Nie można otworzyć pliku. Czy chcesz spróbować ponownie?</translation>
     </message>
@@ -397,56 +330,32 @@ Try a different search or category.</source>
 <context>
     <name>QObject</name>
     <message>
-        <source>Could not load %1</source>
-        <translation type="vanished">Nie udało się załadować %1</translation>
-    </message>
-    <message>
-        <source>License</source>
-        <translation type="vanished">Licencja</translation>
-    </message>
-    <message>
-        <source>Changelog</source>
-        <translation type="vanished">Dziennik zmian</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Anuluj</translation>
-    </message>
-    <message>
-        <source>Could not load changelog.</source>
-        <translation type="vanished">Nie udało się załadować dziennika zmian.</translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation type="vanished">&amp;Zamknij</translation>
-    </message>
-    <message>
-        <location filename="../src/main.cpp" line="95"/>
+        <location filename="../src/main.cpp" line="105"/>
         <source>Custom Toolbox</source>
-        <translation type="unfinished">Niestandardowy zestaw narzędzi</translation>
+        <translation>Niestandardowy zestaw narzędzi</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="120"/>
+        <location filename="../src/main.cpp" line="135"/>
         <source>This app can be used to create custom launchers: box of buttons/icons</source>
         <translation>Tej aplikacji można używać do tworzenia niestandardowych programów uruchamiających: okna z przyciskami / ikonami</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="123"/>
+        <location filename="../src/main.cpp" line="138"/>
         <source>Don&apos;t show &apos;show this dialog at startup&apos; checkbox</source>
         <translation>Nie pokazuj pola wyboru „pokaż to okno dialogowe podczas uruchamiania”.</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="125"/>
+        <location filename="../src/main.cpp" line="140"/>
         <source>Full path and name of the .list file you want to load. Supports both custom format (Key=Value) and INI format ([Section]).</source>
         <translation>Pełna ścieżka i nazwa pliku .list, który chcesz załadować. Obsługuje zarówno format niestandardowy (klucz=wartość), jak i format INI ([sekcja]).</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="136"/>
+        <location filename="../src/main.cpp" line="151"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="137"/>
+        <location filename="../src/main.cpp" line="152"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
         <translation>Wygląda na to, że jesteś zalogowany jako root, wyloguj się i zaloguj jako zwykły użytkownik, aby korzystać z tego programu.</translation>
     </message>
