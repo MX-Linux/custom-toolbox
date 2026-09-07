@@ -225,8 +225,8 @@ update_aur_package() {
     print_step "Converting to tarball source and calculating checksum..."
     local tarball_url="https://github.com/MX-Linux/custom-toolbox/archive/refs/tags/${version}.tar.gz"
 
-    # Update source in PKGBUILD
-    sed -i "s|source=.*|source=(\"${tarball_url}\")|" PKGBUILD
+    # Update source in PKGBUILD (preserve the local custom-toolbox.1 source entry)
+    perl -0777 -pe "s{source=\(.*?\)}{source=(\"${tarball_url}\"\n        'custom-toolbox.1')}s" -i PKGBUILD
 
     # Remove git from makedepends if present
     sed -i '/makedepends=.*git/d' PKGBUILD
@@ -256,8 +256,10 @@ update_aur_package() {
         checksum="PLACEHOLDER_NEEDS_ACTUAL_CHECKSUM"
     fi
 
-    # Update checksum in PKGBUILD
-    sed -i "s/sha256sums=.*/sha256sums=('${checksum}')/" PKGBUILD
+    # Update checksum in PKGBUILD (preserve the checksum for custom-toolbox.1)
+    local man_checksum
+    man_checksum=$(sha256sum custom-toolbox.1 | cut -d' ' -f1)
+    perl -0777 -pe "s{sha256sums=\(.*?\)}{sha256sums=('${checksum}'\n            '${man_checksum}')}s" -i PKGBUILD
 
     # Regenerate .SRCINFO from PKGBUILD
     print_step "Regenerating .SRCINFO..."
