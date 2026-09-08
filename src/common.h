@@ -34,6 +34,7 @@
 namespace Config {
     inline const QString ConfigDir = QStringLiteral(CUSTOM_TOOLBOX_SYSCONFDIR) + "/custom-toolbox";
     inline const QString ConfigFile = ConfigDir + "/custom-toolbox.conf";
+    inline const QString LocaleDir = QStringLiteral(CUSTOM_TOOLBOX_DATADIR) + "/custom-toolbox/locale";
     inline const QString DocDir = QStringLiteral(CUSTOM_TOOLBOX_DATADIR) + "/doc/custom-toolbox";
     inline const QString HelpFile = DocDir + "/help.html";
     inline const QString LicenseFile = DocDir + "/license.html";
