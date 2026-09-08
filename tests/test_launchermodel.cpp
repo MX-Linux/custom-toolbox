@@ -2,6 +2,7 @@
 #include <QDir>
 #include <QFile>
 #include <QSignalSpy>
+#include <QScopeGuard>
 #include <QTemporaryDir>
 #include <QTest>
 #include <QTextStream>
@@ -17,6 +18,8 @@ private slots:
     void filtersAndExposesLauncherRoles();
     void escapesAutostartExec_data();
     void escapesAutostartExec();
+    void autostartLocation_data();
+    void autostartLocation();
 };
 
 void TestLauncherModel::filtersAndExposesLauncherRoles()
@@ -93,6 +96,15 @@ void TestLauncherModel::escapesAutostartExec()
     QTemporaryDir directory;
     QVERIFY(directory.isValid());
     qputenv("HOME", directory.path().toUtf8());
+    const QByteArray previousConfig = qgetenv("XDG_CONFIG_HOME");
+    const auto restoreConfig = qScopeGuard([&] {
+        if (previousConfig.isNull()) {
+            qunsetenv("XDG_CONFIG_HOME");
+        } else {
+            qputenv("XDG_CONFIG_HOME", previousConfig);
+        }
+    });
+    qunsetenv("XDG_CONFIG_HOME");
     const QString listPath = directory.filePath(fileName);
     QFile listFile(listPath);
     QVERIFY(listFile.open(QFile::WriteOnly));
@@ -123,6 +135,77 @@ void TestLauncherModel::escapesAutostartExec()
                                              &program, &arguments));
     QCOMPARE(program, "custom-toolbox");
     QCOMPARE(arguments, QStringList {listPath});
+}
+
+void TestLauncherModel::autostartLocation_data()
+{
+    QTest::addColumn<bool>("customConfig");
+    QTest::addColumn<bool>("legacy");
+    QTest::newRow("default-create") << false << false;
+    QTest::newRow("custom-create") << true << false;
+    QTest::newRow("default-migrate") << false << true;
+    QTest::newRow("custom-migrate") << true << true;
+}
+
+void TestLauncherModel::autostartLocation()
+{
+    QFETCH(bool, customConfig);
+    QFETCH(bool, legacy);
+    QTemporaryDir directory;
+    QVERIFY(directory.isValid());
+    const QByteArray previousConfig = qgetenv("XDG_CONFIG_HOME");
+    const auto restoreConfig = qScopeGuard([&] {
+        if (previousConfig.isNull()) {
+            qunsetenv("XDG_CONFIG_HOME");
+        } else {
+            qputenv("XDG_CONFIG_HOME", previousConfig);
+        }
+    });
+    qputenv("HOME", directory.path().toUtf8());
+    const QString config = directory.filePath(customConfig ? "custom config" : ".config");
+    if (customConfig) {
+        qputenv("XDG_CONFIG_HOME", config.toUtf8());
+    } else {
+        qunsetenv("XDG_CONFIG_HOME");
+    }
+    const QString listPath = directory.filePath("tools.list");
+    QFile listFile(listPath);
+    QVERIFY(listFile.open(QFile::WriteOnly));
+    QVERIFY(listFile.write("Name=Tools\nCategory=Utilities\n/bin/true\n") > 0);
+    listFile.close();
+    const QDir autostart(config + "/autostart");
+    const QString legacyPath = autostart.filePath("tools.desktop");
+    if (legacy) {
+        QVERIFY(QDir().mkpath(autostart.path()));
+        QFile legacyFile(legacyPath);
+        QVERIFY(legacyFile.open(QFile::WriteOnly));
+        QVERIFY(legacyFile.write(("[Desktop Entry]\nExec=custom-toolbox " + listPath + "\n").toUtf8()) > 0);
+    }
+
+    QCommandLineParser parser;
+    parser.addOption({QStringLiteral("remove-checkbox"), QStringLiteral("test option")});
+    QVERIFY(parser.parse({QStringLiteral("custom-toolbox")}));
+    LauncherIconProvider iconProvider;
+    LauncherModel model(parser, listPath, &iconProvider);
+    QCOMPARE(model.startupEnabled(), legacy);
+    QSignalSpy errors(&model, &LauncherModel::errorOccurred);
+    model.setStartupEnabled(true);
+    QCOMPARE(errors.count(), 0);
+    QVERIFY(model.startupEnabled());
+    QVERIFY(!QFile::exists(legacyPath));
+    QCOMPARE(autostart.entryList({"custom-toolbox-*.desktop"}, QDir::Files).size(), 1);
+    if (customConfig) {
+        QVERIFY(!QDir(directory.filePath(".config/autostart")).exists());
+    }
+
+    LauncherIconProvider reopenedIcons;
+    LauncherModel reopened(parser, listPath, &reopenedIcons);
+    QVERIFY(reopened.startupEnabled());
+    QSignalSpy reopenedErrors(&reopened, &LauncherModel::errorOccurred);
+    reopened.setStartupEnabled(false);
+    QCOMPARE(reopenedErrors.count(), 0);
+    QVERIFY(!reopened.startupEnabled());
+    QVERIFY(autostart.entryList({"*.desktop"}, QDir::Files).isEmpty());
 }
 
 QTEST_MAIN(TestLauncherModel)

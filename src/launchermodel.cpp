@@ -744,7 +744,8 @@ QString LauncherModel::autostartSourceHash() const
 
 QString LauncherModel::autostartFilePath() const
 {
-    return QDir::homePath() + QStringLiteral("/.config/autostart/custom-toolbox-")
+    return QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation)
+           + QStringLiteral("/autostart/custom-toolbox-")
            + autostartSourceHash().left(16) + QStringLiteral(".desktop");
 }
 
@@ -818,10 +819,10 @@ bool LauncherModel::writeAutostartFile(QString *errorMessage) const
 
 void LauncherModel::migrateLegacyAutostart()
 {
-    const QString directory = QDir::homePath() + QStringLiteral("/.config/autostart/");
+    const QString directory = QFileInfo(autostartFilePath()).absolutePath();
     const QFileInfo info(fileName);
     for (const QString &name : {launcherCustomName, info.baseName()}) {
-        const QString legacyPath = directory + name + QStringLiteral(".desktop");
+        const QString legacyPath = QDir(directory).filePath(name + QStringLiteral(".desktop"));
         if (legacyPath == autostartFilePath() || !isLegacyAutostartFile(legacyPath)) {
             continue;
         }
@@ -841,7 +842,7 @@ void LauncherModel::setStartupEnabled(bool enabled)
     if (startupState == enabled) {
         return;
     }
-    const QString directory = QDir::homePath() + QStringLiteral("/.config/autostart/");
+    const QString directory = QFileInfo(autostartFilePath()).absolutePath();
     QString error;
     bool success = true;
     if (enabled) {
