@@ -17,6 +17,8 @@ private slots:
     void expandsEnvironmentVariablesInDesktopExec();
     void keepsEscapedAndMalformedReferencesLiteral();
     void dropsUnsetVariableToken();
+    void decodesDesktopExecEscapes_data();
+    void decodesDesktopExecEscapes();
 };
 
 void LauncherParserTest::parsesCustomFormatWithQuotedAliasAndComment()
@@ -137,6 +139,34 @@ void LauncherParserTest::dropsUnsetVariableToken()
                                              &program, &arguments));
     QCOMPARE(program, "app");
     QCOMPARE(arguments, (QStringList {"arg", "VAR="}));
+}
+
+void LauncherParserTest::decodesDesktopExecEscapes_data()
+{
+    QTest::addColumn<QString>("exec");
+    QTest::addColumn<QStringList>("expected");
+
+    // Raw strings represent the bytes in the desktop file, before either decoding pass.
+    QTest::newRow("literal-backslash") << QString(R"(app "a\\\\b")") << QStringList {R"(a\b)"};
+    QTest::newRow("trailing-backslash") << QString(R"(app "a\\\\")") << QStringList {R"(a\)"};
+    QTest::newRow("literal-backslash-n") << QString(R"(app "a\\\\nb")") << QStringList {R"(a\nb)"};
+    QTest::newRow("quoted-reserved-characters")
+        << QString(R"(app "a\\"b" "\\$PATH" "\\`literal\\`")")
+        << QStringList {"a\"b", "$PATH", "`literal`"};
+    QTest::newRow("general-string-escapes")
+        << QString(R"(app "a\sb\tc\nd\re" one\stwo)")
+        << QStringList {"a b\tc\nd\re", "one", "two"};
+}
+
+void LauncherParserTest::decodesDesktopExecEscapes()
+{
+    QFETCH(QString, exec);
+    QFETCH(QStringList, expected);
+    QString program;
+    QStringList arguments;
+    QVERIFY(LauncherParser::parseDesktopExec(exec, "app", "", "app.desktop", &program, &arguments));
+    QCOMPARE(program, "app");
+    QCOMPARE(arguments, expected);
 }
 
 QTEST_MAIN(LauncherParserTest)

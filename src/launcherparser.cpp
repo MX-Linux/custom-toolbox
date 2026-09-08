@@ -41,9 +41,44 @@ qsizetype unquotedCommentIndex(QStringView line)
 }
 } // namespace
 
-bool LauncherParser::parseDesktopExec(const QString &exec, const QString &applicationName, const QString &iconName,
+bool LauncherParser::parseDesktopExec(const QString &rawExec, const QString &applicationName, const QString &iconName,
                                       const QString &desktopFile, QString *program, QStringList *arguments)
 {
+    // Desktop Entry string escaping is a separate layer from Exec argument
+    // quoting: four backslashes in the file become two here, then one below.
+    QString exec;
+    exec.reserve(rawExec.size());
+    for (qsizetype i = 0; i < rawExec.size(); ++i) {
+        const QChar c = rawExec.at(i);
+        if (c != QLatin1Char('\\') || i + 1 == rawExec.size()) {
+            exec.append(c);
+            continue;
+        }
+        switch (rawExec.at(i + 1).unicode()) {
+        case 's':
+            exec.append(QLatin1Char(' '));
+            break;
+        case 'n':
+            exec.append(QLatin1Char('\n'));
+            break;
+        case 't':
+            exec.append(QLatin1Char('\t'));
+            break;
+        case 'r':
+            exec.append(QLatin1Char('\r'));
+            break;
+        case '\\':
+            exec.append(QLatin1Char('\\'));
+            break;
+        default:
+            // Preserve nonstandard escapes such as \$ for the Exec pass,
+            // maintaining compatibility with existing launcher wrappers.
+            exec.append(c);
+            continue;
+        }
+        ++i;
+    }
+
     QStringList parts;
     QString current;
     bool inQuotes {};
