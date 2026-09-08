@@ -19,8 +19,8 @@ ApplicationWindow {
 
     width: 1080
     height: 720
-    minimumWidth: 720
-    minimumHeight: 560
+    minimumWidth: backend.minimumWidth
+    minimumHeight: backend.minimumHeight
     visible: true
     title: backend.title
     color: backgroundColor
@@ -406,8 +406,15 @@ ApplicationWindow {
                 boundsBehavior: Flickable.StopAtBounds
                 ScrollBar.vertical: ScrollBar { policy: ScrollBar.AlwaysOn }
                 model: root.backend
-                cellWidth: width / Math.max(1, Math.floor(width / (root.condensedView ? 230 : 300)))
-                cellHeight: root.condensedView ? 112 : 154
+                readonly property int launcherIconSize: root.backend.iconSize > 0
+                                                       ? root.backend.iconSize : (root.condensedView ? 30 : 38)
+                readonly property int columnCount: root.backend.fixedNumberColumns > 0
+                                                   ? root.backend.fixedNumberColumns
+                                                   : Math.max(1, Math.floor(width / Math.max(
+                                                       root.condensedView ? 230 : 300, launcherIconSize + 180)))
+                cellWidth: width / columnCount
+                cellHeight: Math.max(root.condensedView ? 112 : 154,
+                                     launcherIconSize + (root.condensedView ? 48 : 64))
 
                 Timer {
                     id: returnToBoundsTimer
@@ -445,6 +452,7 @@ ApplicationWindow {
                     description: comment
                     categoryName: category
                     condensed: root.condensedView
+                    iconSize: launcherGrid.launcherIconSize
                     surfaceColor: root.surfaceColor
                     hoverSurfaceColor: root.raisedSurfaceColor
                     primaryTextColor: root.primaryTextColor

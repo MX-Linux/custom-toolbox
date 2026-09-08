@@ -11,6 +11,7 @@ Button {
     required property string categoryName
     required property string iconSource
     property bool condensed: false
+    property int iconSize: condensed ? 30 : 38
     property color surfaceColor: systemPalette.base
     property color hoverSurfaceColor: Qt.tint(systemPalette.base, Qt.alpha(systemPalette.highlight, 0.08))
     property color primaryTextColor: systemPalette.text
@@ -44,17 +45,17 @@ Button {
         spacing: control.condensed ? 10 : 15
         Rectangle {
             Layout.alignment: Qt.AlignTop
-            Layout.preferredWidth: control.condensed ? 42 : 54
-            Layout.preferredHeight: control.condensed ? 42 : 54
+            Layout.preferredWidth: control.iconSize + (control.condensed ? 12 : 16)
+            Layout.preferredHeight: control.iconSize + (control.condensed ? 12 : 16)
             radius: 6
             color: Qt.alpha(control.accentColor, control.hovered ? 0.16 : 0.10)
             Image {
                 anchors.centerIn: parent
-                width: control.condensed ? 30 : 38
-                height: control.condensed ? 30 : 38
+                width: control.iconSize
+                height: control.iconSize
                 source: control.iconSource
-                sourceSize.width: 48
-                sourceSize.height: 48
+                sourceSize.width: control.iconSize
+                sourceSize.height: control.iconSize
                 fillMode: Image.PreserveAspectFit
             }
         }

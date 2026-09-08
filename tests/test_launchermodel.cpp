@@ -7,6 +7,7 @@
 #include <QTest>
 #include <QTextStream>
 
+#include "common.h"
 #include "launchermodel.h"
 #include "launcherparser.h"
 
@@ -20,6 +21,8 @@ private slots:
     void escapesAutostartExec();
     void autostartLocation_data();
     void autostartLocation();
+    void readsLayoutSettings_data();
+    void readsLayoutSettings();
 };
 
 void TestLauncherModel::filtersAndExposesLauncherRoles()
@@ -206,6 +209,51 @@ void TestLauncherModel::autostartLocation()
     QCOMPARE(reopenedErrors.count(), 0);
     QVERIFY(!reopened.startupEnabled());
     QVERIFY(autostart.entryList({"*.desktop"}, QDir::Files).isEmpty());
+}
+
+void TestLauncherModel::readsLayoutSettings_data()
+{
+    QTest::addColumn<QByteArray>("config");
+    QTest::addColumn<QList<int>>("expected");
+    QTest::newRow("defaults") << QByteArray() << QList<int> {720, 560, 0, 0};
+    QTest::newRow("configured")
+        << QByteArray("min_width=840\nmin_height=640\nicon_size=64\nfixed_number_columns=3\n")
+        << QList<int> {840, 640, 64, 3};
+    QTest::newRow("minimums")
+        << QByteArray("min_width=100\nmin_height=-1\nicon_size=-2\nfixed_number_columns=-3\n")
+        << QList<int> {300, 300, 0, 0};
+    QTest::newRow("invalid")
+        << QByteArray("min_width=bad\nmin_height=bad\nicon_size=bad\nfixed_number_columns=bad\n")
+        << QList<int> {720, 560, 0, 0};
+}
+
+void TestLauncherModel::readsLayoutSettings()
+{
+    QFETCH(QByteArray, config);
+    QFETCH(QList<int>, expected);
+    QVERIFY(QDir().mkpath(Config::ConfigDir));
+    QFile configFile(Config::ConfigFile);
+    QVERIFY(configFile.open(QFile::WriteOnly));
+    QCOMPARE(configFile.write(config), config.size());
+    configFile.close();
+    const auto removeConfig = qScopeGuard([] { QFile::remove(Config::ConfigFile); });
+
+    QTemporaryDir directory;
+    QVERIFY(directory.isValid());
+    const QString listPath = directory.filePath("layout.list");
+    QFile listFile(listPath);
+    QVERIFY(listFile.open(QFile::WriteOnly));
+    QVERIFY(listFile.write("Name=Layout\nCategory=Utilities\n/bin/true\n") > 0);
+    listFile.close();
+    QCommandLineParser parser;
+    parser.addOption({QStringLiteral("remove-checkbox"), QStringLiteral("test option")});
+    QVERIFY(parser.parse({QStringLiteral("custom-toolbox")}));
+    LauncherIconProvider icons;
+    LauncherModel model(parser, listPath, &icons);
+    QCOMPARE(model.minimumWidth(), expected.at(0));
+    QCOMPARE(model.minimumHeight(), expected.at(1));
+    QCOMPARE(model.iconSize(), expected.at(2));
+    QCOMPARE(model.fixedNumberColumns(), expected.at(3));
 }
 
 QTEST_MAIN(TestLauncherModel)

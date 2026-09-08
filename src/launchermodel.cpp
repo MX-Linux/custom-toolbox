@@ -125,6 +125,15 @@ LauncherModel::LauncherModel(const QCommandLineParser &argParser, const QString 
       removeStartupCheckbox(argParser.isSet(QStringLiteral("remove-checkbox")))
 {
     QSettings settings(Config::ConfigFile, QSettings::NativeFormat);
+    auto integerSetting = [&settings](const QString &key, int fallback, int minimum) {
+        bool ok = false;
+        const int value = settings.value(key, fallback).toInt(&ok);
+        return ok ? std::max(minimum, value) : fallback;
+    };
+    configuredMinimumWidth = integerSetting(QStringLiteral("min_width"), 720, 300);
+    configuredMinimumHeight = integerSetting(QStringLiteral("min_height"), 560, 300);
+    configuredIconSize = integerSetting(QStringLiteral("icon_size"), 0, 0);
+    configuredColumns = integerSetting(QStringLiteral("fixed_number_columns"), 0, 0);
     hideGui = settings.value(QStringLiteral("hideGUI"), false).toBool();
     guiEditor = settings.value(QStringLiteral("gui_editor")).toString();
 

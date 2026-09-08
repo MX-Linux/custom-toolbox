@@ -42,6 +42,10 @@ class LauncherModel final : public QAbstractListModel
     Q_PROPERTY(bool startupEnabled READ startupEnabled WRITE setStartupEnabled NOTIFY startupEnabledChanged)
     Q_PROPERTY(bool startupVisible READ startupVisible CONSTANT)
     Q_PROPERTY(QString reloadMessage READ reloadMessage NOTIFY reloadMessageChanged)
+    Q_PROPERTY(int minimumWidth READ minimumWidth CONSTANT)
+    Q_PROPERTY(int minimumHeight READ minimumHeight CONSTANT)
+    Q_PROPERTY(int iconSize READ iconSize CONSTANT)
+    Q_PROPERTY(int fixedNumberColumns READ fixedNumberColumns CONSTANT)
 
 public:
     enum Role {
@@ -72,6 +76,11 @@ public:
     void setStartupEnabled(bool enabled);
     [[nodiscard]] bool startupVisible() const;
     [[nodiscard]] QString reloadMessage() const;
+
+    [[nodiscard]] int minimumWidth() const { return configuredMinimumWidth; }
+    [[nodiscard]] int minimumHeight() const { return configuredMinimumHeight; }
+    [[nodiscard]] int iconSize() const { return configuredIconSize; }
+    [[nodiscard]] int fixedNumberColumns() const { return configuredColumns; }
 
     Q_INVOKABLE void launch(int sourceIndex);
     Q_INVOKABLE void edit();
@@ -115,6 +124,10 @@ private:
     bool removeStartupCheckbox {};
     bool startupState {};
     int iconRevision {};
+    int configuredMinimumWidth {720};
+    int configuredMinimumHeight {560};
+    int configuredIconSize {};
+    int configuredColumns {};
 
     mutable QHash<QString, QString> desktopFileCache;
     mutable QHash<QString, QString> desktopFileIndex;

@@ -314,6 +314,9 @@ if(BUILD_TESTING)
     else()
         target_compile_options(test-launchermodel PRIVATE -Werror=return-local-addr)
     endif()
+    target_compile_definitions(test-launchermodel PRIVATE
+        CUSTOM_TOOLBOX_SYSCONFDIR="${CMAKE_CURRENT_BINARY_DIR}/test-config"
+    )
     target_include_directories(test-launchermodel PRIVATE src)
     add_test(NAME launchermodel COMMAND test-launchermodel)
     set_tests_properties(launchermodel PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
