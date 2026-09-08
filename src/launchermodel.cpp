@@ -792,6 +792,7 @@ bool LauncherModel::writeAutostartFile(QString *errorMessage) const
         value.replace('\\', QStringLiteral("\\\\"));
         value.replace('"', QStringLiteral("\\\""));
         value.replace('$', QStringLiteral("\\$"));
+        value.replace('%', QStringLiteral("%%"));
         value.replace('`', QStringLiteral("\\`"));
         return QLatin1Char('"') + value + QLatin1Char('"');
     };
@@ -803,7 +804,7 @@ bool LauncherModel::writeAutostartFile(QString *errorMessage) const
     QTextStream stream(&file);
     stream << "[Desktop Entry]\nName=" << escape(launcherTitle)
            << "\nComment=" << escape(launcherDescription)
-           << "\nExec=custom-toolbox " << quote(QFileInfo(fileName).absoluteFilePath())
+           << "\nExec=custom-toolbox " << escape(quote(QFileInfo(fileName).absoluteFilePath()))
            << "\nTerminal=false\nType=Application\nIcon=custom-toolbox\nCategories=XFCE;System\n"
               "StartupNotify=false\nX-Custom-Toolbox-Managed=true\nX-Custom-Toolbox-Source-SHA256="
            << autostartSourceHash() << '\n';
