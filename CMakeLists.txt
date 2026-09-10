@@ -172,6 +172,7 @@ endif()
 qt6_add_qml_module(custom-toolbox
     URI CustomToolbox
     VERSION 1.0
+    RESOURCE_PREFIX /qt/qml
     QML_FILES
         ${MAIN_QML_ENTRY}
         qml/components/CategoryButton.qml

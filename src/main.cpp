@@ -103,12 +103,7 @@ int main(int argc, char *argv[])
 
     QApplication::setApplicationName("custom-toolbox");
     QApplication::setApplicationDisplayName(QObject::tr("Custom Toolbox"));
-    const auto bundledIcon =
-#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
-        QStringLiteral(":/qt/qml/CustomToolbox/icons/custom-toolbox.svg");
-#else
-        QStringLiteral(":/CustomToolbox/icons/custom-toolbox.svg");
-#endif
+    const auto bundledIcon = QStringLiteral(":/qt/qml/CustomToolbox/icons/custom-toolbox.svg");
     QApplication::setWindowIcon(
         QIcon::fromTheme(QApplication::applicationName(), QIcon(bundledIcon)));
     QApplication::setOrganizationName("MX-Linux");
@@ -194,7 +189,7 @@ int main(int argc, char *argv[])
 #if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
     engine.loadFromModule(QStringLiteral("CustomToolbox"), QStringLiteral("Main"));
 #else
-    engine.load(QUrl(QStringLiteral("qrc:/CustomToolbox/qml/Main.qml")));
+    engine.load(QUrl(QStringLiteral("qrc:/qt/qml/CustomToolbox/qml/Main.qml")));
 #endif
     return QApplication::exec();
 }
