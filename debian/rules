@@ -15,6 +15,15 @@ override_dh_auto_clean:
 override_dh_shlibdeps:
 	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info
 
+# Match the Settings import selected by CMake; Bookworm has Qt 6.4 and
+# no QtCore QML module. Keep common QML dependencies in debian/control.
+override_dh_gencontrol:
+	if dpkg --compare-versions "$$(qmake6 -query QT_VERSION)" ge 6.5; then \
+		dh_gencontrol -- -Vcustom-toolbox:SettingsDepends=qml6-module-qtcore; \
+	else \
+		dh_gencontrol -- -Vcustom-toolbox:SettingsDepends=qml6-module-qt-labs-settings; \
+	fi
+
 # Do not create package-private .dwz debug data.
 override_dh_dwz:
 	@:

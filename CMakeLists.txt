@@ -91,7 +91,7 @@ if(CMAKE_GENERATOR STREQUAL "Ninja")
 endif()
 
 # Find Qt6 components
-find_package(Qt6 REQUIRED COMPONENTS
+find_package(Qt6 6.4 REQUIRED COMPONENTS
     Core
     Gui
     Widgets
@@ -102,7 +102,7 @@ find_package(Qt6 REQUIRED COMPONENTS
 )
 
 if(BUILD_TESTING)
-    find_package(Qt6 REQUIRED COMPONENTS Test)
+    find_package(Qt6 6.4 REQUIRED COMPONENTS Test)
 endif()
 
 # Enable automatic MOC, UIC, and RCC processing
@@ -156,7 +156,15 @@ if(Qt6_VERSION VERSION_GREATER_EQUAL 6.5)
     file(READ "${MAIN_QML_SOURCE}" MAIN_QML_CONTENT)
     string(REPLACE "import Qt.labs.settings" "import QtCore" MAIN_QML_CONTENT "${MAIN_QML_CONTENT}")
     file(GENERATE OUTPUT "${MAIN_QML_ENTRY}" CONTENT "${MAIN_QML_CONTENT}")
-    set_source_files_properties("${MAIN_QML_ENTRY}" PROPERTIES QT_RESOURCE_ALIAS "Main.qml")
+    set_source_files_properties("${MAIN_QML_ENTRY}" PROPERTIES QT_RESOURCE_ALIAS "qml/Main.qml")
+    # Preserve relative component imports both in resources and on disk for
+    # qmllint when Main.qml is generated outside the source tree.
+    file(GLOB QML_COMPONENT_FILES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/qml/components/*.qml")
+    foreach(QML_COMPONENT_FILE IN LISTS QML_COMPONENT_FILES)
+        get_filename_component(QML_COMPONENT_NAME "${QML_COMPONENT_FILE}" NAME)
+        configure_file("${QML_COMPONENT_FILE}"
+            "${CMAKE_CURRENT_BINARY_DIR}/generated-qml/components/${QML_COMPONENT_NAME}" COPYONLY)
+    endforeach()
 else()
     set(MAIN_QML_ENTRY "${MAIN_QML_SOURCE}")
 endif()

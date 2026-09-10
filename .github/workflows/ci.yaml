@@ -74,25 +74,40 @@ jobs:
         run: ctest --test-dir build --output-on-failure
 
   debian-package-check:
-    name: debian package build canary
+    name: Debian ${{ matrix.release }} package
     runs-on: ubuntu-latest
+    container: debian:${{ matrix.release }}
+    strategy:
+      fail-fast: false
+      matrix:
+        release: [bookworm, trixie]
     steps:
       - uses: actions/checkout@v5
 
-      - name: Install packaging dependencies
+      - name: Install packaging dependencies from debian/control
         run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            devscripts \
-            debhelper \
-            build-essential \
-            cmake \
-            ninja-build \
-            qt6-base-dev \
-            qt6-base-dev-tools \
-            qt6-declarative-dev \
-            qt6-tools-dev \
-            qt6-tools-dev-tools
+          apt-get update
+          apt-get install -y --no-install-recommends build-essential devscripts equivs
+          mk-build-deps --install --remove --tool 'apt-get -y --no-install-recommends' debian/control
 
-      - name: Build binary package (unsigned)
-        run: debuild -us -uc -b
+      - name: Build binary package (unsigned, including tests)
+        run: dpkg-buildpackage -us -uc -b
+
+      - name: Install package and its runtime dependencies
+        run: apt-get install -y --no-install-recommends ../custom-toolbox_*.deb
+
+      - name: Lint QML
+        run: cmake --build obj-$(dpkg-architecture -qDEB_HOST_GNU_TYPE) --target all_qmllint
+
+      - name: Smoke test installed application
+        env:
+          QT_QPA_PLATFORM: offscreen
+          QT_QUICK_BACKEND: software
+          QT_QUICK_CONTROLS_STYLE: Fusion
+        run: |
+          export XDG_CONFIG_HOME=$(mktemp -d)
+          status=0
+          timeout 10s custom-toolbox example.list >startup.log 2>&1 || status=$?
+          cat startup.log
+          test "$status" -eq 124
+          ! grep -E 'failed to load component|is not installed|is not a type|ReferenceError|TypeError' startup.log

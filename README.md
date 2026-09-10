@@ -30,14 +30,25 @@ sudo apt install custom-toolbox
 ### Building from Source
 
 #### Prerequisites
-- Qt6 development libraries (Core, Gui, Widgets, LinguistTools)
-- C++20 compatible compiler (GCC 14+ or Clang 15+)
+- Qt 6.4+ development libraries (Core, Gui, Widgets, Qml, Quick, QuickControls2, Test, LinguistTools)
+- C++20 compatible compiler (GCC 12+ or Clang 15+)
 - CMake 3.16+
 - Ninja build system (recommended)
 
-**Ubuntu/Debian:**
+Debian 12 (Bookworm) and Debian 13 (Trixie) are supported with their stock
+compilers and Qt packages. Build a separate binary package on each release.
+
+**Debian:**
 ```bash
-sudo apt install qt6-base-dev qt6-tools-dev cmake ninja-build build-essential
+sudo apt install qt6-base-dev qt6-base-dev-tools qt6-declarative-dev \
+  qt6-tools-dev qt6-tools-dev-tools cmake ninja-build build-essential \
+  qml6-module-qtqml qml6-module-qtqml-models qml6-module-qtqml-workerscript \
+  qml6-module-qtquick qml6-module-qtquick-controls qml6-module-qtquick-layouts \
+  qml6-module-qtquick-templates qml6-module-qtquick-window
+# Debian 12 (Qt 6.4):
+sudo apt install qml6-module-qt-labs-settings
+# Debian 13 (Qt 6.8):
+sudo apt install qml6-module-qtcore
 ```
 
 **Fedora:**
@@ -319,7 +330,7 @@ custom-toolbox/
 - **Language**: C++20 with strict compiler warnings (`-Wpedantic -Werror`)
 - **Framework**: Qt6 (Core, Gui, Widgets)
 - **Build System**: CMake with Ninja generator
-- **Compilers**: GCC 14+ (with LTO) or Clang 15+ (default GCC)
+- **Compilers**: GCC 12+ (with LTO) or Clang 15+ (default GCC)
 - **Optimizations**: `-O3` for Release, LTO for GCC builds
 - **Warnings**: All warnings as errors, pedantic mode enabled
 - **Style**: `snake_case` variables, `PascalCase` classes, minimal comments
