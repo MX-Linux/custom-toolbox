@@ -145,11 +145,27 @@ add_executable(custom-toolbox
     ${HEADERS}
 )
 
+# qml/Main.qml uses Qt.labs.settings so it keeps working on distributions
+# with Qt < 6.5 (e.g. Debian Bookworm). On Qt >= 6.5, generate a build copy
+# with the import switched to the non-deprecated QtCore Settings type
+# instead, which has the same properties this file relies on.
+set(MAIN_QML_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/qml/Main.qml")
+set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${MAIN_QML_SOURCE}")
+if(Qt6_VERSION VERSION_GREATER_EQUAL 6.5)
+    set(MAIN_QML_ENTRY "${CMAKE_CURRENT_BINARY_DIR}/generated-qml/Main.qml")
+    file(READ "${MAIN_QML_SOURCE}" MAIN_QML_CONTENT)
+    string(REPLACE "import Qt.labs.settings" "import QtCore" MAIN_QML_CONTENT "${MAIN_QML_CONTENT}")
+    file(GENERATE OUTPUT "${MAIN_QML_ENTRY}" CONTENT "${MAIN_QML_CONTENT}")
+    set_source_files_properties("${MAIN_QML_ENTRY}" PROPERTIES QT_RESOURCE_ALIAS "Main.qml")
+else()
+    set(MAIN_QML_ENTRY "${MAIN_QML_SOURCE}")
+endif()
+
 qt6_add_qml_module(custom-toolbox
     URI CustomToolbox
     VERSION 1.0
     QML_FILES
-        qml/Main.qml
+        ${MAIN_QML_ENTRY}
         qml/components/CategoryButton.qml
         qml/components/LauncherCard.qml
         qml/components/ModernSwitch.qml
