@@ -156,7 +156,6 @@ if(Qt6_VERSION VERSION_GREATER_EQUAL 6.5)
     file(READ "${MAIN_QML_SOURCE}" MAIN_QML_CONTENT)
     string(REPLACE "import Qt.labs.settings" "import QtCore" MAIN_QML_CONTENT "${MAIN_QML_CONTENT}")
     file(GENERATE OUTPUT "${MAIN_QML_ENTRY}" CONTENT "${MAIN_QML_CONTENT}")
-    set_source_files_properties("${MAIN_QML_ENTRY}" PROPERTIES QT_RESOURCE_ALIAS "qml/Main.qml")
     # Preserve relative component imports both in resources and on disk for
     # qmllint when Main.qml is generated outside the source tree.
     file(GLOB QML_COMPONENT_FILES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/qml/components/*.qml")
@@ -168,6 +167,9 @@ if(Qt6_VERSION VERSION_GREATER_EQUAL 6.5)
 else()
     set(MAIN_QML_ENTRY "${MAIN_QML_SOURCE}")
 endif()
+# Both branches use an absolute source path. Pin its resource name so Qt 6.4
+# embeds it at the URL loaded in main.cpp, alongside the relative imports.
+set_source_files_properties("${MAIN_QML_ENTRY}" PROPERTIES QT_RESOURCE_ALIAS "qml/Main.qml")
 
 qt6_add_qml_module(custom-toolbox
     URI CustomToolbox
