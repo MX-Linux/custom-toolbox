@@ -203,7 +203,7 @@ Try a different search or category.</source>
         <translation>Erro ao abrir ficheiro</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="171"/>
+        <location filename="../src/main.cpp" line="166"/>
         <location filename="../src/launchermodel.cpp" line="410"/>
         <source>File Not Found</source>
         <translation>Ficheiro não encontrado</translation>
@@ -214,7 +214,7 @@ Try a different search or category.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="172"/>
+        <location filename="../src/main.cpp" line="167"/>
         <location filename="../src/launchermodel.cpp" line="410"/>
         <source>The file %1 does not exist.</source>
         <translation>O ficheiro %1 não existe.</translation>
@@ -333,27 +333,27 @@ Try a different search or category.</source>
         <translation>Ferramentas Personalizadas</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="135"/>
+        <location filename="../src/main.cpp" line="130"/>
         <source>This app can be used to create custom launchers: box of buttons/icons</source>
         <translation>Esta aplicação pode ser utilizada para criar lançadores personalizados: caixa de botões/ícones</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="138"/>
+        <location filename="../src/main.cpp" line="133"/>
         <source>Don&apos;t show &apos;show this dialog at startup&apos; checkbox</source>
         <translation>Ocultar caixa de seleção &apos;Exibir esta janela ao iniciar&apos;</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="140"/>
+        <location filename="../src/main.cpp" line="135"/>
         <source>Full path and name of the .list file you want to load. Supports both custom format (Key=Value) and INI format ([Section]).</source>
         <translation>Caminho completo e nome do ficheiro .list a carregar. Suporta formato personalizado (Key=Value [Tecla=Valor])  e o formato ‘INI format ([Section]) (formato INI ([Secção])).</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="151"/>
+        <location filename="../src/main.cpp" line="146"/>
         <source>Error</source>
         <translation>Erro</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="152"/>
+        <location filename="../src/main.cpp" line="147"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
         <translation>O utilizador parece ser o root; para usar este programa, sair e voltar a entrar como utilizador normal.</translation>
     </message>

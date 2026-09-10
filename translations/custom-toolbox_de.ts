@@ -203,7 +203,7 @@ Try a different search or category.</source>
         <translation>Fehler beim Öffnen der Datei</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="171"/>
+        <location filename="../src/main.cpp" line="166"/>
         <location filename="../src/launchermodel.cpp" line="410"/>
         <source>File Not Found</source>
         <translation>Datei nicht gefunden</translation>
@@ -214,7 +214,7 @@ Try a different search or category.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="172"/>
+        <location filename="../src/main.cpp" line="167"/>
         <location filename="../src/launchermodel.cpp" line="410"/>
         <source>The file %1 does not exist.</source>
         <translation>Die Datei %1 existiert nicht.</translation>
@@ -333,28 +333,28 @@ Try a different search or category.</source>
         <translation>Benutzerdefinierte Werkzeuge</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="135"/>
+        <location filename="../src/main.cpp" line="130"/>
         <source>This app can be used to create custom launchers: box of buttons/icons</source>
         <translation>Diese Anwendung kann verwendet werden, um benutzerdefinierte Programmstarter zu erstellen: Box mit Schaltflächen/Symbolen</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="138"/>
+        <location filename="../src/main.cpp" line="133"/>
         <source>Don&apos;t show &apos;show this dialog at startup&apos; checkbox</source>
         <translation>Das Kontrollkästchen &quot;Diesen Dialog beim Startvorgang zeigen&quot; nicht anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="140"/>
+        <location filename="../src/main.cpp" line="135"/>
         <source>Full path and name of the .list file you want to load. Supports both custom format (Key=Value) and INI format ([Section]).</source>
         <translation>Vollständiger Pfad und Name der zu öffnenden .list Datei. Sowohl Custom Format (Taste=Wert) als auch INI Format ([Section]) werden unterstützt.
 </translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="151"/>
+        <location filename="../src/main.cpp" line="146"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="152"/>
+        <location filename="../src/main.cpp" line="147"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
         <translation>Sie sind als Administrator am System angemeldet. Bitte melden Sie sich ab und dann als normaler Benutzer wieder an, um dieses Programm zu verwenden.</translation>
     </message>

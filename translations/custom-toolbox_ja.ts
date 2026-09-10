@@ -202,7 +202,7 @@ Try a different search or category.</source>
         <translation>ファイルを開く際のエラー</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="171"/>
+        <location filename="../src/main.cpp" line="166"/>
         <location filename="../src/launchermodel.cpp" line="410"/>
         <source>File Not Found</source>
         <translation>ファイルが見つかりません</translation>
@@ -213,7 +213,7 @@ Try a different search or category.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="172"/>
+        <location filename="../src/main.cpp" line="167"/>
         <location filename="../src/launchermodel.cpp" line="410"/>
         <source>The file %1 does not exist.</source>
         <translation>ファイル %1 は存在しません。</translation>
@@ -332,27 +332,27 @@ Try a different search or category.</source>
         <translation>カスタムツールボックス</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="135"/>
+        <location filename="../src/main.cpp" line="130"/>
         <source>This app can be used to create custom launchers: box of buttons/icons</source>
         <translation>このアプリでカスタムランチャ（ボタン/アイコンのボックス）を作成できます。</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="138"/>
+        <location filename="../src/main.cpp" line="133"/>
         <source>Don&apos;t show &apos;show this dialog at startup&apos; checkbox</source>
         <translation>「起動時にこのダイアログを表示する」チェックボックスを表示しない</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="140"/>
+        <location filename="../src/main.cpp" line="135"/>
         <source>Full path and name of the .list file you want to load. Supports both custom format (Key=Value) and INI format ([Section]).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="151"/>
+        <location filename="../src/main.cpp" line="146"/>
         <source>Error</source>
         <translation>エラー</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="152"/>
+        <location filename="../src/main.cpp" line="147"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
         <translation>root としてログインしているようです。このプログラムを使用するには、一度ログアウトして通常のユーザとしてログインしてください。</translation>
     </message>

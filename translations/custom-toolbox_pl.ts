@@ -205,7 +205,7 @@ Spróbuj innego wyszukiwania lub kategorii.</translation>
         <translation>Błąd otwierania pliku</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="171"/>
+        <location filename="../src/main.cpp" line="166"/>
         <location filename="../src/launchermodel.cpp" line="410"/>
         <source>File Not Found</source>
         <translation>Nie znaleziono pliku</translation>
@@ -216,7 +216,7 @@ Spróbuj innego wyszukiwania lub kategorii.</translation>
         <translation>Nie udało się ustalić użytkownika bez uprawnień. Odmowa uruchomienia tego programu uruchamiającego jako root.</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="172"/>
+        <location filename="../src/main.cpp" line="167"/>
         <location filename="../src/launchermodel.cpp" line="410"/>
         <source>The file %1 does not exist.</source>
         <translation>Plik %1 nie istnieje.</translation>
@@ -335,27 +335,27 @@ Spróbuj innego wyszukiwania lub kategorii.</translation>
         <translation>Niestandardowy zestaw narzędzi</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="135"/>
+        <location filename="../src/main.cpp" line="130"/>
         <source>This app can be used to create custom launchers: box of buttons/icons</source>
         <translation>Tej aplikacji można używać do tworzenia niestandardowych programów uruchamiających: okna z przyciskami / ikonami</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="138"/>
+        <location filename="../src/main.cpp" line="133"/>
         <source>Don&apos;t show &apos;show this dialog at startup&apos; checkbox</source>
         <translation>Nie pokazuj pola wyboru „pokaż to okno dialogowe podczas uruchamiania”.</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="140"/>
+        <location filename="../src/main.cpp" line="135"/>
         <source>Full path and name of the .list file you want to load. Supports both custom format (Key=Value) and INI format ([Section]).</source>
         <translation>Pełna ścieżka i nazwa pliku .list, który chcesz załadować. Obsługuje zarówno format niestandardowy (klucz=wartość), jak i format INI ([sekcja]).</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="151"/>
+        <location filename="../src/main.cpp" line="146"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="152"/>
+        <location filename="../src/main.cpp" line="147"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
         <translation>Wygląda na to, że jesteś zalogowany jako root, wyloguj się i zaloguj jako zwykły użytkownik, aby korzystać z tego programu.</translation>
     </message>
