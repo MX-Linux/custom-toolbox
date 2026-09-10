@@ -4,7 +4,7 @@
 <context>
     <name>LauncherCard</name>
     <message>
-        <location filename="../qml/components/LauncherCard.qml" line="77"/>
+        <location filename="../qml/components/LauncherCard.qml" line="78"/>
         <source>Open this launcher</source>
         <translation type="unfinished"></translation>
     </message>
@@ -38,7 +38,7 @@
     </message>
     <message>
         <location filename="../qml/Main.qml" line="251"/>
-        <location filename="../qml/Main.qml" line="476"/>
+        <location filename="../qml/Main.qml" line="484"/>
         <source>Launch at login</source>
         <translation type="unfinished"></translation>
     </message>
@@ -49,7 +49,7 @@
     </message>
     <message>
         <location filename="../qml/Main.qml" line="268"/>
-        <location filename="../qml/Main.qml" line="485"/>
+        <location filename="../qml/Main.qml" line="493"/>
         <source>Launch this toolbox at login</source>
         <translation type="unfinished"></translation>
     </message>
@@ -96,33 +96,33 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="464"/>
+        <location filename="../qml/Main.qml" line="472"/>
         <source>No launchers found
 Try a different search or category.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="515"/>
+        <location filename="../qml/Main.qml" line="523"/>
         <source>About %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="548"/>
+        <location filename="../qml/Main.qml" line="556"/>
         <source>Version %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="554"/>
+        <location filename="../qml/Main.qml" line="562"/>
         <source>Custom Toolbox creates focused collections of application launchers and system tasks.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="562"/>
+        <location filename="../qml/Main.qml" line="570"/>
         <source>License</source>
         <translation type="unfinished">Giấy phép</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="571"/>
+        <location filename="../qml/Main.qml" line="579"/>
         <source>Copyright © MX Linux</source>
         <translation type="unfinished"></translation>
     </message>
@@ -130,7 +130,7 @@ Try a different search or category.</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/launchermodel.h" line="99"/>
+        <location filename="../src/launchermodel.h" line="108"/>
         <source>Custom Toolbox</source>
         <translation type="unfinished"></translation>
     </message>
@@ -144,13 +144,13 @@ Try a different search or category.</source>
         <translation>Về ứng dụng này...</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="490"/>
+        <location filename="../qml/Main.qml" line="498"/>
         <source>Edit</source>
         <translation>Chỉnh sửa</translation>
     </message>
     <message>
         <location filename="../qml/Main.qml" line="176"/>
-        <location filename="../src/launchermodel.cpp" line="727"/>
+        <location filename="../src/launchermodel.cpp" line="736"/>
         <source>Help</source>
         <translation>Trợ giúp</translation>
     </message>
@@ -163,12 +163,12 @@ Try a different search or category.</source>
         <translation type="vanished">Đóng ứng dụng</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="498"/>
+        <location filename="../qml/Main.qml" line="506"/>
         <source>Close</source>
         <translation>Đóng</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.h" line="100"/>
+        <location filename="../src/launchermodel.h" line="109"/>
         <source>This is a custom launcher</source>
         <translation type="unfinished"></translation>
     </message>
@@ -181,112 +181,112 @@ Try a different search or category.</source>
         <translation type="vanished">tìm kiếm</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="553"/>
-        <location filename="../src/launchermodel.cpp" line="560"/>
-        <location filename="../src/launchermodel.cpp" line="582"/>
-        <location filename="../src/launchermodel.cpp" line="611"/>
-        <location filename="../src/launchermodel.cpp" line="623"/>
+        <location filename="../src/launchermodel.cpp" line="562"/>
+        <location filename="../src/launchermodel.cpp" line="569"/>
+        <location filename="../src/launchermodel.cpp" line="591"/>
+        <location filename="../src/launchermodel.cpp" line="620"/>
+        <location filename="../src/launchermodel.cpp" line="632"/>
         <source>Execution Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="514"/>
+        <location filename="../src/launchermodel.cpp" line="523"/>
         <source>Command is empty. Cannot execute.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="553"/>
+        <location filename="../src/launchermodel.cpp" line="562"/>
         <source>The selected launcher is no longer available.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="611"/>
+        <location filename="../src/launchermodel.cpp" line="620"/>
         <source>Failed to start command: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="623"/>
+        <location filename="../src/launchermodel.cpp" line="632"/>
         <source>Failed to execute command: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="582"/>
+        <location filename="../src/launchermodel.cpp" line="591"/>
         <source>Failed to start program: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="414"/>
-        <location filename="../src/launchermodel.cpp" line="858"/>
+        <location filename="../src/launchermodel.cpp" line="423"/>
+        <location filename="../src/launchermodel.cpp" line="869"/>
         <location filename="../src/main.cpp" line="70"/>
         <source>File Open Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="401"/>
+        <location filename="../src/launchermodel.cpp" line="410"/>
         <location filename="../src/main.cpp" line="171"/>
         <source>File Not Found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="535"/>
+        <location filename="../src/launchermodel.cpp" line="544"/>
         <source>Could not determine the unprivileged user. Refusing to run this launcher as root.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="401"/>
+        <location filename="../src/launchermodel.cpp" line="410"/>
         <location filename="../src/main.cpp" line="172"/>
         <source>The file %1 does not exist.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="414"/>
+        <location filename="../src/launchermodel.cpp" line="423"/>
         <source>Could not open file: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="420"/>
-        <location filename="../src/launchermodel.cpp" line="449"/>
+        <location filename="../src/launchermodel.cpp" line="429"/>
+        <location filename="../src/launchermodel.cpp" line="458"/>
         <source>Parse Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="420"/>
+        <location filename="../src/launchermodel.cpp" line="429"/>
         <source>The file %1 contains no recognizable launcher entries.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="426"/>
+        <location filename="../src/launchermodel.cpp" line="435"/>
         <source>All launchers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="449"/>
+        <location filename="../src/launchermodel.cpp" line="458"/>
         <source>None of the entries in %1 match an installed application.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="568"/>
+        <location filename="../src/launchermodel.cpp" line="577"/>
         <source>Launcher already running</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="569"/>
+        <location filename="../src/launchermodel.cpp" line="578"/>
         <source>%1 is already running.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="727"/>
-        <location filename="../src/launchermodel.cpp" line="734"/>
+        <location filename="../src/launchermodel.cpp" line="736"/>
+        <location filename="../src/launchermodel.cpp" line="743"/>
         <source>Could not open %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="781"/>
+        <location filename="../src/launchermodel.cpp" line="791"/>
         <source>Refusing to overwrite a non-Custom Toolbox autostart file: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="887"/>
+        <location filename="../src/launchermodel.cpp" line="898"/>
         <source>Could not reload the configuration. The previous configuration is still in use.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -295,29 +295,29 @@ Try a different search or category.</source>
         <translation type="vanished">Phiên bản:</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="849"/>
+        <location filename="../src/launchermodel.cpp" line="860"/>
         <source>Could not create directory: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="713"/>
-        <location filename="../src/launchermodel.cpp" line="719"/>
-        <location filename="../src/launchermodel.cpp" line="734"/>
+        <location filename="../src/launchermodel.cpp" line="722"/>
+        <location filename="../src/launchermodel.cpp" line="728"/>
+        <location filename="../src/launchermodel.cpp" line="743"/>
         <source>Error</source>
         <translation>Lỗi</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="659"/>
+        <location filename="../src/launchermodel.cpp" line="668"/>
         <source>Editor command is empty.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="719"/>
+        <location filename="../src/launchermodel.cpp" line="728"/>
         <source>Failed to launch the editor.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="680"/>
+        <location filename="../src/launchermodel.cpp" line="689"/>
         <source>Could not determine the unprivileged user. Refusing to launch the editor as root.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -326,13 +326,13 @@ Try a different search or category.</source>
         <translation type="vanished">Copyright (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="800"/>
         <location filename="../src/launchermodel.cpp" line="811"/>
+        <location filename="../src/launchermodel.cpp" line="822"/>
         <source>Could not write file: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="854"/>
+        <location filename="../src/launchermodel.cpp" line="865"/>
         <source>Could not remove file: %1</source>
         <translation type="unfinished"></translation>
     </message>

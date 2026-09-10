@@ -1,3 +1,16 @@
+custom-toolbox (26.09) mx; urgency=medium
+
+  * Configured launcher window sizes, icon sizes, and column counts are now
+    applied again
+  * Autostart launchers now use the standard configuration location and handle
+    special characters correctly
+  * Desktop application commands with escaped characters now launch correctly
+  * Translations are now loaded from the installed data directory
+  * The package now includes the Qt component needed to load the launcher on
+    systems where it is not installed indirectly
+
+ -- Adrian <adrian@mxlinux.org>  Thu, 10 Sep 2026 08:24:22 -0400
+
 custom-toolbox (26.08) mx; urgency=medium
 
   * The launcher window now has a refreshed interface with category navigation,
