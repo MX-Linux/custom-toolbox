@@ -196,15 +196,15 @@ Try a different search or category.</source>
         <translation>S’u arrit të nisej program: %1</translation>
     </message>
     <message>
+        <location filename="../src/main.cpp" line="70"/>
         <location filename="../src/launchermodel.cpp" line="423"/>
         <location filename="../src/launchermodel.cpp" line="869"/>
-        <location filename="../src/main.cpp" line="70"/>
         <source>File Open Error</source>
         <translation>Gabim Hapje Kartele</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="410"/>
         <location filename="../src/main.cpp" line="171"/>
+        <location filename="../src/launchermodel.cpp" line="410"/>
         <source>File Not Found</source>
         <translation>Kartela S’u Gjet</translation>
     </message>
@@ -214,8 +214,8 @@ Try a different search or category.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="410"/>
         <location filename="../src/main.cpp" line="172"/>
+        <location filename="../src/launchermodel.cpp" line="410"/>
         <source>The file %1 does not exist.</source>
         <translation>Kartela %1 s’ekziston.</translation>
     </message>

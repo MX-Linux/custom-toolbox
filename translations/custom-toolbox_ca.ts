@@ -197,15 +197,15 @@ Proveu una cerca o categoria diferent.</translation>
         <translation>Ha fallat en engegar el programa: %1</translation>
     </message>
     <message>
+        <location filename="../src/main.cpp" line="70"/>
         <location filename="../src/launchermodel.cpp" line="423"/>
         <location filename="../src/launchermodel.cpp" line="869"/>
-        <location filename="../src/main.cpp" line="70"/>
         <source>File Open Error</source>
         <translation>Error en obrir el fitxer</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="410"/>
         <location filename="../src/main.cpp" line="171"/>
+        <location filename="../src/launchermodel.cpp" line="410"/>
         <source>File Not Found</source>
         <translation>No he trobat el fitxer</translation>
     </message>
@@ -215,8 +215,8 @@ Proveu una cerca o categoria diferent.</translation>
         <translation>No he pogut determinar l&apos;usuari sense privilegis. S&apos;evita executar aquest llançador com a administrador.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="410"/>
         <location filename="../src/main.cpp" line="172"/>
+        <location filename="../src/launchermodel.cpp" line="410"/>
         <source>The file %1 does not exist.</source>
         <translation>El fitxer %1 no existeix.</translation>
     </message>

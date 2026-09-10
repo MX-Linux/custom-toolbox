@@ -196,15 +196,15 @@ Try a different search or category.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/main.cpp" line="70"/>
         <location filename="../src/launchermodel.cpp" line="423"/>
         <location filename="../src/launchermodel.cpp" line="869"/>
-        <location filename="../src/main.cpp" line="70"/>
         <source>File Open Error</source>
         <translation>Erro ao abrir o ficheiro</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="410"/>
         <location filename="../src/main.cpp" line="171"/>
+        <location filename="../src/launchermodel.cpp" line="410"/>
         <source>File Not Found</source>
         <translation>Ficheiro non atopado</translation>
     </message>
@@ -214,8 +214,8 @@ Try a different search or category.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="410"/>
         <location filename="../src/main.cpp" line="172"/>
+        <location filename="../src/launchermodel.cpp" line="410"/>
         <source>The file %1 does not exist.</source>
         <translation>O ficheiro %1 non existe.</translation>
     </message>

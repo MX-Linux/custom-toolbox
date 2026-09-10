@@ -1,4 +1,4 @@
-custom-toolbox (26.09.1) mx; urgency=medium
+custom-toolbox (26.09.2) mx; urgency=medium
 
   * Configured launcher window sizes, icon sizes, and column counts are now
     applied again

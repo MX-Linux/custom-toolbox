@@ -198,15 +198,15 @@ Spróbuj innego wyszukiwania lub kategorii.</translation>
         <translation>Nie udało się uruchomić programu: %1</translation>
     </message>
     <message>
+        <location filename="../src/main.cpp" line="70"/>
         <location filename="../src/launchermodel.cpp" line="423"/>
         <location filename="../src/launchermodel.cpp" line="869"/>
-        <location filename="../src/main.cpp" line="70"/>
         <source>File Open Error</source>
         <translation>Błąd otwierania pliku</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="410"/>
         <location filename="../src/main.cpp" line="171"/>
+        <location filename="../src/launchermodel.cpp" line="410"/>
         <source>File Not Found</source>
         <translation>Nie znaleziono pliku</translation>
     </message>
@@ -216,8 +216,8 @@ Spróbuj innego wyszukiwania lub kategorii.</translation>
         <translation>Nie udało się ustalić użytkownika bez uprawnień. Odmowa uruchomienia tego programu uruchamiającego jako root.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="410"/>
         <location filename="../src/main.cpp" line="172"/>
+        <location filename="../src/launchermodel.cpp" line="410"/>
         <source>The file %1 does not exist.</source>
         <translation>Plik %1 nie istnieje.</translation>
     </message>

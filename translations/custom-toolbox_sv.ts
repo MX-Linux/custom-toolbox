@@ -197,15 +197,15 @@ Försök en annan sökning eller kategori.</translation>
         <translation>Misslyckades med att starta program: %1</translation>
     </message>
     <message>
+        <location filename="../src/main.cpp" line="70"/>
         <location filename="../src/launchermodel.cpp" line="423"/>
         <location filename="../src/launchermodel.cpp" line="869"/>
-        <location filename="../src/main.cpp" line="70"/>
         <source>File Open Error</source>
         <translation>Fil-öppningsfel</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="410"/>
         <location filename="../src/main.cpp" line="171"/>
+        <location filename="../src/launchermodel.cpp" line="410"/>
         <source>File Not Found</source>
         <translation>Fil ej hittad</translation>
     </message>
@@ -215,8 +215,8 @@ Försök en annan sökning eller kategori.</translation>
         <translation>Kunde inte bestämma den oprivilegierade användaren. Vägrar att köra denna startare som root.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="410"/>
         <location filename="../src/main.cpp" line="172"/>
+        <location filename="../src/launchermodel.cpp" line="410"/>
         <source>The file %1 does not exist.</source>
         <translation>Filen %1 finns inte.</translation>
     </message>
