@@ -75,6 +75,13 @@ done
 
 # Build Debian package
 if [ "$DEBIAN_BUILD" = true ]; then
+    # debian/rules may append a distro release suffix (e.g. "mx25" on Trixie)
+    # to debian/changelog while building. Only restore the changelog
+    # afterwards if it was pristine beforehand, so any pre-existing
+    # uncommitted edit to it is never discarded.
+    CHANGELOG_WAS_CLEAN=true
+    git diff --quiet -- debian/changelog || CHANGELOG_WAS_CLEAN=false
+
     echo "Building Debian package..."
     debuild -us -uc
 
@@ -93,6 +100,9 @@ if [ "$DEBIAN_BUILD" = true ]; then
     rm -rf debian/.debhelper/ debian/deb-installer/ obj-*/
     rm -f translations/*.qm
     rm -f ../custom-toolbox_*.build ../custom-toolbox_*.buildinfo 2>/dev/null || true
+    if [ "$CHANGELOG_WAS_CLEAN" = true ]; then
+        git checkout -- debian/changelog
+    fi
 
     echo "Debian package build completed!"
     echo "Debian artifacts moved to debs/ directory"

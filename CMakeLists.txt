@@ -64,8 +64,18 @@ if(USE_CLANG)
     message(STATUS "Using clang compiler")
 endif()
 
+# CMake's project() only accepts a dot-separated numeric version, but
+# debian/changelog may carry a non-numeric distro suffix (e.g. "26.09.5mx25"
+# for MX-25/Trixie builds), so strip it here; the full string with the
+# suffix is still used below for the version shown in the app.
+string(REGEX MATCH "^[0-9]+(\\.[0-9]+)*" PROJECT_VERSION_NUMERIC "${PROJECT_VERSION_FROM_CHANGELOG}")
+if(NOT PROJECT_VERSION_NUMERIC)
+    message(WARNING "Could not extract a numeric version from '${PROJECT_VERSION_FROM_CHANGELOG}', defaulting to 0.0.0")
+    set(PROJECT_VERSION_NUMERIC "0.0.0")
+endif()
+
 project(custom-toolbox
-    VERSION ${PROJECT_VERSION_FROM_CHANGELOG}
+    VERSION ${PROJECT_VERSION_NUMERIC}
     DESCRIPTION "Custom Toolbox - Program for creating custom launchers for MX Linux"
     LANGUAGES CXX
 )
@@ -216,7 +226,7 @@ endif()
 # Set compile definitions
 target_compile_definitions(custom-toolbox PRIVATE
     QT_DEPRECATED_WARNINGS
-    VERSION="${PROJECT_VERSION}"
+    VERSION="${PROJECT_VERSION_FROM_CHANGELOG}"
     CUSTOM_TOOLBOX_SYSCONFDIR="${CMAKE_INSTALL_FULL_SYSCONFDIR}"
     CUSTOM_TOOLBOX_DATADIR="${CMAKE_INSTALL_FULL_DATADIR}"
 )
