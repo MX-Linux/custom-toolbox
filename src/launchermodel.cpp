@@ -335,6 +335,9 @@ void LauncherModel::buildDesktopFileIndex() const
                                               QRegularExpression::MultilineOption);
     QHash<QString, DesktopFileCandidate> candidates;
     const QStringList paths = QStandardPaths::standardLocations(QStandardPaths::ApplicationsLocation);
+    // standardLocations() returns application directories in descending precedence
+    // (user directories first, system ones last), so the lower index wins. Ties within
+    // a single directory tree fall back to path order to keep the index deterministic.
     auto insert = [&candidates](const QString &key, const QString &path, int priority) {
         const auto current = candidates.constFind(key);
         if (current == candidates.constEnd() || priority < current->sourcePriority
