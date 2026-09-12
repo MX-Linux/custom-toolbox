@@ -82,8 +82,14 @@ if [ "$DEBIAN_BUILD" = true ]; then
     CHANGELOG_WAS_CLEAN=true
     git diff --quiet -- debian/changelog || CHANGELOG_WAS_CLEAN=false
 
+    # Binary-only build: debian/rules appends a distro suffix (e.g. "mx25")
+    # to debian/changelog mid-build for OBS multi-distro packaging. That
+    # only stays consistent for a binary-only build - a full source+binary
+    # build runs dpkg-source before the suffix is added and dpkg-genbuildinfo
+    # after, so the two disagree on the version and the build fails looking
+    # for a .dsc that was never produced under the suffixed name.
     echo "Building Debian package..."
-    debuild -us -uc
+    debuild -us -uc -b
 
     echo "Creating debs directory and moving debian artifacts..."
     mkdir -p debs
