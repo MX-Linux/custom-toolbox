@@ -196,8 +196,12 @@ QVariant LauncherModel::data(const QModelIndex &index, int role) const
 
 QHash<int, QByteArray> LauncherModel::roleNames() const
 {
-    return {{NameRole, "name"}, {CommentRole, "comment"}, {CategoryRole, "category"},
-            {IconSourceRole, "iconSource"}, {SourceIndexRole, "sourceIndex"}};
+    static const QHash<int, QByteArray> roles {{NameRole, "name"},
+                                               {CommentRole, "comment"},
+                                               {CategoryRole, "category"},
+                                               {IconSourceRole, "iconSource"},
+                                               {SourceIndexRole, "sourceIndex"}};
+    return roles;
 }
 
 QString LauncherModel::search() const
