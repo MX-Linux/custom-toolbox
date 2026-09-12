@@ -39,6 +39,21 @@ QString commandDescription(const QString &program, const QStringList &arguments)
     return parts.join(QLatin1Char(' '));
 }
 
+bool isProcessRunning(qint64 pid)
+{
+    QFile statFile(QStringLiteral("/proc/%1/stat").arg(pid));
+    if (!statFile.open(QFile::ReadOnly | QFile::Text)) {
+        return false;
+    }
+    const QString stat = QString::fromLocal8Bit(statFile.readAll());
+    const int closingParen = stat.lastIndexOf(QLatin1Char(')'));
+    if (closingParen < 0 || closingParen + 2 >= stat.size()) {
+        return false;
+    }
+    const QChar state = stat.at(closingParen + 2);
+    return state != QLatin1Char('Z') && state != QLatin1Char('X');
+}
+
 QString homeDirectoryForUser(const QString &user)
 {
     if (const passwd *entry = getpwnam(user.toLocal8Bit().constData())) {
@@ -572,8 +587,7 @@ void LauncherModel::launch(int sourceIndex)
     const QString trackingKey = program + QChar() + arguments.join(QChar());
     const qint64 runningProcessId = runningLaunchers.value(trackingKey);
     if (runningProcessId < 0
-        || (runningProcessId > 0
-            && QFileInfo::exists(QStringLiteral("/proc/%1").arg(runningProcessId)))) {
+        || (runningProcessId > 0 && isProcessRunning(runningProcessId))) {
         emit errorOccurred(QCoreApplication::translate("MainWindow", "Launcher already running"),
                            QCoreApplication::translate("MainWindow", "%1 is already running.")
                                .arg(allItems.at(sourceIndex).name));

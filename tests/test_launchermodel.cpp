@@ -79,7 +79,7 @@ void TestLauncherModel::filtersAndExposesLauncherRoles()
     QCOMPARE(errors.count(), 1);
     QCOMPARE(errors.constFirst().at(0).toString(), QStringLiteral("Launcher already running"));
 
-    QTest::qWait(2000);
+    QTest::qWait(600);
     model.launch(model.data(model.index(1), LauncherModel::SourceIndexRole).toInt());
     QCOMPARE(errors.count(), 1);
 }
