@@ -52,7 +52,7 @@ void TestLauncherModel::filtersAndExposesLauncherRoles()
     QCommandLineParser parser;
     parser.addOption({QStringLiteral("remove-checkbox"), QStringLiteral("test option")});
     LauncherIconProvider iconProvider;
-    LauncherModel model(parser, listPath, &iconProvider);
+    LauncherModel model(parser, listPath, iconProvider);
 
     QCOMPARE(model.title(), QStringLiteral("Model Test"));
     QCOMPARE(model.description(), QStringLiteral("Model description"));
@@ -118,7 +118,7 @@ void TestLauncherModel::escapesAutostartExec()
     parser.addOption({QStringLiteral("remove-checkbox"), QStringLiteral("test option")});
     LauncherIconProvider iconProvider;
     QVERIFY(parser.parse({QStringLiteral("custom-toolbox")}));
-    LauncherModel model(parser, listPath, &iconProvider);
+    LauncherModel model(parser, listPath, iconProvider);
     QCOMPARE(model.rowCount(), 1);
     QSignalSpy errors(&model, &LauncherModel::errorOccurred);
     model.setStartupEnabled(true);
@@ -189,7 +189,7 @@ void TestLauncherModel::autostartLocation()
     parser.addOption({QStringLiteral("remove-checkbox"), QStringLiteral("test option")});
     QVERIFY(parser.parse({QStringLiteral("custom-toolbox")}));
     LauncherIconProvider iconProvider;
-    LauncherModel model(parser, listPath, &iconProvider);
+    LauncherModel model(parser, listPath, iconProvider);
     QCOMPARE(model.startupEnabled(), legacy);
     QSignalSpy errors(&model, &LauncherModel::errorOccurred);
     model.setStartupEnabled(true);
@@ -202,7 +202,7 @@ void TestLauncherModel::autostartLocation()
     }
 
     LauncherIconProvider reopenedIcons;
-    LauncherModel reopened(parser, listPath, &reopenedIcons);
+    LauncherModel reopened(parser, listPath, reopenedIcons);
     QVERIFY(reopened.startupEnabled());
     QSignalSpy reopenedErrors(&reopened, &LauncherModel::errorOccurred);
     reopened.setStartupEnabled(false);
@@ -249,7 +249,7 @@ void TestLauncherModel::readsLayoutSettings()
     parser.addOption({QStringLiteral("remove-checkbox"), QStringLiteral("test option")});
     QVERIFY(parser.parse({QStringLiteral("custom-toolbox")}));
     LauncherIconProvider icons;
-    LauncherModel model(parser, listPath, &icons);
+    LauncherModel model(parser, listPath, icons);
     QCOMPARE(model.minimumWidth(), expected.at(0));
     QCOMPARE(model.minimumHeight(), expected.at(1));
     QCOMPARE(model.iconSize(), expected.at(2));

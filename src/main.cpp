@@ -179,7 +179,7 @@ int main(int argc, char *argv[])
     }
 
     auto *iconProvider = new LauncherIconProvider;
-    LauncherModel launcherModel(parser, fileName, iconProvider);
+    LauncherModel launcherModel(parser, fileName, *iconProvider);
     QQmlApplicationEngine engine;
     engine.addImageProvider(QStringLiteral("launchericons"), iconProvider);
     engine.setInitialProperties({{QStringLiteral("backend"), QVariant::fromValue(&launcherModel)},

@@ -132,7 +132,7 @@ QPixmap LauncherIconProvider::requestPixmap(const QString &id, QSize *size, cons
 }
 
 LauncherModel::LauncherModel(const QCommandLineParser &argParser, const QString &listFile,
-                             LauncherIconProvider *provider, QObject *parent)
+                             LauncherIconProvider &provider, QObject *parent)
     : QAbstractListModel(parent),
       iconProvider(provider),
       fileLocation(Config::ConfigDir),
@@ -500,13 +500,13 @@ bool LauncherModel::readFile(const QString &path, bool reportErrors)
     launcherDescription = parsed.comment;
     launcherCustomName = QFileInfo(path).completeBaseName();
 
-    iconProvider->clear();
+    iconProvider.clear();
     ++iconRevision;
     const QIcon fallback = QIcon::fromTheme(QStringLiteral("applications-utilities"),
                                             QIcon(QStringLiteral(":/qt/qml/CustomToolbox/icons/custom-toolbox.svg")));
     for (int i = 0; i < allItems.size(); ++i) {
         const QIcon icon = IconLoader::loadIcon(allItems.at(i).iconName);
-        iconProvider->insert(QString::number(i), icon.isNull() ? fallback : icon);
+        iconProvider.insert(QString::number(i), icon.isNull() ? fallback : icon);
     }
     setReloadMessage({});
     emit categoriesChanged();

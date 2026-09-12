@@ -58,7 +58,7 @@ public:
     Q_ENUM(Role)
 
     explicit LauncherModel(const QCommandLineParser &argParser, const QString &listFile,
-                           LauncherIconProvider *iconProvider, QObject *parent = nullptr);
+                           LauncherIconProvider &iconProvider, QObject *parent = nullptr);
 
     [[nodiscard]] int rowCount(const QModelIndex &parent = {}) const override;
     [[nodiscard]] QVariant data(const QModelIndex &index, int role) const override;
@@ -102,7 +102,7 @@ private:
     QVector<ItemInfo> allItems;
     QVector<int> visibleRows;
     QStringList categoryNames;
-    LauncherIconProvider *iconProvider;
+    LauncherIconProvider &iconProvider;
     QString searchText;
     QString selectedCategoryName;
     QString launcherTitle {QCoreApplication::translate("MainWindow", "Custom Toolbox")};
