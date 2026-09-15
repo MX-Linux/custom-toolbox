@@ -53,8 +53,11 @@ package() {
     install -Dm755 build/custom-toolbox "${pkgdir}/usr/bin/custom-toolbox"
 
     # Install translations
-    install -dm755 "${pkgdir}/usr/share/custom-toolbox/locale"
-    install -Dm644 build/*.qm "${pkgdir}/usr/share/custom-toolbox/locale/" 2>/dev/null || true
+    # "install -D" with several sources needs -t, and then creates the
+    # destination directory itself, so the separate install -dm755 is gone. No
+    # error suppression either: the old "2>/dev/null || true" swallowed a glob
+    # that matched nothing, shipping the package with no translations at all.
+    install -Dm644 -t "${pkgdir}/usr/share/custom-toolbox/locale/" build/*.qm
 
     # Install config files
     install -dm755 "${pkgdir}/etc/custom-toolbox"
