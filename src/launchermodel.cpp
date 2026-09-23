@@ -136,7 +136,7 @@ LauncherModel::LauncherModel(const QCommandLineParser &argParser, const QString 
     : QAbstractListModel(parent),
       iconProvider(provider),
       fileLocation(Config::ConfigDir),
-      fileName(listFile),
+      fileName(QFileInfo(listFile).absoluteFilePath()),
       removeStartupCheckbox(argParser.isSet(QStringLiteral("remove-checkbox")))
 {
     QSettings settings(Config::ConfigFile, QSettings::NativeFormat);
