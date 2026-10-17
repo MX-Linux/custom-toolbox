@@ -3,6 +3,7 @@
 #include <QFile>
 #include <QSignalSpy>
 #include <QScopeGuard>
+#include <QSettings>
 #include <QTemporaryDir>
 #include <QTest>
 #include <QTextStream>
@@ -213,30 +214,36 @@ void TestLauncherModel::autostartLocation()
 
 void TestLauncherModel::readsLayoutSettings_data()
 {
-    QTest::addColumn<QByteArray>("config");
+    QTest::addColumn<QVariantMap>("config");
     QTest::addColumn<QList<int>>("expected");
-    QTest::newRow("defaults") << QByteArray() << QList<int> {720, 560, 0, 0};
+    QTest::newRow("defaults") << QVariantMap() << QList<int> {720, 560, 0, 0};
     QTest::newRow("configured")
-        << QByteArray("min_width=840\nmin_height=640\nicon_size=64\nfixed_number_columns=3\n")
+        << QVariantMap {{"min_width", 840}, {"min_height", 640}, {"icon_size", 64}, {"fixed_number_columns", 3}}
         << QList<int> {840, 640, 64, 3};
     QTest::newRow("minimums")
-        << QByteArray("min_width=100\nmin_height=-1\nicon_size=-2\nfixed_number_columns=-3\n")
+        << QVariantMap {{"min_width", 100}, {"min_height", -1}, {"icon_size", -2}, {"fixed_number_columns", -3}}
         << QList<int> {300, 300, 0, 0};
     QTest::newRow("invalid")
-        << QByteArray("min_width=bad\nmin_height=bad\nicon_size=bad\nfixed_number_columns=bad\n")
+        << QVariantMap {{"min_width", "bad"}, {"min_height", "bad"}, {"icon_size", "bad"},
+                        {"fixed_number_columns", "bad"}}
         << QList<int> {720, 560, 0, 0};
 }
 
 void TestLauncherModel::readsLayoutSettings()
 {
-    QFETCH(QByteArray, config);
+    QFETCH(QVariantMap, config);
     QFETCH(QList<int>, expected);
     QVERIFY(QDir().mkpath(Config::ConfigDir));
-    QFile configFile(Config::ConfigFile);
-    QVERIFY(configFile.open(QFile::WriteOnly));
-    QCOMPARE(configFile.write(config), config.size());
-    configFile.close();
     const auto removeConfig = qScopeGuard([] { QFile::remove(Config::ConfigFile); });
+    // Update Qt's shared cache as well as the file: consecutive rows can have
+    // identical file sizes and modification timestamps on fast build hosts.
+    QSettings settings(Config::ConfigFile, QSettings::NativeFormat);
+    settings.clear();
+    for (auto it = config.cbegin(); it != config.cend(); ++it) {
+        settings.setValue(it.key(), it.value());
+    }
+    settings.sync();
+    QCOMPARE(settings.status(), QSettings::NoError);
 
     QTemporaryDir directory;
     QVERIFY(directory.isValid());
