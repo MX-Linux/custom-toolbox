@@ -10,6 +10,7 @@ struct ItemInfo {
     QString iconName {};
     QString exec {};
     QStringList execArgs {};
+    QString workingDirectory {};
     bool terminal {};
     bool root {};
     bool user {};

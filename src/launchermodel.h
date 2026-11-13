@@ -120,6 +120,7 @@ private:
     QFileSystemWatcher fileWatcher;
     QTimer fileReloadTimer;
     QStringList desktopApplicationDirs;
+    QStringList watchedDesktopPaths;
     bool hideGui {};
     bool removeStartupCheckbox {};
     bool startupState {};
@@ -141,23 +142,26 @@ private:
     [[nodiscard]] QString getDefaultEditor() const;
     [[nodiscard]] QString invokingUser() const;
     bool prepareCommand(const ItemInfo &item, QString *program, QStringList *arguments,
-                        QString *errorMessage) const;
+                        QString *workingDirectory, QString *errorMessage) const;
     bool prepareEditorCommand(const QString &editor, QString *program, QStringList *arguments,
                               QString *errorMessage) const;
     bool readFile(const QString &path, bool reportErrors = true);
     void refilter();
     void runTracked(const QString &program, const QStringList &arguments,
-                    const QString &trackingKey = {});
+                    const QString &trackingKey = {}, const QString &workingDirectory = {});
 
-    [[nodiscard]] QString autostartFilePath() const;
+    [[nodiscard]] QString autostartFilePath(const QString &sourceHash = {}) const;
     [[nodiscard]] QString autostartSourceHash() const;
+    [[nodiscard]] QString canonicalAutostartSourceHash() const;
+    [[nodiscard]] bool autostartRunsThisList(const QString &path) const;
     [[nodiscard]] bool isLegacyAutostartFile(const QString &path) const;
-    [[nodiscard]] bool isManagedAutostartFile(const QString &path) const;
+    [[nodiscard]] bool isManagedAutostartFile(const QString &path, const QString &sourceHash = {}) const;
     void migrateLegacyAutostart();
     bool writeAutostartFile(QString *errorMessage) const;
 
     void handleDirectoryChanged(const QString &path);
     void handleFileChanged(const QString &path);
+    void watchDesktopFiles(const QStringList &files);
     void refreshIfFileChanged();
     void setReloadMessage(const QString &message);
     void watchDesktopApplicationDirectories();

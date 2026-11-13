@@ -412,6 +412,7 @@ ItemInfo LauncherModel::getDesktopFileInfo(const QString &path) const
     item.iconName = desktopEntryValue(text, QStringLiteral("Icon"), lang);
     item.terminal = desktopEntryValue(text, QStringLiteral("Terminal"), lang)
                         .compare(QLatin1String("true"), Qt::CaseInsensitive) == 0;
+    item.workingDirectory = LauncherParser::decodeDesktopString(desktopEntryValue(text, QStringLiteral("Path"), lang));
     if (item.name.isEmpty()
         || !LauncherParser::parseDesktopExec(desktopEntryValue(text, QStringLiteral("Exec"), lang), item.name,
                                              item.iconName, path, &item.exec, &item.execArgs)) {
@@ -455,11 +456,13 @@ bool LauncherModel::readFile(const QString &path, bool reportErrors)
     clearDesktopFileCaches();
     QVector<ItemInfo> items;
     QStringList newCategories {QCoreApplication::translate("MainWindow", "All launchers")};
+    QStringList resolvedFiles;
     for (const auto &parsedItem : parsed.items) {
         const QString desktopFile = getDesktopFileName(parsedItem.appName);
         if (desktopFile.isEmpty()) {
             continue;
         }
+        resolvedFiles.append(desktopFile);
         ItemInfo item = getDesktopFileInfo(desktopFile);
         if (item.name.isEmpty()) {
             continue;
@@ -490,6 +493,7 @@ bool LauncherModel::readFile(const QString &path, bool reportErrors)
     iconTheme = newTheme;
     QIcon::setThemeName(effectiveNewTheme);
 
+    watchDesktopFiles(resolvedFiles);
     beginResetModel();
     allItems = std::move(items);
     visibleRows.clear();
@@ -539,7 +543,7 @@ QString LauncherModel::invokingUser() const
 }
 
 bool LauncherModel::prepareCommand(const ItemInfo &item, QString *program, QStringList *arguments,
-                                   QString *errorMessage) const
+                                   QString *workingDirectory, QString *errorMessage) const
 {
     if (item.exec.isEmpty()) {
         *errorMessage = QCoreApplication::translate("MainWindow", "Command is empty. Cannot execute.");
@@ -547,6 +551,14 @@ bool LauncherModel::prepareCommand(const ItemInfo &item, QString *program, QStri
     }
     QString launchProgram = item.exec;
     QStringList launchArguments = item.execArgs;
+    QString launchDirectory = item.workingDirectory;
+    // pkexec normally starts the command in the target user's home directory. For an Exec
+    // line that already runs pkexec, ask it to keep the working directory rather than
+    // wrapping the command in env, which would change the program Polkit authorizes.
+    if (!launchDirectory.isEmpty() && QFileInfo(launchProgram).fileName() == QLatin1String("pkexec")
+        && !launchArguments.contains(QLatin1String("--keep-cwd"))) {
+        launchArguments.prepend(QStringLiteral("--keep-cwd"));
+    }
     if (item.terminal) {
         launchArguments.prepend(launchProgram);
         launchArguments.prepend(QStringLiteral("-e"));
@@ -555,10 +567,16 @@ bool LauncherModel::prepareCommand(const ItemInfo &item, QString *program, QStri
     QStringList environment {QStringLiteral("env"), QStringLiteral("DISPLAY=") + qEnvironmentVariable("DISPLAY"),
                              QStringLiteral("XAUTHORITY=")
                                  + qEnvironmentVariable("XAUTHORITY", QDir::homePath() + QStringLiteral("/.Xauthority"))};
+    // The root and user flags already run env under pkexec, so it applies the working
+    // directory after elevation, which may reach directories the caller cannot.
+    if (!item.workingDirectory.isEmpty()) {
+        environment.insert(1, QStringLiteral("--chdir=") + item.workingDirectory);
+    }
     if (item.root && getuid() != 0) {
         launchArguments.prepend(launchProgram);
         launchArguments = environment + launchArguments;
         launchProgram = QStringLiteral("pkexec");
+        launchDirectory.clear();
     } else if (item.user && getuid() == 0) {
         const QString user = invokingUser();
         const QString home = homeDirectoryForUser(user);
@@ -566,15 +584,17 @@ bool LauncherModel::prepareCommand(const ItemInfo &item, QString *program, QStri
             *errorMessage = QCoreApplication::translate("MainWindow", "Could not determine the unprivileged user. Refusing to run this launcher as root.");
             return false;
         }
-        environment[2] = QStringLiteral("XAUTHORITY=")
-                         + qEnvironmentVariable("XAUTHORITY", home + QStringLiteral("/.Xauthority"));
+        environment.last() = QStringLiteral("XAUTHORITY=")
+                             + qEnvironmentVariable("XAUTHORITY", home + QStringLiteral("/.Xauthority"));
         launchArguments.prepend(launchProgram);
         launchArguments = QStringList {QStringLiteral("--user"), user} + environment + launchArguments;
         launchProgram = QStringLiteral("pkexec");
+        launchDirectory.clear();
     }
     errorMessage->clear();
     *program = launchProgram;
     *arguments = launchArguments;
+    *workingDirectory = launchDirectory;
     return true;
 }
 
@@ -586,12 +606,14 @@ void LauncherModel::launch(int sourceIndex)
     }
     QString program;
     QStringList arguments;
+    QString workingDirectory;
     QString error;
-    if (!prepareCommand(allItems.at(sourceIndex), &program, &arguments, &error)) {
+    if (!prepareCommand(allItems.at(sourceIndex), &program, &arguments, &workingDirectory, &error)) {
         emit errorOccurred(QCoreApplication::translate("MainWindow", "Execution Error"), error);
         return;
     }
-    const QString trackingKey = program + QChar() + arguments.join(QChar());
+    const QString trackingKey = allItems.at(sourceIndex).workingDirectory + QChar() + program + QChar()
+                                + arguments.join(QChar());
     const qint64 runningProcessId = runningLaunchers.value(trackingKey);
     if (runningProcessId < 0
         || (runningProcessId > 0 && isProcessRunning(runningProcessId))) {
@@ -604,11 +626,11 @@ void LauncherModel::launch(int sourceIndex)
 
     if (program == QLatin1String("pkexec") || hideGui) {
         runningLaunchers.insert(trackingKey, -1);
-        runTracked(program, arguments, trackingKey);
+        runTracked(program, arguments, trackingKey, workingDirectory);
         return;
     }
     qint64 processId = 0;
-    if (!QProcess::startDetached(program, arguments, {}, &processId)) {
+    if (!QProcess::startDetached(program, arguments, workingDirectory, &processId)) {
         emit errorOccurred(QCoreApplication::translate("MainWindow", "Execution Error"), QCoreApplication::translate("MainWindow", "Failed to start program: %1").arg(program));
     } else if (processId > 0) {
         runningLaunchers.insert(trackingKey, processId);
@@ -616,7 +638,7 @@ void LauncherModel::launch(int sourceIndex)
 }
 
 void LauncherModel::runTracked(const QString &program, const QStringList &arguments,
-                               const QString &trackingKey)
+                               const QString &trackingKey, const QString &workingDirectory)
 {
     if (hideGui) {
         emit hideRequested();
@@ -625,6 +647,7 @@ void LauncherModel::runTracked(const QString &program, const QStringList &argume
     const bool isPkexec = program == QLatin1String("pkexec");
     auto *process = new QProcess(this);
     process->setProcessChannelMode(QProcess::ForwardedChannels);
+    process->setWorkingDirectory(workingDirectory);
     connect(process, &QProcess::started, this, [this, process, trackingKey] {
         if (!trackingKey.isEmpty()) {
             runningLaunchers.insert(trackingKey, process->processId());
@@ -765,27 +788,50 @@ void LauncherModel::openLicense()
     }
 }
 
+// The autostart entry is identified by the list path it executes (fileName is absolute),
+// not by its symlink target, so retargeting a symlinked list keeps the same entry.
 QString LauncherModel::autostartSourceHash() const
 {
-    const QFileInfo info(fileName);
-    const QString path = info.canonicalFilePath().isEmpty() ? info.absoluteFilePath() : info.canonicalFilePath();
-    return QString::fromLatin1(QCryptographicHash::hash(path.toUtf8(), QCryptographicHash::Sha256).toHex());
+    return QString::fromLatin1(QCryptographicHash::hash(fileName.toUtf8(), QCryptographicHash::Sha256).toHex());
 }
 
-QString LauncherModel::autostartFilePath() const
+// Earlier releases hashed the canonical path; used only to migrate those entries.
+QString LauncherModel::canonicalAutostartSourceHash() const
+{
+    const QString canonical = QFileInfo(fileName).canonicalFilePath();
+    return QString::fromLatin1(
+        QCryptographicHash::hash((canonical.isEmpty() ? fileName : canonical).toUtf8(), QCryptographicHash::Sha256)
+            .toHex());
+}
+
+QString LauncherModel::autostartFilePath(const QString &sourceHash) const
 {
     return QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation)
            + QStringLiteral("/autostart/custom-toolbox-")
-           + autostartSourceHash().left(16) + QStringLiteral(".desktop");
+           + (sourceHash.isEmpty() ? autostartSourceHash() : sourceHash).left(16) + QStringLiteral(".desktop");
 }
 
-bool LauncherModel::isManagedAutostartFile(const QString &path) const
+bool LauncherModel::isManagedAutostartFile(const QString &path, const QString &sourceHash) const
 {
     QSettings settings(path, QSettings::IniFormat);
     return QFile::exists(path) && settings.status() == QSettings::NoError
            && settings.value(QStringLiteral("Desktop Entry/X-Custom-Toolbox-Managed")).toBool()
            && settings.value(QStringLiteral("Desktop Entry/X-Custom-Toolbox-Source-SHA256")).toString()
-                  == autostartSourceHash();
+                  == (sourceHash.isEmpty() ? autostartSourceHash() : sourceHash);
+}
+
+bool LauncherModel::autostartRunsThisList(const QString &path) const
+{
+    QFile file(path);
+    if (!file.open(QFile::ReadOnly | QFile::Text)) {
+        return false;
+    }
+    const QString exec = LauncherParser::extractLocalizedValue(QString::fromUtf8(file.readAll()),
+                                                               QStringLiteral("Exec"), lang);
+    QString program;
+    QStringList arguments;
+    return LauncherParser::parseDesktopExec(exec, {}, {}, path, &program, &arguments)
+           && program == QLatin1String("custom-toolbox") && arguments == QStringList {fileName};
 }
 
 bool LauncherModel::isLegacyAutostartFile(const QString &path) const
@@ -865,6 +911,23 @@ void LauncherModel::migrateLegacyAutostart()
             qWarning() << error;
         }
     }
+
+    // An entry named by the old canonical hash may belong to the symlink target or to
+    // another symlink to it; migrate it only if it starts this exact list path.
+    const QString canonicalHash = canonicalAutostartSourceHash();
+    const QString canonicalPath = autostartFilePath(canonicalHash);
+    if (canonicalPath == autostartFilePath() || !isManagedAutostartFile(canonicalPath, canonicalHash)
+        || !autostartRunsThisList(canonicalPath)) {
+        return;
+    }
+    QString error;
+    if (writeAutostartFile(&error)) {
+        if (!QFile::remove(canonicalPath)) {
+            qWarning() << "Could not remove migrated autostart file:" << canonicalPath;
+        }
+    } else {
+        qWarning() << error;
+    }
 }
 
 void LauncherModel::setStartupEnabled(bool enabled)
@@ -900,12 +963,19 @@ void LauncherModel::handleFileChanged(const QString &path)
     if (path == fileName) {
         watchFile(fileName);
         fileReloadTimer.start();
+    } else if (watchedDesktopPaths.contains(path)) {
+        // Replacing a file drops its watch; restore it so later edits are still seen.
+        fileWatcher.removePath(path);
+        if (QFile::exists(path) && !fileWatcher.addPath(path)) {
+            qWarning() << "Failed to add watch for desktop file:" << path;
+        }
+        fileReloadTimer.start();
     }
 }
 
 void LauncherModel::handleDirectoryChanged(const QString &path)
 {
-    if (desktopApplicationDirs.contains(path) || path == fileLocation) {
+    if (desktopApplicationDirs.contains(path) || watchedDesktopPaths.contains(path) || path == fileLocation) {
         if (path == fileLocation && QFile::exists(fileName)) {
             watchFile(fileName);
         }
@@ -944,6 +1014,33 @@ void LauncherModel::watchFile(const QString &path)
         && !fileWatcher.addPath(fileLocation)) {
         qWarning() << "Failed to add watch for directory:" << fileLocation;
     }
+}
+
+// Watch the desktop files the list resolved to, plus their directories (which may be
+// subdirectories of the application directories), so in-place edits and replacements
+// of an entry's Name, Exec, etc. reload the launcher.
+void LauncherModel::watchDesktopFiles(const QStringList &files)
+{
+    QStringList paths;
+    for (const QString &file : files) {
+        if (file.endsWith(QLatin1String(".desktop"))) {
+            paths << file << QFileInfo(file).absolutePath();
+        }
+    }
+    paths.removeDuplicates();
+    for (const QString &path : std::as_const(watchedDesktopPaths)) {
+        if (!paths.contains(path) && path != fileName && path != fileLocation
+            && !desktopApplicationDirs.contains(path)) {
+            fileWatcher.removePath(path);
+        }
+    }
+    const QStringList watched = fileWatcher.files() + fileWatcher.directories();
+    for (const QString &path : std::as_const(paths)) {
+        if (!watched.contains(path) && QFileInfo::exists(path) && !fileWatcher.addPath(path)) {
+            qWarning() << "Failed to add watch for desktop file path:" << path;
+        }
+    }
+    watchedDesktopPaths = paths;
 }
 
 void LauncherModel::watchDesktopApplicationDirectories()

@@ -1,12 +1,16 @@
 #include <QCommandLineParser>
+#include <QCryptographicHash>
 #include <QDir>
 #include <QFile>
 #include <QSignalSpy>
+#include <QStandardPaths>
 #include <QScopeGuard>
 #include <QSettings>
 #include <QTemporaryDir>
 #include <QTest>
 #include <QTextStream>
+
+#include <unistd.h>
 
 #include "common.h"
 #include "launchermodel.h"
@@ -24,7 +28,27 @@ private slots:
     void autostartLocation();
     void readsLayoutSettings_data();
     void readsLayoutSettings();
+    void launchesInDesktopWorkingDirectory_data();
+    void launchesInDesktopWorkingDirectory();
+    void tracksLaunchersPerWorkingDirectory();
+    void leavesTargetAutostartWhenOpeningSymlink();
+    void keepsAutostartAcrossSymlinkRetarget();
+    void reloadsEditedDesktopFile();
 };
+
+namespace
+{
+bool writeFile(const QString &path, const QByteArray &contents)
+{
+    QFile file(path);
+    return file.open(QFile::WriteOnly | QFile::Truncate) && file.write(contents) == contents.size();
+}
+
+QString sourceHash(const QString &path)
+{
+    return QString::fromLatin1(QCryptographicHash::hash(path.toUtf8(), QCryptographicHash::Sha256).toHex());
+}
+} // namespace
 
 void TestLauncherModel::filtersAndExposesLauncherRoles()
 {
@@ -261,6 +285,252 @@ void TestLauncherModel::readsLayoutSettings()
     QCOMPARE(model.minimumHeight(), expected.at(1));
     QCOMPARE(model.iconSize(), expected.at(2));
     QCOMPARE(model.fixedNumberColumns(), expected.at(3));
+}
+
+void TestLauncherModel::launchesInDesktopWorkingDirectory_data()
+{
+    QTest::addColumn<QByteArray>("exec");
+    QTest::addColumn<QByteArray>("listEntry");
+    // The program pkexec is asked to authorize, or empty if pkexec is not used.
+    QTest::addColumn<QString>("authorized");
+    const QByteArray probe = R"(/bin/sh -c "pwd > cwd.txt")";
+    QTest::newRow("detached") << probe << QByteArray("cwd-probe") << QString();
+    QTest::newRow("root-flag") << probe << QByteArray("cwd-probe root") << QString(getuid() == 0 ? "" : "env");
+    QTest::newRow("exec-pkexec") << "pkexec " + probe << QByteArray("cwd-probe") << QString("/bin/sh");
+    QTest::newRow("exec-pkexec-terminal-flag")
+        << "pkexec " + probe << QByteArray("cwd-probe terminal") << QString("/bin/sh");
+}
+
+void TestLauncherModel::launchesInDesktopWorkingDirectory()
+{
+    QFETCH(QByteArray, exec);
+    QFETCH(QByteArray, listEntry);
+    QFETCH(QString, authorized);
+    QTemporaryDir directory;
+    QVERIFY(directory.isValid());
+    qputenv("HOME", directory.path().toUtf8());
+    qputenv("XDG_DATA_HOME", directory.filePath("share").toUtf8());
+
+    // Stand-ins for pkexec and the terminal. Like the real pkexec, the fake one starts the
+    // command in $HOME unless given --keep-cwd; it records the program it would authorize.
+    const QString bin = directory.filePath("bin");
+    QVERIFY(QDir().mkpath(bin));
+    QVERIFY(writeFile(bin + "/pkexec", R"(#!/bin/sh
+keep=
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --keep-cwd) keep=1; shift ;;
+        --user) shift 2 ;;
+        --*) shift ;;
+        *) break ;;
+    esac
+done
+printf '%s\n' "$1" > "$HOME/authorized.txt"
+[ -n "$keep" ] || cd "$HOME" || exit 1
+exec "$@"
+)"));
+    QVERIFY(writeFile(bin + "/x-terminal-emulator", "#!/bin/sh\n[ \"$1\" = -e ] && shift\nexec \"$@\"\n"));
+    for (const char *tool : {"/pkexec", "/x-terminal-emulator"}) {
+        QVERIFY(QFile::setPermissions(bin + tool, QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner));
+    }
+    const QByteArray previousPath = qgetenv("PATH");
+    const auto restorePath = qScopeGuard([&] { qputenv("PATH", previousPath); });
+    qputenv("PATH", bin.toUtf8() + ':' + previousPath);
+    QCOMPARE(QStandardPaths::findExecutable("pkexec"), bin + "/pkexec");
+
+    const QString applications = directory.filePath("share/applications");
+    const QString workDir = directory.filePath("work dir");
+    QVERIFY(QDir().mkpath(applications));
+    QVERIFY(QDir().mkpath(workDir));
+    // Path is a Desktop Entry string, so the space may be written as \s.
+    QByteArray path = workDir.toUtf8();
+    path.replace(' ', "\\s");
+    QVERIFY(writeFile(applications + "/cwd-probe.desktop",
+                      "[Desktop Entry]\nType=Application\nName=Cwd Probe\nExec=" + exec + "\nPath=" + path + "\n"));
+    const QString listPath = directory.filePath("cwd.list");
+    QVERIFY(writeFile(listPath, "Name=Cwd\nCategory=Utilities\n" + listEntry + "\n"));
+
+    QCommandLineParser parser;
+    parser.addOption({QStringLiteral("remove-checkbox"), QStringLiteral("test option")});
+    QVERIFY(parser.parse({QStringLiteral("custom-toolbox")}));
+    LauncherIconProvider icons;
+    LauncherModel model(parser, listPath, icons);
+    QCOMPARE(model.rowCount(), 1);
+    QSignalSpy errors(&model, &LauncherModel::errorOccurred);
+    model.launch(model.data(model.index(0), LauncherModel::SourceIndexRole).toInt());
+
+    QFile output(workDir + "/cwd.txt");
+    QTRY_VERIFY(output.exists() && output.size() > 0);
+    QVERIFY(output.open(QFile::ReadOnly));
+    QCOMPARE(QString::fromUtf8(output.readAll()).trimmed(), QDir(workDir).canonicalPath());
+    QFile authorization(directory.filePath("authorized.txt"));
+    if (authorized.isEmpty()) {
+        QVERIFY(!authorization.exists());
+    } else {
+        QVERIFY(authorization.open(QFile::ReadOnly));
+        QCOMPARE(QString::fromUtf8(authorization.readAll()).trimmed(), authorized);
+    }
+    QTest::qWait(100);
+    QCOMPARE(errors.count(), 0);
+}
+
+void TestLauncherModel::tracksLaunchersPerWorkingDirectory()
+{
+    QTemporaryDir directory;
+    QVERIFY(directory.isValid());
+    qputenv("HOME", directory.path().toUtf8());
+    qputenv("XDG_DATA_HOME", directory.filePath("share").toUtf8());
+    const QString applications = directory.filePath("share/applications");
+    QVERIFY(QDir().mkpath(applications));
+    for (const char *name : {"first", "second"}) {
+        const QString workDir = directory.filePath(name);
+        QVERIFY(QDir().mkpath(workDir));
+        QVERIFY(writeFile(applications + "/sleep-" + name + ".desktop",
+                          "[Desktop Entry]\nType=Application\nName=Sleep " + QByteArray(name)
+                              + "\nExec=/bin/sleep 0.5\nPath=" + workDir.toUtf8() + "\n"));
+    }
+    const QString listPath = directory.filePath("sleep.list");
+    QVERIFY(writeFile(listPath, "Name=Sleep\nCategory=Utilities\nsleep-first\nsleep-second\n"));
+
+    QCommandLineParser parser;
+    parser.addOption({QStringLiteral("remove-checkbox"), QStringLiteral("test option")});
+    QVERIFY(parser.parse({QStringLiteral("custom-toolbox")}));
+    LauncherIconProvider icons;
+    LauncherModel model(parser, listPath, icons);
+    QCOMPARE(model.rowCount(), 2);
+    QSignalSpy errors(&model, &LauncherModel::errorOccurred);
+    model.launch(model.data(model.index(0), LauncherModel::SourceIndexRole).toInt());
+    model.launch(model.data(model.index(1), LauncherModel::SourceIndexRole).toInt());
+    QCOMPARE(errors.count(), 0);
+    model.launch(model.data(model.index(1), LauncherModel::SourceIndexRole).toInt());
+    QCOMPARE(errors.count(), 1);
+    QCOMPARE(errors.constFirst().at(0).toString(), QStringLiteral("Launcher already running"));
+}
+
+void TestLauncherModel::leavesTargetAutostartWhenOpeningSymlink()
+{
+    QTemporaryDir directory;
+    QVERIFY(directory.isValid());
+    const QByteArray previousConfig = qgetenv("XDG_CONFIG_HOME");
+    const auto restoreConfig = qScopeGuard([&] {
+        if (previousConfig.isNull()) {
+            qunsetenv("XDG_CONFIG_HOME");
+        } else {
+            qputenv("XDG_CONFIG_HOME", previousConfig);
+        }
+    });
+    qputenv("HOME", directory.path().toUtf8());
+    qunsetenv("XDG_CONFIG_HOME");
+    const QString real = directory.filePath("real.list");
+    const QString link = directory.filePath("link.list");
+    QVERIFY(writeFile(real, "Name=Real\nCategory=Utilities\n/bin/true\n"));
+    QVERIFY(QFile::link(real, link));
+
+    QCommandLineParser parser;
+    parser.addOption({QStringLiteral("remove-checkbox"), QStringLiteral("test option")});
+    QVERIFY(parser.parse({QStringLiteral("custom-toolbox")}));
+    LauncherIconProvider realIcons;
+    LauncherModel realModel(parser, real, realIcons);
+    realModel.setStartupEnabled(true);
+    QVERIFY(realModel.startupEnabled());
+    const QDir autostart(directory.filePath(".config/autostart"));
+    const QStringList realEntries = autostart.entryList({"*.desktop"}, QDir::Files);
+    QCOMPARE(realEntries.size(), 1);
+
+    LauncherIconProvider linkIcons;
+    LauncherModel linkModel(parser, link, linkIcons);
+    QVERIFY(!linkModel.startupEnabled());
+    QCOMPARE(autostart.entryList({"*.desktop"}, QDir::Files), realEntries);
+
+    LauncherIconProvider reopenedIcons;
+    LauncherModel reopened(parser, real, reopenedIcons);
+    QVERIFY(reopened.startupEnabled());
+}
+
+void TestLauncherModel::keepsAutostartAcrossSymlinkRetarget()
+{
+    QTemporaryDir directory;
+    QVERIFY(directory.isValid());
+    const QByteArray previousConfig = qgetenv("XDG_CONFIG_HOME");
+    const auto restoreConfig = qScopeGuard([&] {
+        if (previousConfig.isNull()) {
+            qunsetenv("XDG_CONFIG_HOME");
+        } else {
+            qputenv("XDG_CONFIG_HOME", previousConfig);
+        }
+    });
+    qputenv("HOME", directory.path().toUtf8());
+    qunsetenv("XDG_CONFIG_HOME");
+    const QString one = directory.filePath("one.list");
+    const QString two = directory.filePath("two.list");
+    const QString link = directory.filePath("link.list");
+    QVERIFY(writeFile(one, "Name=One\nCategory=Utilities\n/bin/true\n"));
+    QVERIFY(writeFile(two, "Name=Two\nCategory=Utilities\n/bin/true\n"));
+    QVERIFY(QFile::link(one, link));
+
+    // An entry written by an earlier release, keyed by the symlink target, is migrated.
+    const QDir autostart(directory.filePath(".config/autostart"));
+    QVERIFY(QDir().mkpath(autostart.path()));
+    const QString canonicalHash = sourceHash(QFileInfo(one).canonicalFilePath());
+    const QString oldEntry = autostart.filePath("custom-toolbox-" + canonicalHash.left(16) + ".desktop");
+    QVERIFY(writeFile(oldEntry, "[Desktop Entry]\nExec=custom-toolbox " + link.toUtf8()
+                                    + "\nX-Custom-Toolbox-Managed=true\nX-Custom-Toolbox-Source-SHA256="
+                                    + canonicalHash.toUtf8() + "\n"));
+
+    QCommandLineParser parser;
+    parser.addOption({QStringLiteral("remove-checkbox"), QStringLiteral("test option")});
+    QVERIFY(parser.parse({QStringLiteral("custom-toolbox")}));
+    LauncherIconProvider icons;
+    LauncherModel model(parser, link, icons);
+    QVERIFY(model.startupEnabled());
+    QVERIFY(!QFile::exists(oldEntry));
+    QCOMPARE(autostart.entryList({"*.desktop"}, QDir::Files),
+             QStringList {"custom-toolbox-" + sourceHash(link).left(16) + ".desktop"});
+
+    QVERIFY(QFile::remove(link));
+    QVERIFY(QFile::link(two, link));
+    LauncherIconProvider reopenedIcons;
+    LauncherModel reopened(parser, link, reopenedIcons);
+    QVERIFY(reopened.startupEnabled());
+
+    QSignalSpy errors(&model, &LauncherModel::errorOccurred);
+    model.setStartupEnabled(false);
+    QCOMPARE(errors.count(), 0);
+    QVERIFY(!model.startupEnabled());
+    QVERIFY(autostart.entryList({"*.desktop"}, QDir::Files).isEmpty());
+}
+
+void TestLauncherModel::reloadsEditedDesktopFile()
+{
+    QTemporaryDir directory;
+    QVERIFY(directory.isValid());
+    qputenv("HOME", directory.path().toUtf8());
+    qputenv("XDG_DATA_HOME", directory.filePath("share").toUtf8());
+    const QString vendor = directory.filePath("share/applications/vendor");
+    QVERIFY(QDir().mkpath(vendor));
+    const QString desktopPath = vendor + "/watched-tool.desktop";
+    QVERIFY(writeFile(desktopPath, "[Desktop Entry]\nType=Application\nName=Original Tool\nExec=/bin/true\n"));
+    const QString listPath = directory.filePath("watch.list");
+    QVERIFY(writeFile(listPath, "Name=Watch\nCategory=Utilities\nwatched-tool\n"));
+
+    QCommandLineParser parser;
+    parser.addOption({QStringLiteral("remove-checkbox"), QStringLiteral("test option")});
+    QVERIFY(parser.parse({QStringLiteral("custom-toolbox")}));
+    LauncherIconProvider icons;
+    LauncherModel model(parser, listPath, icons);
+    QCOMPARE(model.data(model.index(0), LauncherModel::NameRole).toString(), QStringLiteral("Original Tool"));
+
+    // Truncate and rewrite in place (same inode), which no directory watch reports.
+    QVERIFY(writeFile(desktopPath, "[Desktop Entry]\nType=Application\nName=Edited Tool\nExec=/bin/true\n"));
+    QTRY_COMPARE(model.data(model.index(0), LauncherModel::NameRole).toString(), QStringLiteral("Edited Tool"));
+
+    // Replace the file (new inode); the restored watch must still see later in-place edits.
+    QVERIFY(writeFile(desktopPath + ".new", "[Desktop Entry]\nType=Application\nName=Replaced Tool\nExec=/bin/true\n"));
+    QVERIFY(QFile::remove(desktopPath));
+    QVERIFY(QFile::rename(desktopPath + ".new", desktopPath));
+    QTRY_COMPARE(model.data(model.index(0), LauncherModel::NameRole).toString(), QStringLiteral("Replaced Tool"));
+    QVERIFY(writeFile(desktopPath, "[Desktop Entry]\nType=Application\nName=Final Tool\nExec=/bin/true\n"));
+    QTRY_COMPARE(model.data(model.index(0), LauncherModel::NameRole).toString(), QStringLiteral("Final Tool"));
 }
 
 QTEST_MAIN(TestLauncherModel)

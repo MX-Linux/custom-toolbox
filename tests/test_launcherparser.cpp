@@ -1,3 +1,4 @@
+#include <QFile>
 #include <QSettings>
 #include <QTemporaryDir>
 #include <QtTest>
@@ -12,6 +13,10 @@ private slots:
     void parsesCustomFormatWithQuotedAliasAndComment();
     void skipsConflictingCustomFlags();
     void parsesIniFormatWithColonInAlias();
+    void keepsLiteralIniAliasBoundaries_data();
+    void keepsLiteralIniAliasBoundaries();
+    void readsItemsFromEncodedSections_data();
+    void readsItemsFromEncodedSections();
     void skipsConflictingIniFlags();
     void extractsLocalizedValuesFromCrLfText();
     void expandsEnvironmentVariablesInDesktopExec();
@@ -66,6 +71,95 @@ void LauncherParserTest::parsesIniFormatWithColonInAlias()
     QCOMPARE(item.appName, "example");
     QCOMPARE(item.alias, "Example: Tool");
     QVERIFY(item.terminal);
+}
+
+void LauncherParserTest::keepsLiteralIniAliasBoundaries_data()
+{
+    QTest::addColumn<QByteArray>("items");
+    // Each expected entry is "appName|alias|flags", flags being r(oot), t(erminal), u(ser).
+    QTest::addColumn<QStringList>("expected");
+    QTest::newRow("colon-flag-words") << QByteArray(R"(sample:alias="My:root:Tool")")
+                                      << QStringList {"sample|My:root:Tool|"};
+    QTest::newRow("escaped-quote") << QByteArray(R"(sample:alias="My\":root:Tool")")
+                                   << QStringList {R"(sample|My":root:Tool|)"};
+    QTest::newRow("comma-and-comment") << QByteArray(R"(other:terminal:alias="A, B":root ; note)")
+                                       << QStringList {"other|A, B|rt"};
+    QTest::newRow("continuation") << QByteArray("one:root,\\\n  two:terminal") << QStringList {"one||r", "two||t"};
+    QTest::newRow("hex-escape") << QByteArray(R"(sample:alias="\x41lias")") << QStringList {"sample|Alias|"};
+    QTest::newRow("single-quotes") << QByteArray("sample:alias='It:root'") << QStringList {"sample|It:root|"};
+    QTest::newRow("unquoted-apostrophe") << QByteArray("sample:alias=Bob's:root") << QStringList {"sample|Bob's|r"};
+    QTest::newRow("qsettings-quoted") << QByteArray(R"("sample:alias=\"Quoted, Item\":terminal", next)")
+                                      << QStringList {"sample|Quoted, Item|t", "next||"};
+    QTest::newRow("unterminated") << QByteArray(R"(sample:alias="Open:root)")
+                                  << QStringList {R"(sample|"Open:root|)"};
+}
+
+void LauncherParserTest::keepsLiteralIniAliasBoundaries()
+{
+    QFETCH(QByteArray, items);
+    QFETCH(QStringList, expected);
+    QTemporaryDir dir;
+    QVERIFY(dir.isValid());
+    const QString path = dir.filePath("launcher.list");
+    QFile file(path);
+    QVERIFY(file.open(QFile::WriteOnly | QFile::Text));
+    QVERIFY(file.write("[Categories]\nlist=Utilities\n\n[Utilities]\nitems=" + items + "\n") > 0);
+    file.close();
+    QSettings settings(path, QSettings::IniFormat);
+
+    const auto result = LauncherParser::parseIni(settings, "en_US");
+
+    QStringList actual;
+    for (const auto &item : result.items) {
+        QString flags;
+        if (item.root) {
+            flags += 'r';
+        }
+        if (item.terminal) {
+            flags += 't';
+        }
+        if (item.user) {
+            flags += 'u';
+        }
+        actual << item.appName + '|' + item.alias + '|' + flags;
+    }
+    QCOMPARE(actual, expected);
+}
+
+void LauncherParserTest::readsItemsFromEncodedSections_data()
+{
+    QTest::addColumn<QString>("category");
+    QTest::addColumn<QByteArray>("section");
+    QTest::newRow("unicode-escape") << QString::fromUtf8("工具") << QByteArray("[%U5DE5%U5177]\nitems=");
+    QTest::newRow("lowercase-unicode-escape") << QString::fromUtf8("工具") << QByteArray("[%u5de5%u5177]\nitems=");
+    QTest::newRow("percent-escape") << QString("Custom Tools") << QByteArray("[Custom%20Tools]\nitems=");
+    QTest::newRow("latin1-escape") << QString::fromUtf8("Ünï") << QByteArray("[%DCn%EF]\nitems=");
+    QTest::newRow("general-group-key") << QString("Utilities") << QByteArray("[General]\nUtilities\\items=");
+    QTest::newRow("encoded-key") << QString("Utilities") << QByteArray("[ Utilities ]\n%69tems =");
+}
+
+void LauncherParserTest::readsItemsFromEncodedSections()
+{
+    QFETCH(QString, category);
+    QFETCH(QByteArray, section);
+    QTemporaryDir dir;
+    QVERIFY(dir.isValid());
+    const QString path = dir.filePath("launcher.list");
+    QFile file(path);
+    QVERIFY(file.open(QFile::WriteOnly | QFile::Text));
+    QVERIFY(file.write("[Categories]\nlist=" + category.toUtf8() + "\n\n" + section
+                       + R"(sample:alias="My:root:Tool")" + "\n")
+            > 0);
+    file.close();
+    QSettings settings(path, QSettings::IniFormat);
+    QCOMPARE(settings.value("Categories/list").toString(), category);
+
+    const auto result = LauncherParser::parseIni(settings, "en_US");
+
+    QCOMPARE(result.items.size(), 1);
+    QCOMPARE(result.items.first().category, category);
+    QCOMPARE(result.items.first().alias, "My:root:Tool");
+    QVERIFY(!result.items.first().root);
 }
 
 void LauncherParserTest::skipsConflictingIniFlags()
