@@ -12,69 +12,69 @@
 <context>
     <name>Main</name>
     <message>
-        <location filename="../qml/Main.qml" line="43"/>
+        <location filename="../qml/Main.qml" line="44"/>
         <source>Configuration error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="131"/>
+        <location filename="../qml/Main.qml" line="141"/>
         <source>Search launchers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="154"/>
+        <location filename="../qml/Main.qml" line="164"/>
         <source>Search launchers and tasks…</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="166"/>
+        <location filename="../qml/Main.qml" line="176"/>
         <source>Clear search</source>
-        <translation type="unfinished"></translation>
+        <translation>Εκκαθάριση αναζήτησης</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="215"/>
+        <location filename="../qml/Main.qml" line="225"/>
         <source>CATEGORIES</source>
-        <translation type="unfinished"></translation>
+        <translation>ΚΑΤΗΓΟΡΙΕΣ</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="251"/>
-        <location filename="../qml/Main.qml" line="484"/>
+        <location filename="../qml/Main.qml" line="261"/>
+        <location filename="../qml/Main.qml" line="522"/>
         <source>Launch at login</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="258"/>
+        <location filename="../qml/Main.qml" line="268"/>
         <source>Open this toolbox automatically</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="268"/>
-        <location filename="../qml/Main.qml" line="493"/>
+        <location filename="../qml/Main.qml" line="278"/>
+        <location filename="../qml/Main.qml" line="531"/>
         <source>Launch this toolbox at login</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="334"/>
+        <location filename="../qml/Main.qml" line="344"/>
         <source>Search results</source>
-        <translation type="unfinished"></translation>
+        <translation>Αποτελέσματα αναζήτησης</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="336"/>
+        <location filename="../qml/Main.qml" line="346"/>
         <source>All launchers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="343"/>
+        <location filename="../qml/Main.qml" line="353"/>
         <source>Results matching “%1”</source>
-        <translation type="unfinished"></translation>
+        <translation>Αποτελέσματα που σχετίζονται με “%1”</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="344"/>
+        <location filename="../qml/Main.qml" line="354"/>
         <source>Choose a launcher to start an application or task</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../qml/Main.qml" line="351"/>
+        <location filename="../qml/Main.qml" line="361"/>
         <source>%n launcher(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -82,50 +82,65 @@
         </translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="366"/>
+        <location filename="../qml/Main.qml" line="376"/>
         <source>Condensed view</source>
-        <translation type="unfinished"></translation>
+        <translation>Συνοπτική προβολή</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="376"/>
+        <location filename="../qml/Main.qml" line="386"/>
         <source>Use condensed launcher view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="379"/>
+        <location filename="../qml/Main.qml" line="389"/>
         <source>Show more launchers at once</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="472"/>
+        <location filename="../qml/Main.qml" line="404"/>
+        <source>Hide categories</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="414"/>
+        <source>Hide the category list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="417"/>
+        <source>Use the whole window for launchers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="510"/>
         <source>No launchers found
 Try a different search or category.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="523"/>
+        <location filename="../qml/Main.qml" line="561"/>
         <source>About %1</source>
-        <translation type="unfinished">Περί του %1</translation>
+        <translation>Περί του %1</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="556"/>
+        <location filename="../qml/Main.qml" line="594"/>
         <source>Version %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Έκδοση %1</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="562"/>
+        <location filename="../qml/Main.qml" line="600"/>
         <source>Custom Toolbox creates focused collections of application launchers and system tasks.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="570"/>
+        <location filename="../qml/Main.qml" line="608"/>
         <source>License</source>
-        <translation type="unfinished">Άδεια</translation>
+        <translation>Άδεια</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="579"/>
+        <location filename="../qml/Main.qml" line="617"/>
         <source>Copyright © MX Linux</source>
-        <translation type="unfinished"></translation>
+        <translation>Πνευματικά δικαιώματα © MX Linux</translation>
     </message>
 </context>
 <context>
@@ -136,45 +151,25 @@ Try a different search or category.</source>
         <translation>Προσαρμοσμένη Εργαλειοθήκη</translation>
     </message>
     <message>
-        <source>About this application</source>
-        <translation type="vanished">Περί της εφαρμογής</translation>
-    </message>
-    <message>
-        <location filename="../qml/Main.qml" line="184"/>
+        <location filename="../qml/Main.qml" line="194"/>
         <source>About...</source>
         <translation>Περί...</translation>
     </message>
     <message>
-        <source>Alt+A</source>
-        <translation type="vanished">Alt+A</translation>
-    </message>
-    <message>
-        <location filename="../qml/Main.qml" line="498"/>
+        <location filename="../qml/Main.qml" line="536"/>
         <source>Edit</source>
         <translation>Επεξεργασία</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="176"/>
-        <location filename="../src/launchermodel.cpp" line="736"/>
+        <location filename="../qml/Main.qml" line="186"/>
+        <location filename="../src/launchermodel.cpp" line="780"/>
         <source>Help</source>
         <translation>Βοήθεια</translation>
     </message>
     <message>
-        <source>Alt+H</source>
-        <translation type="vanished">Alt+H</translation>
-    </message>
-    <message>
-        <source>Close application</source>
-        <translation type="vanished">Κλείσιμο εφαρμογής</translation>
-    </message>
-    <message>
-        <location filename="../qml/Main.qml" line="506"/>
+        <location filename="../qml/Main.qml" line="544"/>
         <source>Close</source>
         <translation>Κλείσιμο</translation>
-    </message>
-    <message>
-        <source>Alt+C</source>
-        <translation type="vanished">Alt+C</translation>
     </message>
     <message>
         <location filename="../src/launchermodel.h" line="109"/>
@@ -182,178 +177,150 @@ Try a different search or category.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show this dialog at start up</source>
-        <translation type="vanished">Εμφάνιση αυτού του παραθύρου στην εκκίνηση</translation>
-    </message>
-    <message>
-        <source>search</source>
-        <translation type="vanished">αναζήτηση</translation>
-    </message>
-    <message>
-        <location filename="../src/launchermodel.cpp" line="562"/>
-        <location filename="../src/launchermodel.cpp" line="569"/>
-        <location filename="../src/launchermodel.cpp" line="591"/>
-        <location filename="../src/launchermodel.cpp" line="620"/>
-        <location filename="../src/launchermodel.cpp" line="632"/>
+        <location filename="../src/launchermodel.cpp" line="604"/>
+        <location filename="../src/launchermodel.cpp" line="612"/>
+        <location filename="../src/launchermodel.cpp" line="634"/>
+        <location filename="../src/launchermodel.cpp" line="664"/>
+        <location filename="../src/launchermodel.cpp" line="676"/>
         <source>Execution Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="523"/>
+        <location filename="../src/launchermodel.cpp" line="549"/>
         <source>Command is empty. Cannot execute.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="562"/>
+        <location filename="../src/launchermodel.cpp" line="604"/>
         <source>The selected launcher is no longer available.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="620"/>
+        <location filename="../src/launchermodel.cpp" line="664"/>
         <source>Failed to start command: %1</source>
         <translation>Απέτυχε η εκκίνηση της εντολής: %1</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="632"/>
+        <location filename="../src/launchermodel.cpp" line="676"/>
         <source>Failed to execute command: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="591"/>
+        <location filename="../src/launchermodel.cpp" line="634"/>
         <source>Failed to start program: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="70"/>
-        <location filename="../src/launchermodel.cpp" line="423"/>
-        <location filename="../src/launchermodel.cpp" line="869"/>
+        <location filename="../src/launchermodel.cpp" line="446"/>
+        <location filename="../src/launchermodel.cpp" line="953"/>
         <source>File Open Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="166"/>
-        <location filename="../src/launchermodel.cpp" line="410"/>
+        <location filename="../src/launchermodel.cpp" line="433"/>
         <source>File Not Found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="544"/>
+        <location filename="../src/launchermodel.cpp" line="584"/>
         <source>Could not determine the unprivileged user. Refusing to run this launcher as root.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="167"/>
-        <location filename="../src/launchermodel.cpp" line="410"/>
+        <location filename="../src/launchermodel.cpp" line="433"/>
         <source>The file %1 does not exist.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="423"/>
+        <location filename="../src/launchermodel.cpp" line="446"/>
         <source>Could not open file: </source>
         <translation>Δεν ήταν δυνατό το άνοιγμα του αρχείου:</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="429"/>
-        <location filename="../src/launchermodel.cpp" line="458"/>
+        <location filename="../src/launchermodel.cpp" line="452"/>
+        <location filename="../src/launchermodel.cpp" line="483"/>
         <source>Parse Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="429"/>
+        <location filename="../src/launchermodel.cpp" line="452"/>
         <source>The file %1 contains no recognizable launcher entries.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="435"/>
+        <location filename="../src/launchermodel.cpp" line="458"/>
         <source>All launchers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="458"/>
+        <location filename="../src/launchermodel.cpp" line="483"/>
         <source>None of the entries in %1 match an installed application.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="577"/>
+        <location filename="../src/launchermodel.cpp" line="620"/>
         <source>Launcher already running</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="578"/>
+        <location filename="../src/launchermodel.cpp" line="621"/>
         <source>%1 is already running.</source>
-        <translation type="unfinished"></translation>
+        <translation>Το %1 είναι σε λειτουργία.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="736"/>
-        <location filename="../src/launchermodel.cpp" line="743"/>
-        <source>Could not open %1.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/launchermodel.cpp" line="791"/>
+        <location filename="../src/launchermodel.cpp" line="858"/>
         <source>Refusing to overwrite a non-Custom Toolbox autostart file: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="898"/>
-        <source>Could not reload the configuration. The previous configuration is still in use.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Version:</source>
-        <translation type="vanished">Έκδοση:</translation>
-    </message>
-    <message>
-        <source>About %1</source>
-        <translation type="vanished">Περί του %1</translation>
-    </message>
-    <message>
-        <location filename="../src/launchermodel.cpp" line="860"/>
+        <location filename="../src/launchermodel.cpp" line="944"/>
         <source>Could not create directory: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="722"/>
-        <location filename="../src/launchermodel.cpp" line="728"/>
-        <location filename="../src/launchermodel.cpp" line="743"/>
+        <location filename="../src/launchermodel.cpp" line="766"/>
+        <location filename="../src/launchermodel.cpp" line="772"/>
+        <location filename="../src/launchermodel.cpp" line="787"/>
         <source>Error</source>
         <translation>Σφάλμα</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="668"/>
+        <location filename="../src/launchermodel.cpp" line="712"/>
         <source>Editor command is empty.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="728"/>
+        <location filename="../src/launchermodel.cpp" line="772"/>
         <source>Failed to launch the editor.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="689"/>
+        <location filename="../src/launchermodel.cpp" line="733"/>
         <source>Could not determine the unprivileged user. Refusing to launch the editor as root.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Copyright (c) MX Linux</source>
-        <translation type="vanished">Πνευματικά δικαιώματα (c) MX Linux</translation>
+        <location filename="../src/launchermodel.cpp" line="780"/>
+        <location filename="../src/launchermodel.cpp" line="787"/>
+        <source>Could not open %1.</source>
+        <translation>Δεν ήταν δυνατό το άνοιγμα του %1.</translation>
     </message>
     <message>
-        <source>%1 License</source>
-        <translation type="vanished">Άδεια %1</translation>
+        <location filename="../src/launchermodel.cpp" line="989"/>
+        <source>Could not reload the configuration. The previous configuration is still in use.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>%1 Help</source>
-        <translation type="vanished">Βοήθεια %1</translation>
-    </message>
-    <message>
-        <location filename="../src/launchermodel.cpp" line="811"/>
-        <location filename="../src/launchermodel.cpp" line="822"/>
+        <location filename="../src/launchermodel.cpp" line="878"/>
+        <location filename="../src/launchermodel.cpp" line="889"/>
         <source>Could not write file: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="865"/>
+        <location filename="../src/launchermodel.cpp" line="949"/>
         <source>Could not remove file: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -376,33 +343,9 @@ Try a different search or category.</source>
 <context>
     <name>QObject</name>
     <message>
-        <source>Could not load %1</source>
-        <translation type="vanished">Δεν ήταν δυνατή η φόρτωση του %1</translation>
-    </message>
-    <message>
-        <source>License</source>
-        <translation type="vanished">Άδεια</translation>
-    </message>
-    <message>
-        <source>Changelog</source>
-        <translation type="vanished">Αρχείο αλλαγών</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Άκυρο</translation>
-    </message>
-    <message>
-        <source>Could not load changelog.</source>
-        <translation type="vanished">Δεν ήταν δυνατή η φόρτωση του αρχείου αλλαγών.</translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation type="vanished">&amp;Κλείσιμο</translation>
-    </message>
-    <message>
         <location filename="../src/main.cpp" line="105"/>
         <source>Custom Toolbox</source>
-        <translation type="unfinished">Προσαρμοσμένη Εργαλειοθήκη</translation>
+        <translation>Προσαρμοσμένη Εργαλειοθήκη</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="130"/>

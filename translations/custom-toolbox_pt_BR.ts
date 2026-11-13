@@ -6,126 +6,142 @@
     <message>
         <location filename="../qml/components/LauncherCard.qml" line="78"/>
         <source>Open this launcher</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir este lançador</translation>
     </message>
 </context>
 <context>
     <name>Main</name>
     <message>
-        <location filename="../qml/Main.qml" line="43"/>
+        <location filename="../qml/Main.qml" line="44"/>
         <source>Configuration error</source>
-        <translation type="unfinished"></translation>
+        <translation>Ocorreu um erro na configuração</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="131"/>
+        <location filename="../qml/Main.qml" line="141"/>
         <source>Search launchers</source>
-        <translation type="unfinished"></translation>
+        <translation>Buscar lançadores</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="154"/>
+        <location filename="../qml/Main.qml" line="164"/>
         <source>Search launchers and tasks…</source>
-        <translation type="unfinished"></translation>
+        <translation>Pesquisar por tarefas e lançadores...</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="166"/>
+        <location filename="../qml/Main.qml" line="176"/>
         <source>Clear search</source>
-        <translation type="unfinished"></translation>
+        <translation>Limpar busca</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="215"/>
+        <location filename="../qml/Main.qml" line="225"/>
         <source>CATEGORIES</source>
-        <translation type="unfinished"></translation>
+        <translation>CATEGORIAS</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="251"/>
-        <location filename="../qml/Main.qml" line="484"/>
+        <location filename="../qml/Main.qml" line="261"/>
+        <location filename="../qml/Main.qml" line="522"/>
         <source>Launch at login</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/Main.qml" line="258"/>
-        <source>Open this toolbox automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Iniciar ao logar</translation>
     </message>
     <message>
         <location filename="../qml/Main.qml" line="268"/>
-        <location filename="../qml/Main.qml" line="493"/>
+        <source>Open this toolbox automatically</source>
+        <translation>Abrir automaticamente esta caixa de ferramentas</translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="278"/>
+        <location filename="../qml/Main.qml" line="531"/>
         <source>Launch this toolbox at login</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/Main.qml" line="334"/>
-        <source>Search results</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/Main.qml" line="336"/>
-        <source>All launchers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/Main.qml" line="343"/>
-        <source>Results matching “%1”</source>
-        <translation type="unfinished"></translation>
+        <translation>Iniciar essa caixa de ferramentas ao logar</translation>
     </message>
     <message>
         <location filename="../qml/Main.qml" line="344"/>
+        <source>Search results</source>
+        <translation>Resultados da busca</translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="346"/>
+        <source>All launchers</source>
+        <translation>Todos os lançadores</translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="353"/>
+        <source>Results matching “%1”</source>
+        <translation>Resultados correspondentes a ‘%1’</translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="354"/>
         <source>Choose a launcher to start an application or task</source>
-        <translation type="unfinished"></translation>
+        <translation>Escolha um lançador para iniciar um programa ou uma tarefa</translation>
     </message>
     <message numerus="yes">
-        <location filename="../qml/Main.qml" line="351"/>
+        <location filename="../qml/Main.qml" line="361"/>
         <source>%n launcher(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n lançador</numerusform>
+            <numerusform>%n lançadores</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="366"/>
-        <source>Condensed view</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../qml/Main.qml" line="376"/>
+        <source>Condensed view</source>
+        <translation>Visão resumida</translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="386"/>
         <source>Use condensed launcher view</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar uma visão resumida dos lançadores</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="379"/>
+        <location filename="../qml/Main.qml" line="389"/>
         <source>Show more launchers at once</source>
+        <translation>Exibir mais lançadores de uma vez</translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="404"/>
+        <source>Hide categories</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="472"/>
+        <location filename="../qml/Main.qml" line="414"/>
+        <source>Hide the category list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="417"/>
+        <source>Use the whole window for launchers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="510"/>
         <source>No launchers found
 Try a different search or category.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nenhum lançador foi encontrado
+Por favor, pesquise outro nome ou categoria.</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="523"/>
+        <location filename="../qml/Main.qml" line="561"/>
         <source>About %1</source>
         <translation>Sobre o ‘%1’</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="556"/>
+        <location filename="../qml/Main.qml" line="594"/>
         <source>Version %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Versão do ‘%1’</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="562"/>
+        <location filename="../qml/Main.qml" line="600"/>
         <source>Custom Toolbox creates focused collections of application launchers and system tasks.</source>
-        <translation type="unfinished"></translation>
+        <translation>O Personalizador da Caixa de Ferramentas cria uma coleção de lançadores de programas e de tarefas do sistema. </translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="570"/>
+        <location filename="../qml/Main.qml" line="608"/>
         <source>License</source>
         <translation>Licença</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="579"/>
+        <location filename="../qml/Main.qml" line="617"/>
         <source>Copyright © MX Linux</source>
-        <translation type="unfinished"></translation>
+        <translation>Direitos Autorais © MX Linux</translation>
     </message>
 </context>
 <context>
@@ -136,23 +152,23 @@ Try a different search or category.</source>
         <translation>Personalizador da Caixa de Ferramentas</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="184"/>
+        <location filename="../qml/Main.qml" line="194"/>
         <source>About...</source>
         <translation>Sobre...</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="498"/>
+        <location filename="../qml/Main.qml" line="536"/>
         <source>Edit</source>
         <translation>Editar</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="176"/>
-        <location filename="../src/launchermodel.cpp" line="736"/>
+        <location filename="../qml/Main.qml" line="186"/>
+        <location filename="../src/launchermodel.cpp" line="780"/>
         <source>Help</source>
         <translation>Ajuda</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="506"/>
+        <location filename="../qml/Main.qml" line="544"/>
         <source>Close</source>
         <translation>Fechar</translation>
     </message>
@@ -162,150 +178,150 @@ Try a different search or category.</source>
         <translation>Este é um iniciador ou lançador personalizado</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="562"/>
-        <location filename="../src/launchermodel.cpp" line="569"/>
-        <location filename="../src/launchermodel.cpp" line="591"/>
-        <location filename="../src/launchermodel.cpp" line="620"/>
-        <location filename="../src/launchermodel.cpp" line="632"/>
+        <location filename="../src/launchermodel.cpp" line="604"/>
+        <location filename="../src/launchermodel.cpp" line="612"/>
+        <location filename="../src/launchermodel.cpp" line="634"/>
+        <location filename="../src/launchermodel.cpp" line="664"/>
+        <location filename="../src/launchermodel.cpp" line="676"/>
         <source>Execution Error</source>
         <translation>Ocorreu um erro na execução</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="523"/>
+        <location filename="../src/launchermodel.cpp" line="549"/>
         <source>Command is empty. Cannot execute.</source>
         <translation>Não foi possível executar porque o comando está vazio.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="562"/>
+        <location filename="../src/launchermodel.cpp" line="604"/>
         <source>The selected launcher is no longer available.</source>
-        <translation type="unfinished"></translation>
+        <translation>O lançador selecionado não está mais disponível.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="620"/>
+        <location filename="../src/launchermodel.cpp" line="664"/>
         <source>Failed to start command: %1</source>
         <translation>Ocorreu um erro ao executar o comando: %1</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="632"/>
+        <location filename="../src/launchermodel.cpp" line="676"/>
         <source>Failed to execute command: %1</source>
         <translation>Ocorreu uma falha ao executar o comando %1</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="591"/>
+        <location filename="../src/launchermodel.cpp" line="634"/>
         <source>Failed to start program: %1</source>
         <translation>Ocorreu uma falha ao executar o programa %1</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="70"/>
-        <location filename="../src/launchermodel.cpp" line="423"/>
-        <location filename="../src/launchermodel.cpp" line="869"/>
+        <location filename="../src/launchermodel.cpp" line="446"/>
+        <location filename="../src/launchermodel.cpp" line="953"/>
         <source>File Open Error</source>
         <translation>Ocorreu um erro ao abrir o arquivo</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="166"/>
-        <location filename="../src/launchermodel.cpp" line="410"/>
+        <location filename="../src/launchermodel.cpp" line="433"/>
         <source>File Not Found</source>
         <translation>O arquivo não foi encontrado</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="544"/>
+        <location filename="../src/launchermodel.cpp" line="584"/>
         <source>Could not determine the unprivileged user. Refusing to run this launcher as root.</source>
         <translation>Como não foi possível determinar o usuário sem os privilégios, este inicializador não será executado como administrador.</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="167"/>
-        <location filename="../src/launchermodel.cpp" line="410"/>
+        <location filename="../src/launchermodel.cpp" line="433"/>
         <source>The file %1 does not exist.</source>
         <translation>O arquivo %1 não existe.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="423"/>
+        <location filename="../src/launchermodel.cpp" line="446"/>
         <source>Could not open file: </source>
         <translation>Não foi possível abrir o arquivo</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="429"/>
-        <location filename="../src/launchermodel.cpp" line="458"/>
+        <location filename="../src/launchermodel.cpp" line="452"/>
+        <location filename="../src/launchermodel.cpp" line="483"/>
         <source>Parse Error</source>
         <translation>Ocorreu um erro de análise</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="429"/>
+        <location filename="../src/launchermodel.cpp" line="452"/>
         <source>The file %1 contains no recognizable launcher entries.</source>
         <translation>O arquivo em %1 não contém um lançador reconhecível.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="435"/>
+        <location filename="../src/launchermodel.cpp" line="458"/>
         <source>All launchers</source>
-        <translation type="unfinished"></translation>
+        <translation>Todos os lançadores</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="458"/>
+        <location filename="../src/launchermodel.cpp" line="483"/>
         <source>None of the entries in %1 match an installed application.</source>
         <translation>Nenhuma das entradas em %1 corresponde a um programa instalado.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="577"/>
+        <location filename="../src/launchermodel.cpp" line="620"/>
         <source>Launcher already running</source>
-        <translation type="unfinished"></translation>
+        <translation>O lançador já está em execução</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="578"/>
+        <location filename="../src/launchermodel.cpp" line="621"/>
         <source>%1 is already running.</source>
-        <translation type="unfinished"></translation>
+        <translation>O %1 já está em execução.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="791"/>
+        <location filename="../src/launchermodel.cpp" line="858"/>
         <source>Refusing to overwrite a non-Custom Toolbox autostart file: %1</source>
         <translation>Não foi possível substituir um arquivo de inicialização automática ‘%1’ externo ao Personalizador da Caixa de Ferramentas</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="860"/>
+        <location filename="../src/launchermodel.cpp" line="944"/>
         <source>Could not create directory: %1</source>
         <translation>Não foi possível criar o diretório: %1</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="722"/>
-        <location filename="../src/launchermodel.cpp" line="728"/>
-        <location filename="../src/launchermodel.cpp" line="743"/>
+        <location filename="../src/launchermodel.cpp" line="766"/>
+        <location filename="../src/launchermodel.cpp" line="772"/>
+        <location filename="../src/launchermodel.cpp" line="787"/>
         <source>Error</source>
         <translation>Ocorreu um erro</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="668"/>
+        <location filename="../src/launchermodel.cpp" line="712"/>
         <source>Editor command is empty.</source>
         <translation>O comando do editor está vazio ou está em branco.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="728"/>
+        <location filename="../src/launchermodel.cpp" line="772"/>
         <source>Failed to launch the editor.</source>
         <translation>Ocorreu um erro ao iniciar o editor.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="689"/>
+        <location filename="../src/launchermodel.cpp" line="733"/>
         <source>Could not determine the unprivileged user. Refusing to launch the editor as root.</source>
         <translation>Como não foi possível determinar o usuário sem os privilégios, este editor não será executado como administrador.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="736"/>
-        <location filename="../src/launchermodel.cpp" line="743"/>
+        <location filename="../src/launchermodel.cpp" line="780"/>
+        <location filename="../src/launchermodel.cpp" line="787"/>
         <source>Could not open %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Não foi possível abrir o %1.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="898"/>
+        <location filename="../src/launchermodel.cpp" line="989"/>
         <source>Could not reload the configuration. The previous configuration is still in use.</source>
         <translation>Não foi possível recarregar o ajuste. As configurações anteriores estão vigentes.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="811"/>
-        <location filename="../src/launchermodel.cpp" line="822"/>
+        <location filename="../src/launchermodel.cpp" line="878"/>
+        <location filename="../src/launchermodel.cpp" line="889"/>
         <source>Could not write file: %1</source>
         <translation>Não foi possível gravar o arquivo %1</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="865"/>
+        <location filename="../src/launchermodel.cpp" line="949"/>
         <source>Could not remove file: %1</source>
         <translation>Não foi possível remover o arquivo %1</translation>
     </message>

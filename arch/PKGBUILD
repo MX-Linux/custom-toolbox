@@ -10,11 +10,11 @@
 # Keep pkgver in step with debian/changelog: it names the tarball.
 
 pkgname=custom-toolbox
-pkgver=26.09.5
+pkgver=26.11
 # Must stay >= the AUR package's pkgrel (currently 26.09.5-2). A repo package
 # blocks AUR helpers from updating it, so a lower pkgrel here would pin users
 # to a downgrade. Do not "tidy" this back to 1.
-pkgrel=2
+pkgrel=1
 pkgdesc="A customizable toolbox application built with Qt"
 arch=('x86_64')
 url="https://github.com/MX-Linux/custom-toolbox"

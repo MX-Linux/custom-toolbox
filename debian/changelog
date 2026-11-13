@@ -1,3 +1,23 @@
+custom-toolbox (26.11) mx; urgency=medium
+
+  * A new "Hide categories" switch hides the category list to make room for
+    more launchers, and the choice is remembered
+  * Launcher descriptions and other secondary text are darker and easier to
+    read on light backgrounds
+  * Editing the launcher list as administrator now opens the right file when
+    the toolbox was started with a relative file path
+  * In INI-style launcher lists, a quoted display name that contains colons or
+    words like root is now kept as the name instead of being read as an option,
+    so it can no longer cause an unexpected administrator password prompt
+  * Apps now start in the working folder set in their menu entry, including
+    apps run as administrator
+  * Turning off "Launch at login" now works for a list opened through a link
+    that was later pointed at a different list
+  * Changes to an app's menu entry, such as its name or command, now show up
+    in the launcher right away
+
+ -- Adrian <adrian@mxlinux.org>  Fri, 13 Nov 2026 11:32:54 -0500
+
 custom-toolbox (26.09.5) mx; urgency=medium
 
   * Configured launcher window sizes, icon sizes, and column counts are now
