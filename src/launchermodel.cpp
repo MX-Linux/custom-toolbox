@@ -522,24 +522,24 @@ bool LauncherModel::readFile(const QString &path, bool reportErrors)
     return true;
 }
 
-QString LauncherModel::invokingUser() const
+QString LauncherModel::invokingUser()
 {
-    auto nameForUid = [](const QByteArray &value) -> QString {
-        bool ok = false;
-        const uint uid = value.toUInt(&ok);
-        if (ok) {
-            if (const passwd *entry = getpwuid(uid)) {
-                return QString::fromLocal8Bit(entry->pw_name);
-            }
-        }
-        return {};
+    // Launchers and editors marked user must not run as root, so an account with UID 0
+    // (e.g. a toolbox elevated again from a root shell) doesn't count as an answer.
+    auto nonRootName = [](const passwd *entry) -> QString {
+        return entry && entry->pw_uid != 0 ? QString::fromLocal8Bit(entry->pw_name) : QString();
     };
     for (const char *variable : {"PKEXEC_UID", "SUDO_UID"}) {
-        if (const QString name = nameForUid(qgetenv(variable)); !name.isEmpty()) {
-            return name;
+        bool ok = false;
+        const uint uid = qgetenv(variable).toUInt(&ok);
+        if (ok) {
+            if (const QString name = nonRootName(getpwuid(uid)); !name.isEmpty()) {
+                return name;
+            }
         }
     }
-    return QString::fromLocal8Bit(qgetenv("SUDO_USER"));
+    const QByteArray sudoUser = qgetenv("SUDO_USER");
+    return sudoUser.isEmpty() ? QString() : nonRootName(getpwnam(sudoUser.constData()));
 }
 
 bool LauncherModel::prepareCommand(const ItemInfo &item, QString *program, QStringList *arguments,

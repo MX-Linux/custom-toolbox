@@ -14,6 +14,7 @@
 #include <QTextStream>
 
 #include <csignal>
+#include <pwd.h>
 #include <unistd.h>
 
 #include "common.h"
@@ -34,6 +35,7 @@ private slots:
     void readsLayoutSettings();
     void launchesInDesktopWorkingDirectory_data();
     void launchesInDesktopWorkingDirectory();
+    void neverResolvesInvokingUserToRoot();
     void tracksLaunchersPerWorkingDirectory();
     void leavesTrackedLaunchersRunningOnExit();
     void releasesTrackedLauncherThatFailsToStartOnExit();
@@ -378,6 +380,56 @@ exec "$@"
     }
     QTest::qWait(100);
     QCOMPARE(errors.count(), 0);
+}
+
+void TestLauncherModel::neverResolvesInvokingUserToRoot()
+{
+    if (getuid() == 0) {
+        QSKIP("needs a non-root account to stand in for the invoking user");
+    }
+    const passwd *self = getpwuid(getuid());
+    QVERIFY(self);
+    // Copy the name: later passwd lookups may overwrite getpwuid()'s static storage.
+    const QByteArray selfLogin(self->pw_name);
+    const QString selfName = QString::fromLocal8Bit(selfLogin);
+    const QByteArray selfUid = QByteArray::number(getuid());
+
+    const QList<QByteArray> variables {"PKEXEC_UID", "SUDO_UID", "SUDO_USER"};
+    QList<QByteArray> previous;
+    for (const QByteArray &variable : variables) {
+        previous.append(qgetenv(variable.constData()));
+    }
+    const auto restore = qScopeGuard([&] {
+        for (int i = 0; i < variables.size(); ++i) {
+            if (previous.at(i).isNull()) {
+                qunsetenv(variables.at(i).constData());
+            } else {
+                qputenv(variables.at(i).constData(), previous.at(i));
+            }
+        }
+    });
+    auto resolve = [&](const QByteArray &pkexecUid, const QByteArray &sudoUid, const QByteArray &sudoUser) {
+        const QList<QByteArray> values {pkexecUid, sudoUid, sudoUser};
+        for (int i = 0; i < variables.size(); ++i) {
+            if (values.at(i).isNull()) {
+                qunsetenv(variables.at(i).constData());
+            } else {
+                qputenv(variables.at(i).constData(), values.at(i));
+            }
+        }
+        return LauncherModel::invokingUser();
+    };
+
+    QCOMPARE(resolve(selfUid, {}, {}), selfName);
+    QCOMPARE(resolve({}, selfUid, {}), selfName);
+    QCOMPARE(resolve({}, {}, selfLogin), selfName);
+    // A root lookup is skipped in favor of the next source, never returned.
+    QCOMPARE(resolve("0", selfUid, {}), selfName);
+    QCOMPARE(resolve("0", "0", selfLogin), selfName);
+    QCOMPARE(resolve("0", {}, {}), QString());
+    QCOMPARE(resolve("0", "0", "root"), QString());
+    QCOMPARE(resolve({}, {}, "root"), QString());
+    QCOMPARE(resolve({}, {}, {}), QString());
 }
 
 void TestLauncherModel::tracksLaunchersPerWorkingDirectory()

@@ -83,6 +83,9 @@ public:
     [[nodiscard]] int iconSize() const { return configuredIconSize; }
     [[nodiscard]] int fixedNumberColumns() const { return configuredColumns; }
 
+    // The non-root account that elevated the toolbox, or empty if none can be identified.
+    [[nodiscard]] static QString invokingUser();
+
     Q_INVOKABLE void launch(int sourceIndex);
     Q_INVOKABLE void edit();
     Q_INVOKABLE void openHelp();
@@ -141,7 +144,6 @@ private:
     [[nodiscard]] ItemInfo getDesktopFileInfo(const QString &path) const;
     [[nodiscard]] QString getDesktopFileName(const QString &appName) const;
     [[nodiscard]] QString getDefaultEditor() const;
-    [[nodiscard]] QString invokingUser() const;
     bool prepareCommand(const ItemInfo &item, QString *program, QStringList *arguments,
                         QString *workingDirectory, QString *errorMessage) const;
     bool prepareEditorCommand(const QString &editor, QString *program, QStringList *arguments,
