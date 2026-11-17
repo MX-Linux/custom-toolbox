@@ -45,6 +45,7 @@ private slots:
     void releasesTrackedLauncherThatFailsToStartOnExit();
     void leavesTargetAutostartWhenOpeningSymlink();
     void keepsAutostartAcrossSymlinkRetarget();
+    void leavesTargetLegacyAutostartWhenOpeningSymlink();
     void decodesDesktopEntryStrings();
     void reloadsEditedDesktopFile();
     void reloadsWhenOnlyEntryIsUnhidden();
@@ -788,6 +789,51 @@ void TestLauncherModel::leavesTargetAutostartWhenOpeningSymlink()
     LauncherIconProvider reopenedIcons;
     LauncherModel reopened(parser, real, reopenedIcons);
     QVERIFY(reopened.startupEnabled());
+}
+
+void TestLauncherModel::leavesTargetLegacyAutostartWhenOpeningSymlink()
+{
+    QTemporaryDir directory;
+    QVERIFY(directory.isValid());
+    const QByteArray previousConfig = qgetenv("XDG_CONFIG_HOME");
+    const auto restoreConfig = qScopeGuard([&] {
+        if (previousConfig.isNull()) {
+            qunsetenv("XDG_CONFIG_HOME");
+        } else {
+            qputenv("XDG_CONFIG_HOME", previousConfig);
+        }
+    });
+    qputenv("HOME", directory.path().toUtf8());
+    qunsetenv("XDG_CONFIG_HOME");
+    // A symlink with the target's name, in another directory, so both share the legacy
+    // autostart file name tools.desktop.
+    QVERIFY(QDir().mkpath(directory.filePath("lists")));
+    QVERIFY(QDir().mkpath(directory.filePath("links")));
+    const QString real = directory.filePath("lists/tools.list");
+    const QString link = directory.filePath("links/tools.list");
+    QVERIFY(writeFile(real, "Name=Tools\nCategory=Utilities\n/bin/true\n"));
+    QVERIFY(QFile::link(real, link));
+    const QDir autostart(directory.filePath(".config/autostart"));
+    QVERIFY(QDir().mkpath(autostart.path()));
+    const QString legacy = autostart.filePath("tools.desktop");
+    QVERIFY(writeFile(legacy, "[Desktop Entry]\nType=Application\nName=Tools\nExec=custom-toolbox " + real.toUtf8() + "\n"));
+
+    QCommandLineParser parser;
+    parser.addOption({QStringLiteral("remove-checkbox"), QStringLiteral("test option")});
+    QVERIFY(parser.parse({QStringLiteral("custom-toolbox")}));
+    {
+        LauncherIconProvider linkIcons;
+        LauncherModel linkModel(parser, link, linkIcons);
+        QVERIFY(!linkModel.startupEnabled());
+        QCOMPARE(autostart.entryList({"*.desktop"}, QDir::Files), QStringList {"tools.desktop"});
+    }
+
+    // Opening the list the entry names still migrates it.
+    LauncherIconProvider realIcons;
+    LauncherModel realModel(parser, real, realIcons);
+    QVERIFY(realModel.startupEnabled());
+    QVERIFY(!QFile::exists(legacy));
+    QCOMPARE(autostart.entryList({"*.desktop"}, QDir::Files).size(), 1);
 }
 
 void TestLauncherModel::keepsAutostartAcrossSymlinkRetarget()

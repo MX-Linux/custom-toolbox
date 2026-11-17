@@ -939,10 +939,10 @@ bool LauncherModel::isLegacyAutostartFile(const QString &path) const
         || parts.first() != QLatin1String("custom-toolbox")) {
         return false;
     }
-    const QFileInfo info(fileName);
+    // Legacy entries recorded the list path as it was opened. Match only that path: through a
+    // symlink with the same name, the target's entry would otherwise move to the symlink.
     const QString listPath = parts.mid(1).join(QLatin1Char(' '));
-    return listPath == info.absoluteFilePath()
-           || (!info.canonicalFilePath().isEmpty() && listPath == info.canonicalFilePath());
+    return listPath == QFileInfo(fileName).absoluteFilePath();
 }
 
 bool LauncherModel::writeAutostartFile(QString *errorMessage) const
