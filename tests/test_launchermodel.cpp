@@ -1,7 +1,10 @@
 #include <QCommandLineParser>
 #include <QCryptographicHash>
 #include <QDir>
+#include <QElapsedTimer>
 #include <QFile>
+#include <QPointer>
+#include <QProcess>
 #include <QSignalSpy>
 #include <QStandardPaths>
 #include <QScopeGuard>
@@ -10,6 +13,7 @@
 #include <QTest>
 #include <QTextStream>
 
+#include <csignal>
 #include <unistd.h>
 
 #include "common.h"
@@ -31,6 +35,8 @@ private slots:
     void launchesInDesktopWorkingDirectory_data();
     void launchesInDesktopWorkingDirectory();
     void tracksLaunchersPerWorkingDirectory();
+    void leavesTrackedLaunchersRunningOnExit();
+    void releasesTrackedLauncherThatFailsToStartOnExit();
     void leavesTargetAutostartWhenOpeningSymlink();
     void keepsAutostartAcrossSymlinkRetarget();
     void reloadsEditedDesktopFile();
@@ -405,6 +411,102 @@ void TestLauncherModel::tracksLaunchersPerWorkingDirectory()
     model.launch(model.data(model.index(1), LauncherModel::SourceIndexRole).toInt());
     QCOMPARE(errors.count(), 1);
     QCOMPARE(errors.constFirst().at(0).toString(), QStringLiteral("Launcher already running"));
+}
+
+void TestLauncherModel::leavesTrackedLaunchersRunningOnExit()
+{
+    if (getuid() == 0) {
+        QSKIP("root launchers are only tracked through pkexec for unprivileged users");
+    }
+    QTemporaryDir directory;
+    QVERIFY(directory.isValid());
+    qputenv("HOME", directory.path().toUtf8());
+    qputenv("XDG_DATA_HOME", directory.filePath("share").toUtf8());
+
+    // A pass-through pkexec makes the root launcher a tracked child of the model.
+    const QString bin = directory.filePath("bin");
+    QVERIFY(QDir().mkpath(bin));
+    QVERIFY(writeFile(bin + "/pkexec", "#!/bin/sh\nexec \"$@\"\n"));
+    const QString program = directory.filePath("long-running");
+    QVERIFY(writeFile(program, "#!/bin/sh\necho $$ > \"$HOME/pid.txt\"\nexec sleep 30\n"));
+    for (const QString &tool : {bin + "/pkexec", program}) {
+        QVERIFY(QFile::setPermissions(tool, QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner));
+    }
+    const QByteArray previousPath = qgetenv("PATH");
+    const auto restorePath = qScopeGuard([&] { qputenv("PATH", previousPath); });
+    qputenv("PATH", bin.toUtf8() + ':' + previousPath);
+
+    const QString applications = directory.filePath("share/applications");
+    QVERIFY(QDir().mkpath(applications));
+    QVERIFY(writeFile(applications + "/long-running.desktop",
+                      "[Desktop Entry]\nType=Application\nName=Long Running\nExec=" + program.toUtf8() + "\n"));
+    const QString listPath = directory.filePath("long.list");
+    QVERIFY(writeFile(listPath, "Name=Long\nCategory=Utilities\nlong-running root\n"));
+
+    QCommandLineParser parser;
+    parser.addOption({QStringLiteral("remove-checkbox"), QStringLiteral("test option")});
+    QVERIFY(parser.parse({QStringLiteral("custom-toolbox")}));
+    LauncherIconProvider icons;
+    QElapsedTimer timer;
+    {
+        LauncherModel model(parser, listPath, icons);
+        QCOMPARE(model.rowCount(), 1);
+        model.launch(model.data(model.index(0), LauncherModel::SourceIndexRole).toInt());
+        QFile pidFile(directory.filePath("pid.txt"));
+        QTRY_VERIFY(pidFile.exists() && pidFile.size() > 0);
+        timer.start();
+    }
+    QVERIFY2(timer.elapsed() < 5000, "destroying the model waited for the launched application");
+
+    QFile pidFile(directory.filePath("pid.txt"));
+    QVERIFY(pidFile.open(QFile::ReadOnly));
+    const pid_t pid = QString::fromUtf8(pidFile.readAll()).trimmed().toInt();
+    QVERIFY(pid > 0);
+    const auto stopChild = qScopeGuard([pid] { ::kill(pid, SIGTERM); });
+    QCOMPARE(::kill(pid, 0), 0);
+}
+
+void TestLauncherModel::releasesTrackedLauncherThatFailsToStartOnExit()
+{
+    if (getuid() == 0) {
+        QSKIP("root launchers are only tracked through pkexec for unprivileged users");
+    }
+    QTemporaryDir directory;
+    QVERIFY(directory.isValid());
+    qputenv("HOME", directory.path().toUtf8());
+    qputenv("XDG_DATA_HOME", directory.filePath("share").toUtf8());
+
+    // With no pkexec on PATH, the tracked launch is still starting when the model goes away
+    // and then fails to start; the released process must still delete itself.
+    const QString bin = directory.filePath("bin");
+    QVERIFY(QDir().mkpath(bin));
+    const QByteArray previousPath = qgetenv("PATH");
+    const auto restorePath = qScopeGuard([&] { qputenv("PATH", previousPath); });
+    qputenv("PATH", bin.toUtf8());
+
+    const QString applications = directory.filePath("share/applications");
+    QVERIFY(QDir().mkpath(applications));
+    QVERIFY(writeFile(applications + "/true-app.desktop",
+                      "[Desktop Entry]\nType=Application\nName=True App\nExec=/bin/true\n"));
+    const QString listPath = directory.filePath("true.list");
+    QVERIFY(writeFile(listPath, "Name=True\nCategory=Utilities\ntrue-app root\n"));
+
+    QCommandLineParser parser;
+    parser.addOption({QStringLiteral("remove-checkbox"), QStringLiteral("test option")});
+    QVERIFY(parser.parse({QStringLiteral("custom-toolbox")}));
+    LauncherIconProvider icons;
+    QPointer<QProcess> process;
+    {
+        LauncherModel model(parser, listPath, icons);
+        QCOMPARE(model.rowCount(), 1);
+        model.launch(model.data(model.index(0), LauncherModel::SourceIndexRole).toInt());
+        const auto processes = model.findChildren<QProcess *>(Qt::FindDirectChildrenOnly);
+        QCOMPARE(processes.size(), 1);
+        process = processes.constFirst();
+        QVERIFY(process->state() != QProcess::NotRunning);
+    }
+    QVERIFY(process);
+    QTRY_VERIFY(process.isNull());
 }
 
 void TestLauncherModel::leavesTargetAutostartWhenOpeningSymlink()

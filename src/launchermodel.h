@@ -59,6 +59,7 @@ public:
 
     explicit LauncherModel(const QCommandLineParser &argParser, const QString &listFile,
                            LauncherIconProvider &iconProvider, QObject *parent = nullptr);
+    ~LauncherModel() override;
 
     [[nodiscard]] int rowCount(const QModelIndex &parent = {}) const override;
     [[nodiscard]] QVariant data(const QModelIndex &index, int role) const override;

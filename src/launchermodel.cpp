@@ -637,6 +637,28 @@ void LauncherModel::launch(int sourceIndex)
     }
 }
 
+LauncherModel::~LauncherModel()
+{
+    // A running QProcess's destructor kills its child and then blocks for up to 30 seconds
+    // waiting for it. Launched applications must outlive the toolbox, and an authenticated
+    // pkexec child can't be signaled by an unprivileged toolbox anyway, so release them:
+    // each one is deleted once it stops running (its child exited or failed to start),
+    // or leaked if the toolbox exits first.
+    const auto processes = findChildren<QProcess *>(Qt::FindDirectChildrenOnly);
+    for (QProcess *process : processes) {
+        if (process->state() == QProcess::NotRunning) {
+            continue;
+        }
+        process->disconnect(this);
+        process->setParent(nullptr);
+        connect(process, &QProcess::stateChanged, process, [process](QProcess::ProcessState state) {
+            if (state == QProcess::NotRunning) {
+                process->deleteLater();
+            }
+        });
+    }
+}
+
 void LauncherModel::runTracked(const QString &program, const QStringList &arguments,
                                const QString &trackingKey, const QString &workingDirectory)
 {
