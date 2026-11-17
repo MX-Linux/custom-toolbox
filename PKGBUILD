@@ -8,6 +8,7 @@ url="https://mxlinux.org"
 license=('GPL3')
 depends=('qt6-base' 'qt6-declarative' 'polkit')
 makedepends=('cmake' 'ninja' 'qt6-declarative' 'qt6-tools')
+backup=('etc/custom-toolbox/custom-toolbox.conf')
 source=()
 sha256sums=()
 
