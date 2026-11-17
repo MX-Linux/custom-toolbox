@@ -238,6 +238,15 @@ update_aur_package() {
     # Remove git from makedepends if present
     sed -i '/makedepends=.*git/d' "$pkgbuild"
 
+    # GitHub tag archives unpack to <repo>-<tag without a leading v>; derive the
+    # source directory from pkgver so it follows the release instead of staying
+    # pinned to the version the recipe was last edited for.
+    sed -i 's/^_srcdir=.*/_srcdir="${pkgname}-${pkgver#v}"/' "$pkgbuild"
+    if ! grep -qxF '_srcdir="${pkgname}-${pkgver#v}"' "$pkgbuild"; then
+        print_error "PKGBUILD has no _srcdir line to update"
+        exit 1
+    fi
+
     # Download tarball and calculate checksum (with retry)
     local checksum=""
     local retries=5
