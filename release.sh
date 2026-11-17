@@ -291,16 +291,17 @@ update_aur_package() {
     # Check if there are any changes to commit
     print_step "Checking for AUR package changes..."
 
-    if git -C "$AUR_DIR" diff --quiet && git -C "$AUR_DIR" diff --staged --quiet; then
+    # Only the generated recipe files are published; anything else in the checkout,
+    # staged or not, stays out of the release commit. Compare them with HEAD, which
+    # is exactly what the path-limited commit would record.
+    local aur_files=(PKGBUILD .SRCINFO)
+    if git -C "$AUR_DIR" diff --quiet HEAD -- "${aur_files[@]}"; then
         print_warning "No changes in AUR package - skipping commit"
     else
         print_step "Committing AUR package changes..."
 
-        # Add all changes
-        git -C "$AUR_DIR" add .
-
-        # Commit changes
-        git -C "$AUR_DIR" commit -m "$annotation"
+        git -C "$AUR_DIR" add -- "${aur_files[@]}"
+        git -C "$AUR_DIR" commit -m "$annotation" -- "${aur_files[@]}"
 
         print_success "AUR package updated and committed"
         echo
@@ -311,10 +312,8 @@ update_aur_package() {
     rm -f "/tmp/${version}.tar.gz"
 }
 
-# Push the AUR repo if it has commits the AUR doesn't
-push_aur_package() {
-    print_step "Pushing AUR package..."
-
+# The AUR directory must be its own checkout on the branch that gets published
+check_aur_checkout() {
     local aur_toplevel
     aur_toplevel=$(git -C "$AUR_DIR" rev-parse --show-toplevel 2>/dev/null) || aur_toplevel=""
     if [ "$aur_toplevel" != "$(realpath "$AUR_DIR")" ]; then
@@ -322,15 +321,22 @@ push_aur_package() {
         return 1
     fi
 
-    if ! git -C "$AUR_DIR" diff --quiet HEAD -- PKGBUILD .SRCINFO; then
-        print_error "$AUR_DIR has uncommitted PKGBUILD/.SRCINFO changes; commit them first"
-        return 1
-    fi
-
     local current_branch
     current_branch=$(git -C "$AUR_DIR" branch --show-current)
     if [ "$current_branch" != "$AUR_LOCAL_BRANCH" ]; then
         print_error "$AUR_DIR is on branch '$current_branch', expected '$AUR_LOCAL_BRANCH'"
+        return 1
+    fi
+}
+
+# Push the AUR repo if it has commits the AUR doesn't
+push_aur_package() {
+    print_step "Pushing AUR package..."
+
+    check_aur_checkout || return 1
+
+    if ! git -C "$AUR_DIR" diff --quiet HEAD -- PKGBUILD .SRCINFO; then
+        print_error "$AUR_DIR has uncommitted PKGBUILD/.SRCINFO changes; commit them first"
         return 1
     fi
 
@@ -447,6 +453,14 @@ main() {
             exit 0
         fi
     fi
+
+    # Check the AUR checkout before anything is tagged or written, so a wrong
+    # directory or branch can't leave a pushed tag or a misplaced commit behind.
+    if [ ! -d "$AUR_DIR" ]; then
+        print_error "AUR directory '$AUR_DIR' not found"
+        exit 1
+    fi
+    check_aur_checkout || exit 1
 
     # Reuse an existing tag instead of failing or attempting to recreate it.
     print_step "Checking if tag '$version' already exists..."
