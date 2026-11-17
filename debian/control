@@ -8,7 +8,7 @@ Vcs-Git: git://github.com/AdrianTM/custom-toolbox
 
 Package: custom-toolbox
 Architecture: any
-Depends: menu, ${misc:Depends}, ${shlibs:Depends}, ${custom-toolbox:SettingsDepends},
+Depends: menu, pkexec, ${misc:Depends}, ${shlibs:Depends}, ${custom-toolbox:SettingsDepends},
  qml6-module-qtqml,
  qml6-module-qtqml-models,
  qml6-module-qtqml-workerscript,
