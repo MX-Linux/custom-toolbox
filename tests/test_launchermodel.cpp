@@ -42,6 +42,8 @@ private slots:
     void leavesTargetAutostartWhenOpeningSymlink();
     void keepsAutostartAcrossSymlinkRetarget();
     void reloadsEditedDesktopFile();
+    void reloadsWhenOnlyEntryIsUnhidden();
+    void reloadsWhenRemovedDesktopFileReturns();
 };
 
 namespace
@@ -685,6 +687,62 @@ void TestLauncherModel::reloadsEditedDesktopFile()
     QTRY_COMPARE(model.data(model.index(0), LauncherModel::NameRole).toString(), QStringLiteral("Replaced Tool"));
     QVERIFY(writeFile(desktopPath, "[Desktop Entry]\nType=Application\nName=Final Tool\nExec=/bin/true\n"));
     QTRY_COMPARE(model.data(model.index(0), LauncherModel::NameRole).toString(), QStringLiteral("Final Tool"));
+}
+
+void TestLauncherModel::reloadsWhenOnlyEntryIsUnhidden()
+{
+    QTemporaryDir directory;
+    QVERIFY(directory.isValid());
+    qputenv("HOME", directory.path().toUtf8());
+    qputenv("XDG_DATA_HOME", directory.filePath("share").toUtf8());
+    const QString vendor = directory.filePath("share/applications/vendor");
+    QVERIFY(QDir().mkpath(vendor));
+    const QString desktopPath = vendor + "/hidden-tool.desktop";
+    QVERIFY(writeFile(desktopPath, "[Desktop Entry]\nType=Application\nName=Hidden Tool\nExec=/bin/true\nHidden=true\n"));
+    const QString listPath = directory.filePath("hidden.list");
+    QVERIFY(writeFile(listPath, "Name=Hidden\nCategory=Utilities\nhidden-tool\n"));
+
+    QCommandLineParser parser;
+    parser.addOption({QStringLiteral("remove-checkbox"), QStringLiteral("test option")});
+    QVERIFY(parser.parse({QStringLiteral("custom-toolbox")}));
+    LauncherIconProvider icons;
+    LauncherModel model(parser, listPath, icons);
+    QCOMPARE(model.rowCount(), 0);
+
+    // Un-hide in place (same inode), which only a watch on the file itself reports.
+    QVERIFY(writeFile(desktopPath, "[Desktop Entry]\nType=Application\nName=Hidden Tool\nExec=/bin/true\n"));
+    QTRY_COMPARE(model.rowCount(), 1);
+    QCOMPARE(model.data(model.index(0), LauncherModel::NameRole).toString(), QStringLiteral("Hidden Tool"));
+}
+
+void TestLauncherModel::reloadsWhenRemovedDesktopFileReturns()
+{
+    QTemporaryDir directory;
+    QVERIFY(directory.isValid());
+    qputenv("HOME", directory.path().toUtf8());
+    qputenv("XDG_DATA_HOME", directory.filePath("share").toUtf8());
+    const QString vendor = directory.filePath("share/applications/vendor");
+    QVERIFY(QDir().mkpath(vendor));
+    const QString desktopPath = vendor + "/returning-tool.desktop";
+    QVERIFY(writeFile(desktopPath, "[Desktop Entry]\nType=Application\nName=Original Tool\nExec=/bin/true\n"));
+    const QString listPath = directory.filePath("returning.list");
+    QVERIFY(writeFile(listPath, "Name=Returning\nCategory=Utilities\nreturning-tool\n"));
+
+    QCommandLineParser parser;
+    parser.addOption({QStringLiteral("remove-checkbox"), QStringLiteral("test option")});
+    QVERIFY(parser.parse({QStringLiteral("custom-toolbox")}));
+    LauncherIconProvider icons;
+    LauncherModel model(parser, listPath, icons);
+    QCOMPARE(model.data(model.index(0), LauncherModel::NameRole).toString(), QStringLiteral("Original Tool"));
+
+    // Let the reload fail while the file is gone, so recreating it is a separate change.
+    QVERIFY(QFile::remove(desktopPath));
+    QTRY_VERIFY(!model.reloadMessage().isEmpty());
+    QCOMPARE(model.data(model.index(0), LauncherModel::NameRole).toString(), QStringLiteral("Original Tool"));
+
+    QVERIFY(writeFile(desktopPath, "[Desktop Entry]\nType=Application\nName=Returned Tool\nExec=/bin/true\n"));
+    QTRY_COMPARE(model.data(model.index(0), LauncherModel::NameRole).toString(), QStringLiteral("Returned Tool"));
+    QVERIFY(model.reloadMessage().isEmpty());
 }
 
 QTEST_MAIN(TestLauncherModel)

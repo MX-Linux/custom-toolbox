@@ -480,6 +480,11 @@ bool LauncherModel::readFile(const QString &path, bool reportErrors)
         }
     }
     if (items.isEmpty()) {
+        // Keep showing the last usable list, and add watches for the entries this one
+        // resolved to: un-hiding one in place (e.g. removing Hidden=true) must still trigger
+        // a reload. The previous watches stay too, so a desktop file that is missing for now
+        // is noticed when it reappears; the next successful reload drops what is obsolete.
+        watchDesktopFiles(watchedDesktopPaths + resolvedFiles);
         report(QCoreApplication::translate("MainWindow", "Parse Error"), QCoreApplication::translate("MainWindow", "None of the entries in %1 match an installed application.").arg(path));
         return false;
     }
