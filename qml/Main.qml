@@ -36,6 +36,12 @@ ApplicationWindow {
     readonly property color inactiveControlColor: systemPalette.mid
     readonly property real baseFontSize: Application.font.pixelSize > 0 ? Application.font.pixelSize : 13
     readonly property bool compactNavigation: width < 900
+    // Below this width the header keeps only the search field and the menu button.
+    readonly property bool narrowHeader: width < 560
+    // Short windows drop the page heading and tighten spacing so the launcher grid keeps room.
+    readonly property bool shortWindow: height < 480
+    // The view switches move into the header menu when they can't sit beside the heading.
+    readonly property bool compactViewControls: shortWindow || !viewHeader.sideBySide
     property bool condensedView: false
     property bool hideCategories: false
 
@@ -77,18 +83,19 @@ ApplicationWindow {
     }
 
     header: Rectangle {
-        implicitHeight: 88
+        implicitHeight: root.shortWindow ? 64 : 88
         color: root.surfaceColor
         border.color: root.borderColor
         border.width: 1
 
         RowLayout {
             anchors.fill: parent
-            anchors.leftMargin: 25
-            anchors.rightMargin: 25
+            anchors.leftMargin: root.narrowHeader ? 12 : 25
+            anchors.rightMargin: root.narrowHeader ? 12 : 25
             spacing: 14
 
             Rectangle {
+                visible: !root.narrowHeader
                 Layout.preferredWidth: 48
                 Layout.preferredHeight: 48
                 radius: 6
@@ -103,6 +110,7 @@ ApplicationWindow {
             }
 
             ColumnLayout {
+                visible: !root.narrowHeader
                 Layout.preferredWidth: root.compactNavigation ? 170 : 230
                 spacing: 1
                 Text {
@@ -123,12 +131,16 @@ ApplicationWindow {
                 }
             }
 
-            Item { Layout.fillWidth: true }
+            Item {
+                visible: !root.narrowHeader
+                Layout.fillWidth: true
+            }
 
             TextField {
                 id: searchField
+                Layout.fillWidth: root.narrowHeader
                 Layout.preferredWidth: Math.min(380, root.width * 0.36)
-                Layout.minimumWidth: 210
+                Layout.minimumWidth: root.narrowHeader ? 120 : 210
                 Layout.preferredHeight: 44
                 leftPadding: 42
                 rightPadding: 38
@@ -182,7 +194,8 @@ ApplicationWindow {
             }
 
             SecondaryButton {
-                visible: root.width >= 820
+                id: helpButton
+                visible: root.width >= 820 && !root.narrowHeader
                 text: qsTranslate("MainWindow", "Help")
                 textColor: root.primaryTextColor
                 hoverColor: root.accentWash
@@ -191,6 +204,7 @@ ApplicationWindow {
                 onClicked: root.backend.openHelp()
             }
             SecondaryButton {
+                visible: !root.narrowHeader
                 text: qsTranslate("MainWindow", "About...")
                 textColor: root.primaryTextColor
                 hoverColor: root.accentWash
@@ -198,15 +212,60 @@ ApplicationWindow {
                 accentColor: root.accentColor
                 onClicked: aboutDialog.open()
             }
+            SecondaryButton {
+                id: moreButton
+                // Also the only route to Help whenever its button doesn't fit.
+                visible: root.narrowHeader || root.compactViewControls || !helpButton.visible
+                text: "⋮"
+                Accessible.name: qsTr("More options")
+                textColor: root.primaryTextColor
+                hoverColor: root.accentWash
+                borderColor: root.borderColor
+                accentColor: root.accentColor
+                onClicked: moreMenu.popup(moreButton, moreButton.width - moreMenu.width, moreButton.height)
+
+                Menu {
+                    id: moreMenu
+                    MenuItem {
+                        text: qsTr("Condensed view")
+                        checkable: true
+                        checked: root.condensedView
+                        onToggled: {
+                            root.condensedView = checked
+                            checked = Qt.binding(() => root.condensedView)
+                        }
+                    }
+                    MenuItem {
+                        text: qsTr("Hide categories")
+                        checkable: true
+                        checked: root.hideCategories
+                        onToggled: {
+                            root.hideCategories = checked
+                            checked = Qt.binding(() => root.hideCategories)
+                        }
+                    }
+                    MenuSeparator {}
+                    MenuItem {
+                        text: qsTranslate("MainWindow", "Help")
+                        onTriggered: root.backend.openHelp()
+                    }
+                    MenuItem {
+                        text: qsTranslate("MainWindow", "About...")
+                        onTriggered: aboutDialog.open()
+                    }
+                }
+            }
         }
     }
 
     RowLayout {
+        id: contentRow
         anchors.fill: parent
-        anchors.margins: 24
+        anchors.margins: root.narrowHeader || root.shortWindow ? 12 : 24
         spacing: 24
 
         Rectangle {
+            id: sidebar
             visible: !root.compactNavigation && !root.hideCategories
             Layout.preferredWidth: 218
             Layout.fillHeight: true
@@ -285,7 +344,7 @@ ApplicationWindow {
         ColumnLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            spacing: 15
+            spacing: root.shortWindow ? 8 : 15
 
             Flickable {
                 id: compactCategoriesFlickable
@@ -337,86 +396,126 @@ ApplicationWindow {
             }
 
             RowLayout {
+                id: viewHeader
+                visible: !root.shortWindow
                 Layout.fillWidth: true
+                spacing: 12
+                // The view switches sit beside the heading when both fit; otherwise they move
+                // into the header menu. Measure against the width the window leaves for this
+                // column: the column's own width follows its content, so it would keep a
+                // layout that doesn't fit.
+                readonly property real availableWidth: contentRow.width
+                                                       - (sidebar.visible ? sidebar.width + contentRow.spacing : 0)
+                readonly property real controlsWidth: launcherCount.implicitWidth + condensedLabel.implicitWidth
+                                                      + hideCategoriesLabel.implicitWidth
+                                                      + condensedSwitch.implicitWidth
+                                                      + hideCategoriesSwitch.implicitWidth
+                                                      + 2 * 11 + 6 * viewControls.spacing
+                readonly property bool sideBySide: availableWidth >= heading.implicitWidth + controlsWidth + spacing
+
                 ColumnLayout {
+                    id: heading
+                    Layout.fillWidth: true
+                    Layout.minimumWidth: 0
                     spacing: 2
                     Text {
+                        Layout.fillWidth: true
+                        Layout.minimumWidth: 0
                         text: searchField.text.length > 0 ? qsTr("Search results")
                               : (root.backend.selectedCategory.length > 0
                                  ? root.backend.selectedCategory : qsTr("All launchers"))
                         color: root.primaryTextColor
                         font.pixelSize: root.baseFontSize + 12
                         font.weight: Font.Bold
+                        elide: Text.ElideRight
                     }
                     Text {
+                        Layout.fillWidth: true
+                        Layout.minimumWidth: 0
                         text: searchField.text.length > 0
                               ? qsTr("Results matching “%1”").arg(searchField.text)
                               : qsTr("Choose a launcher to start an application or task")
                         color: root.secondaryTextColor
                         font.pixelSize: root.baseFontSize
+                        elide: Text.ElideRight
                     }
                 }
-                Item { Layout.fillWidth: true }
-                Text {
-                    text: qsTr("%n launcher(s)", "", launcherGrid.count)
-                    color: root.secondaryTextColor
-                    font.pixelSize: Math.max(10, root.baseFontSize - 1)
-                }
 
-                Rectangle {
-                    Layout.preferredWidth: 1
-                    Layout.preferredHeight: 24
-                    Layout.leftMargin: 5
-                    Layout.rightMargin: 5
-                    color: root.borderColor
-                }
+                RowLayout {
+                    id: viewControls
+                    visible: !root.compactViewControls
+                    spacing: 5
 
-                Text {
-                    Layout.maximumWidth: 130
-                    text: qsTr("Condensed view")
-                    color: root.secondaryTextColor
-                    font.pixelSize: Math.max(10, root.baseFontSize - 1)
-                    elide: Text.ElideRight
-                }
-                ModernSwitch {
-                    id: condensedSwitch
-                    checked: root.condensedView
-                    accentColor: root.accentColor
-                    inactiveColor: root.inactiveControlColor
-                    Accessible.name: qsTr("Use condensed launcher view")
-                    ThemeToolTip {
-                        visible: condensedSwitch.hovered
-                        text: qsTr("Show more launchers at once")
+                    Text {
+                        id: launcherCount
+                        text: qsTr("%n launcher(s)", "", launcherGrid.count)
+                        color: root.secondaryTextColor
+                        font.pixelSize: Math.max(10, root.baseFontSize - 1)
                     }
-                    onToggled: root.condensedView = checked
-                }
 
-                Rectangle {
-                    Layout.preferredWidth: 1
-                    Layout.preferredHeight: 24
-                    Layout.leftMargin: 5
-                    Layout.rightMargin: 5
-                    color: root.borderColor
-                }
-
-                Text {
-                    Layout.maximumWidth: 130
-                    text: qsTr("Hide categories")
-                    color: root.secondaryTextColor
-                    font.pixelSize: Math.max(10, root.baseFontSize - 1)
-                    elide: Text.ElideRight
-                }
-                ModernSwitch {
-                    id: hideCategoriesSwitch
-                    checked: root.hideCategories
-                    accentColor: root.accentColor
-                    inactiveColor: root.inactiveControlColor
-                    Accessible.name: qsTr("Hide the category list")
-                    ThemeToolTip {
-                        visible: hideCategoriesSwitch.hovered
-                        text: qsTr("Use the whole window for launchers")
+                    Rectangle {
+                        Layout.preferredWidth: 1
+                        Layout.preferredHeight: 24
+                        Layout.leftMargin: 5
+                        Layout.rightMargin: 5
+                        color: root.borderColor
                     }
-                    onToggled: root.hideCategories = checked
+
+                    Text {
+                        id: condensedLabel
+                        Layout.maximumWidth: 130
+                        text: qsTr("Condensed view")
+                        color: root.secondaryTextColor
+                        font.pixelSize: Math.max(10, root.baseFontSize - 1)
+                        elide: Text.ElideRight
+                    }
+                    ModernSwitch {
+                        id: condensedSwitch
+                        checked: root.condensedView
+                        accentColor: root.accentColor
+                        inactiveColor: root.inactiveControlColor
+                        Accessible.name: qsTr("Use condensed launcher view")
+                        ThemeToolTip {
+                            visible: condensedSwitch.hovered
+                            text: qsTr("Show more launchers at once")
+                        }
+                        onToggled: {
+                            root.condensedView = checked
+                            checked = Qt.binding(() => root.condensedView)
+                        }
+                    }
+
+                    Rectangle {
+                        Layout.preferredWidth: 1
+                        Layout.preferredHeight: 24
+                        Layout.leftMargin: 5
+                        Layout.rightMargin: 5
+                        color: root.borderColor
+                    }
+
+                    Text {
+                        id: hideCategoriesLabel
+                        Layout.maximumWidth: 130
+                        text: qsTr("Hide categories")
+                        color: root.secondaryTextColor
+                        font.pixelSize: Math.max(10, root.baseFontSize - 1)
+                        elide: Text.ElideRight
+                    }
+                    ModernSwitch {
+                        id: hideCategoriesSwitch
+                        checked: root.hideCategories
+                        accentColor: root.accentColor
+                        inactiveColor: root.inactiveControlColor
+                        Accessible.name: qsTr("Hide the category list")
+                        ThemeToolTip {
+                            visible: hideCategoriesSwitch.hovered
+                            text: qsTr("Use the whole window for launchers")
+                        }
+                        onToggled: {
+                            root.hideCategories = checked
+                            checked = Qt.binding(() => root.hideCategories)
+                        }
+                    }
                 }
             }
 
@@ -519,9 +618,15 @@ ApplicationWindow {
                 Layout.fillWidth: true
                 Text {
                     visible: (root.compactNavigation || root.hideCategories) && root.backend.startupVisible
+                    Layout.fillWidth: true
+                    Layout.minimumWidth: 0
+                    // Layouts snap to whole pixels; round up so the full label isn't elided.
+                    Layout.preferredWidth: Math.ceil(implicitWidth)
+                    Layout.maximumWidth: Math.ceil(implicitWidth)
                     text: qsTr("Launch at login")
                     color: root.secondaryTextColor
                     font.pixelSize: Math.max(10, root.baseFontSize - 1)
+                    elide: Text.ElideRight
                 }
                 ModernSwitch {
                     visible: (root.compactNavigation || root.hideCategories) && root.backend.startupVisible
@@ -555,13 +660,16 @@ ApplicationWindow {
     Dialog {
         id: aboutDialog
         modal: true
-        width: 440
-        x: (root.width - width) / 2
-        y: (root.height - height) / 2
+        anchors.centerIn: Overlay.overlay
+        width: Math.min(440, root.width - 24)
+        // Fit short windows; the content scrolls when it doesn't.
+        height: Math.min(implicitHeight, root.height - 24)
         title: qsTr("About %1").arg(root.backend.title)
+        // Set on the Dialog: it pushes its own (empty) standard buttons into the footer box,
+        // so buttons set only on the box never appeared.
+        standardButtons: Dialog.Close
         background: Rectangle { color: root.surfaceColor; radius: 6; border.color: root.borderColor }
         footer: DialogButtonBox {
-            standardButtons: Dialog.Close
             alignment: Qt.AlignRight
             padding: 12
             background: Item {}
@@ -571,52 +679,65 @@ ApplicationWindow {
                 borderColor: root.borderColor
                 accentColor: root.accentColor
             }
-            onRejected: aboutDialog.reject()
         }
-        contentItem: ColumnLayout {
-            spacing: 14
-            Image {
-                Layout.alignment: Qt.AlignHCenter
-                Layout.preferredWidth: 72
-                Layout.preferredHeight: 72
-                source: "../icons/custom-toolbox.svg"
-                fillMode: Image.PreserveAspectFit
-            }
-            Text {
-                Layout.alignment: Qt.AlignHCenter
-                text: root.backend.title
-                color: root.primaryTextColor
-                font.pixelSize: root.baseFontSize + 11
-                font.weight: Font.Bold
-            }
-            Text {
-                Layout.alignment: Qt.AlignHCenter
-                text: qsTr("Version %1").arg(root.version)
-                color: root.secondaryTextColor
-                font.pixelSize: root.baseFontSize
-            }
-            Text {
-                Layout.fillWidth: true
-                text: qsTr("Custom Toolbox creates focused collections of application launchers and system tasks.")
-                color: root.primaryTextColor
-                horizontalAlignment: Text.AlignHCenter
-                wrapMode: Text.Wrap
-                font.pixelSize: root.baseFontSize + 1
-            }
-            SecondaryButton {
-                Layout.alignment: Qt.AlignHCenter
-                text: qsTr("License")
-                textColor: root.primaryTextColor
-                hoverColor: root.accentWash
-                borderColor: root.borderColor
-                accentColor: root.accentColor
-                onClicked: root.backend.openLicense()
-            }
-            Text {
-                Layout.alignment: Qt.AlignHCenter
-                text: qsTr("Copyright © MX Linux")
-                color: root.secondaryTextColor
-                font.pixelSize: Math.max(10, root.baseFontSize - 2)
+        contentItem: Flickable {
+            id: aboutContentArea
+            implicitHeight: aboutContent.implicitHeight
+            contentWidth: width
+            contentHeight: aboutContent.implicitHeight
+            clip: true
+            boundsBehavior: Flickable.StopAtBounds
+            ScrollBar.vertical: ScrollBar {}
+
+            ColumnLayout {
+                id: aboutContent
+                width: aboutContentArea.width
+                spacing: 14
+                Image {
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.preferredWidth: 72
+                    Layout.preferredHeight: 72
+                    source: "../icons/custom-toolbox.svg"
+                    fillMode: Image.PreserveAspectFit
+                }
+                Text {
+                    Layout.fillWidth: true
+                    text: root.backend.title
+                    color: root.primaryTextColor
+                    horizontalAlignment: Text.AlignHCenter
+                    wrapMode: Text.Wrap
+                    font.pixelSize: root.baseFontSize + 11
+                    font.weight: Font.Bold
+                }
+                Text {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: qsTr("Version %1").arg(root.version)
+                    color: root.secondaryTextColor
+                    font.pixelSize: root.baseFontSize
+                }
+                Text {
+                    Layout.fillWidth: true
+                    text: qsTr("Custom Toolbox creates focused collections of application launchers and system tasks.")
+                    color: root.primaryTextColor
+                    horizontalAlignment: Text.AlignHCenter
+                    wrapMode: Text.Wrap
+                    font.pixelSize: root.baseFontSize + 1
+                }
+                SecondaryButton {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: qsTr("License")
+                    textColor: root.primaryTextColor
+                    hoverColor: root.accentWash
+                    borderColor: root.borderColor
+                    accentColor: root.accentColor
+                    onClicked: root.backend.openLicense()
+                }
+                Text {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: qsTr("Copyright © MX Linux")
+                    color: root.secondaryTextColor
+                    font.pixelSize: Math.max(10, root.baseFontSize - 2)
+                }
             }
         }
     }
@@ -626,13 +747,17 @@ ApplicationWindow {
         property string message: ""
         modal: true
         anchors.centerIn: Overlay.overlay
+        // Size from the message rather than implicitWidth, which follows the footer and loops.
+        width: Math.min(Math.max(errorText.implicitWidth, 240) + leftPadding + rightPadding, 560, root.width - 24)
+        // Long messages (e.g. a failed command line) scroll above the fixed OK button.
+        height: Math.min(implicitHeight, root.height - 24)
+        standardButtons: Dialog.Ok
         background: Rectangle {
             color: root.surfaceColor
             radius: 6
             border.color: root.borderColor
         }
         footer: DialogButtonBox {
-            standardButtons: Dialog.Ok
             alignment: Qt.AlignRight
             padding: 12
             background: Item {}
@@ -642,12 +767,23 @@ ApplicationWindow {
                 borderColor: root.borderColor
                 accentColor: root.accentColor
             }
-            onAccepted: errorDialog.accept()
         }
-        contentItem: Text {
-            text: errorDialog.message
-            color: root.primaryTextColor
-            wrapMode: Text.Wrap
+        contentItem: Flickable {
+            id: errorMessageArea
+            implicitHeight: errorText.implicitHeight
+            contentWidth: width
+            contentHeight: errorText.implicitHeight
+            clip: true
+            boundsBehavior: Flickable.StopAtBounds
+            ScrollBar.vertical: ScrollBar {}
+
+            Text {
+                id: errorText
+                width: errorMessageArea.width
+                text: errorDialog.message
+                color: root.primaryTextColor
+                wrapMode: Text.Wrap
+            }
         }
     }
 }
