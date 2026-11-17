@@ -148,7 +148,7 @@ Try a different search or category.</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/launchermodel.h" line="108"/>
+        <location filename="../src/launchermodel.h" line="112"/>
         <source>Custom Toolbox</source>
         <translation>Пользовательский набор инструментов</translation>
     </message>
@@ -164,7 +164,7 @@ Try a different search or category.</source>
     </message>
     <message>
         <location filename="../qml/Main.qml" line="186"/>
-        <location filename="../src/launchermodel.cpp" line="780"/>
+        <location filename="../src/launchermodel.cpp" line="874"/>
         <source>Help</source>
         <translation>Справка</translation>
     </message>
@@ -174,155 +174,165 @@ Try a different search or category.</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.h" line="109"/>
+        <location filename="../src/launchermodel.h" line="113"/>
         <source>This is a custom launcher</source>
         <translation>Это настраиваемый лаунчер</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="604"/>
-        <location filename="../src/launchermodel.cpp" line="612"/>
-        <location filename="../src/launchermodel.cpp" line="634"/>
-        <location filename="../src/launchermodel.cpp" line="664"/>
-        <location filename="../src/launchermodel.cpp" line="676"/>
+        <location filename="../src/launchermodel.cpp" line="674"/>
+        <location filename="../src/launchermodel.cpp" line="682"/>
+        <location filename="../src/launchermodel.cpp" line="704"/>
+        <location filename="../src/launchermodel.cpp" line="756"/>
+        <location filename="../src/launchermodel.cpp" line="768"/>
         <source>Execution Error</source>
         <translation>Ошибка выполнения</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="549"/>
+        <location filename="../src/launchermodel.cpp" line="617"/>
         <source>Command is empty. Cannot execute.</source>
         <translation>Команда пуста. Невозможно выполнить.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="604"/>
+        <location filename="../src/launchermodel.cpp" line="674"/>
         <source>The selected launcher is no longer available.</source>
         <translation>Выбранный лаунчер больше не доступен.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="664"/>
+        <location filename="../src/launchermodel.cpp" line="756"/>
         <source>Failed to start command: %1</source>
         <translation>Не удалось запустить команду: %1</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="676"/>
+        <location filename="../src/launchermodel.cpp" line="768"/>
         <source>Failed to execute command: %1</source>
         <translation>Не удалось выполнить команду: %1</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="634"/>
+        <location filename="../src/launchermodel.cpp" line="704"/>
         <source>Failed to start program: %1</source>
         <translation>Не удалось запустить программу: %1</translation>
     </message>
     <message>
+        <location filename="../src/launchermodel.cpp" line="509"/>
+        <location filename="../src/launchermodel.cpp" line="1047"/>
         <location filename="../src/main.cpp" line="70"/>
-        <location filename="../src/launchermodel.cpp" line="446"/>
-        <location filename="../src/launchermodel.cpp" line="953"/>
         <source>File Open Error</source>
         <translation>Ошибка открытия файла</translation>
     </message>
     <message>
+        <location filename="../src/launchermodel.cpp" line="496"/>
         <location filename="../src/main.cpp" line="166"/>
-        <location filename="../src/launchermodel.cpp" line="433"/>
         <source>File Not Found</source>
         <translation>Файл не найден</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="584"/>
+        <location filename="../src/launchermodel.cpp" line="654"/>
         <source>Could not determine the unprivileged user. Refusing to run this launcher as root.</source>
         <translation>Не удалось определить обычного пользователя. Отказ от запуска этого лаунчера от root.</translation>
     </message>
     <message>
+        <location filename="../src/launchermodel.cpp" line="496"/>
         <location filename="../src/main.cpp" line="167"/>
-        <location filename="../src/launchermodel.cpp" line="433"/>
         <source>The file %1 does not exist.</source>
         <translation>Файл %1 не существует.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="446"/>
+        <location filename="../src/launchermodel.cpp" line="120"/>
+        <source>No terminal emulator is installed in the system directories, so this cannot run as administrator in a terminal.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/launchermodel.cpp" line="121"/>
+        <source>No terminal emulator found. Install one or set the TERMINAL environment variable.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/launchermodel.cpp" line="509"/>
         <source>Could not open file: </source>
         <translation>Не удалось открыть файл:</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="452"/>
-        <location filename="../src/launchermodel.cpp" line="483"/>
+        <location filename="../src/launchermodel.cpp" line="515"/>
+        <location filename="../src/launchermodel.cpp" line="551"/>
         <source>Parse Error</source>
         <translation>Ошибка разбора</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="452"/>
+        <location filename="../src/launchermodel.cpp" line="515"/>
         <source>The file %1 contains no recognizable launcher entries.</source>
         <translation>Файл %1 не содержит распознаваемых записей лаунчера.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="458"/>
+        <location filename="../src/launchermodel.cpp" line="521"/>
         <source>All launchers</source>
         <translation>Все лаунчеры</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="483"/>
+        <location filename="../src/launchermodel.cpp" line="551"/>
         <source>None of the entries in %1 match an installed application.</source>
         <translation>Ни одна из записей в %1 не соответствует установленному приложению.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="620"/>
+        <location filename="../src/launchermodel.cpp" line="690"/>
         <source>Launcher already running</source>
         <translation>Лаунчер уже запущен</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="621"/>
+        <location filename="../src/launchermodel.cpp" line="691"/>
         <source>%1 is already running.</source>
         <translation>%1 уже запущен.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="858"/>
+        <location filename="../src/launchermodel.cpp" line="952"/>
         <source>Refusing to overwrite a non-Custom Toolbox autostart file: %1</source>
         <translation>Отказ от перезаписи файла автозапуска, не являющегося пользовательским набором инструментов: %1</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="944"/>
+        <location filename="../src/launchermodel.cpp" line="1038"/>
         <source>Could not create directory: %1</source>
         <translation>Не удалось создать каталог: %1</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="766"/>
-        <location filename="../src/launchermodel.cpp" line="772"/>
-        <location filename="../src/launchermodel.cpp" line="787"/>
+        <location filename="../src/launchermodel.cpp" line="860"/>
+        <location filename="../src/launchermodel.cpp" line="866"/>
+        <location filename="../src/launchermodel.cpp" line="881"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="712"/>
+        <location filename="../src/launchermodel.cpp" line="804"/>
         <source>Editor command is empty.</source>
         <translation>Команда редактора пуста.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="772"/>
+        <location filename="../src/launchermodel.cpp" line="866"/>
         <source>Failed to launch the editor.</source>
         <translation>Не удалось запустить редактор.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="733"/>
+        <location filename="../src/launchermodel.cpp" line="831"/>
         <source>Could not determine the unprivileged user. Refusing to launch the editor as root.</source>
         <translation>Не удалось определить обычного пользователя. Отказ от запуска редактора от root.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="780"/>
-        <location filename="../src/launchermodel.cpp" line="787"/>
+        <location filename="../src/launchermodel.cpp" line="874"/>
+        <location filename="../src/launchermodel.cpp" line="881"/>
         <source>Could not open %1.</source>
         <translation>Не удалось открыть %1.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="989"/>
+        <location filename="../src/launchermodel.cpp" line="1083"/>
         <source>Could not reload the configuration. The previous configuration is still in use.</source>
         <translation>Не удалось перезагрузить конфигурацию. Предыдущая конфигурация всё ещё используется.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="878"/>
-        <location filename="../src/launchermodel.cpp" line="889"/>
+        <location filename="../src/launchermodel.cpp" line="972"/>
+        <location filename="../src/launchermodel.cpp" line="983"/>
         <source>Could not write file: %1</source>
         <translation>Не удалось записать файл: %1</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="949"/>
+        <location filename="../src/launchermodel.cpp" line="1043"/>
         <source>Could not remove file: %1</source>
         <translation>Не удалось удалить файл: %1</translation>
     </message>

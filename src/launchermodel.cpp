@@ -12,6 +12,7 @@
 
 #include <algorithm>
 #include <pwd.h>
+#include <utility>
 #include <unistd.h>
 
 #include <QApplication>
@@ -60,6 +61,65 @@ QString homeDirectoryForUser(const QString &user)
         return QString::fromLocal8Bit(entry->pw_dir);
     }
     return {};
+}
+
+// Find a terminal emulator and build the arguments that make it run `command`, keeping the
+// command's arguments separate. A terminal that runs as root is chosen only among known
+// emulators in the system directories pkexec searches, and returned as an absolute path, so
+// neither $TERMINAL nor the user's PATH selects a privileged program. Otherwise the Debian
+// alternative comes first, then $TERMINAL, then common emulators, and a name found on PATH
+// is returned as a name.
+bool terminalCommand(const QStringList &command, bool asRoot, QString *program, QStringList *arguments,
+                     QString *errorMessage)
+{
+    // The option that introduces the command and its separate arguments; empty when the
+    // command follows directly. (xfce4-terminal's and mate-terminal's -e take one string.)
+    static const QList<std::pair<QString, QString>> knownTerminals {
+        {QStringLiteral("x-terminal-emulator"), QStringLiteral("-e")},
+        {QStringLiteral("xdg-terminal-exec"), QString()},
+        {QStringLiteral("konsole"), QStringLiteral("-e")},
+        {QStringLiteral("gnome-terminal"), QStringLiteral("--")},
+        {QStringLiteral("xfce4-terminal"), QStringLiteral("-x")},
+        {QStringLiteral("mate-terminal"), QStringLiteral("-x")},
+        {QStringLiteral("terminator"), QStringLiteral("-x")},
+        {QStringLiteral("alacritty"), QStringLiteral("-e")},
+        {QStringLiteral("kitty"), QString()},
+        {QStringLiteral("foot"), QString()},
+        {QStringLiteral("xterm"), QStringLiteral("-e")},
+    };
+    static const QStringList systemDirectories {QStringLiteral("/usr/sbin"), QStringLiteral("/usr/bin"),
+                                                QStringLiteral("/sbin"), QStringLiteral("/bin")};
+    QStringList candidates;
+    for (const auto &terminal : knownTerminals) {
+        candidates << terminal.first;
+    }
+    if (!asRoot) {
+        if (const QString preferred = qEnvironmentVariable("TERMINAL").trimmed(); !preferred.isEmpty()) {
+            candidates.insert(1, preferred);
+        }
+    }
+    for (const QString &candidate : std::as_const(candidates)) {
+        const QString found = asRoot ? QStandardPaths::findExecutable(candidate, systemDirectories)
+                                     : QStandardPaths::findExecutable(candidate);
+        if (found.isEmpty()) {
+            continue;
+        }
+        const QString name = QFileInfo(candidate).fileName();
+        QString option = QStringLiteral("-e");
+        for (const auto &terminal : knownTerminals) {
+            if (terminal.first == name) {
+                option = terminal.second;
+                break;
+            }
+        }
+        *program = asRoot ? found : candidate;
+        *arguments = option.isEmpty() ? command : QStringList {option} + command;
+        return true;
+    }
+    *errorMessage = asRoot
+                        ? QCoreApplication::translate("MainWindow", "No terminal emulator is installed in the system directories, so this cannot run as administrator in a terminal.")
+                        : QCoreApplication::translate("MainWindow", "No terminal emulator found. Install one or set the TERMINAL environment variable.");
+    return false;
 }
 
 struct DesktopFileCandidate {
@@ -567,10 +627,12 @@ bool LauncherModel::prepareCommand(const ItemInfo &item, QString *program, QStri
         && !launchArguments.contains(QLatin1String("--keep-cwd"))) {
         launchArguments.prepend(QStringLiteral("--keep-cwd"));
     }
-    if (item.terminal) {
-        launchArguments.prepend(launchProgram);
-        launchArguments.prepend(QStringLiteral("-e"));
-        launchProgram = QStringLiteral("x-terminal-emulator");
+    // The terminal runs as whoever the launcher runs as, so a root launch needs a trusted one.
+    const bool runsAsRoot = getuid() == 0 ? !item.user : item.root;
+    if (item.terminal
+        && !terminalCommand(QStringList {launchProgram} + launchArguments, runsAsRoot, &launchProgram,
+                            &launchArguments, errorMessage)) {
+        return false;
     }
     QStringList environment {QStringLiteral("env"), QStringLiteral("DISPLAY=") + qEnvironmentVariable("DISPLAY"),
                              QStringLiteral("XAUTHORITY=")
@@ -748,10 +810,16 @@ bool LauncherModel::prepareEditorCommand(const QString &editor, QString *program
     static const QRegularExpression cli(QStringLiteral(R"(\b(nano|vi|vim|nvim|micro|emacs)\b)"));
     const bool selfElevating = elevates.match(editorName).hasMatch();
     parts << fileName;
-    if (cli.match(editorName).hasMatch()) {
-        parts.prepend(editorProgram);
-        parts.prepend(QStringLiteral("-e"));
-        editorProgram = QStringLiteral("x-terminal-emulator");
+    bool needsElevation = false;
+    if (!selfElevating) {
+        const QFileInfo info(fileName);
+        needsElevation = info.exists() ? !info.isWritable() : !QFileInfo(info.path()).isWritable();
+    }
+    // A terminal hosting an editor that runs as root (here or through pkexec) must be trusted.
+    if (cli.match(editorName).hasMatch()
+        && !terminalCommand(QStringList {editorProgram} + parts, getuid() == 0 || needsElevation, &editorProgram,
+                            &parts, errorMessage)) {
+        return false;
     }
     QStringList environment {QStringLiteral("env"), QStringLiteral("DISPLAY=") + qEnvironmentVariable("DISPLAY"),
                              QStringLiteral("XAUTHORITY=")
@@ -768,14 +836,10 @@ bool LauncherModel::prepareEditorCommand(const QString &editor, QString *program
         parts.prepend(editorProgram);
         parts = QStringList {QStringLiteral("--user"), user} + environment + parts;
         editorProgram = QStringLiteral("pkexec");
-    } else if (!selfElevating) {
-        const QFileInfo info(fileName);
-        const bool needsElevation = info.exists() ? !info.isWritable() : !QFileInfo(info.path()).isWritable();
-        if (needsElevation) {
-            parts.prepend(editorProgram);
-            parts = environment + parts;
-            editorProgram = QStringLiteral("pkexec");
-        }
+    } else if (needsElevation) {
+        parts.prepend(editorProgram);
+        parts = environment + parts;
+        editorProgram = QStringLiteral("pkexec");
     }
     errorMessage->clear();
     *program = editorProgram;

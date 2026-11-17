@@ -13,6 +13,7 @@
 #include <QTest>
 #include <QTextStream>
 
+#include <algorithm>
 #include <csignal>
 #include <pwd.h>
 #include <unistd.h>
@@ -36,6 +37,9 @@ private slots:
     void launchesInDesktopWorkingDirectory_data();
     void launchesInDesktopWorkingDirectory();
     void neverResolvesInvokingUserToRoot();
+    void runsTerminalEntriesInAvailableTerminal_data();
+    void runsTerminalEntriesInAvailableTerminal();
+    void runsRootTerminalsFromSystemDirectories();
     void tracksLaunchersPerWorkingDirectory();
     void leavesTrackedLaunchersRunningOnExit();
     void releasesTrackedLauncherThatFailsToStartOnExit();
@@ -316,6 +320,9 @@ void TestLauncherModel::launchesInDesktopWorkingDirectory()
 {
     QFETCH(QByteArray, exec);
     QFETCH(QByteArray, listEntry);
+    if (getuid() == 0 && listEntry.contains("terminal")) {
+        QSKIP("a root toolbox takes its terminal from the system directories, not the fake on PATH");
+    }
     QFETCH(QString, authorized);
     QTemporaryDir directory;
     QVERIFY(directory.isValid());
@@ -433,6 +440,185 @@ void TestLauncherModel::neverResolvesInvokingUserToRoot()
     QCOMPARE(resolve("0", "0", "root"), QString());
     QCOMPARE(resolve({}, {}, "root"), QString());
     QCOMPARE(resolve({}, {}, {}), QString());
+}
+
+void TestLauncherModel::runsTerminalEntriesInAvailableTerminal_data()
+{
+    QTest::addColumn<QStringList>("installed");
+    QTest::addColumn<QString>("terminalVariable");
+    QTest::addColumn<QStringList>("expected");
+
+    const QStringList command {"/bin/echo", "two words", "last"};
+    QTest::newRow("debian-alternative-first")
+        << QStringList {"x-terminal-emulator", "xfce4-terminal"} << QString()
+        << QStringList {"x-terminal-emulator", "-e"} + command;
+    QTest::newRow("xfce4-terminal-separate-arguments")
+        << QStringList {"xfce4-terminal"} << QString() << QStringList {"xfce4-terminal", "-x"} + command;
+    QTest::newRow("gnome-terminal-double-dash")
+        << QStringList {"gnome-terminal"} << QString() << QStringList {"gnome-terminal", "--"} + command;
+    QTest::newRow("kitty-direct") << QStringList {"kitty"} << QString() << QStringList {"kitty"} + command;
+    QTest::newRow("terminal-variable-before-known")
+        << QStringList {"konsole", "myterm"} << QString("myterm") << QStringList {"myterm", "-e"} + command;
+    QTest::newRow("terminal-variable-known-form")
+        << QStringList {"konsole", "xfce4-terminal"} << QString("xfce4-terminal")
+        << QStringList {"xfce4-terminal", "-x"} + command;
+    QTest::newRow("none-installed") << QStringList {} << QString() << QStringList {};
+}
+
+void TestLauncherModel::runsTerminalEntriesInAvailableTerminal()
+{
+    if (getuid() == 0) {
+        QSKIP("a root toolbox ignores PATH and $TERMINAL when choosing a terminal");
+    }
+    QFETCH(QStringList, installed);
+    QFETCH(QString, terminalVariable);
+    QFETCH(QStringList, expected);
+    QTemporaryDir directory;
+    QVERIFY(directory.isValid());
+    qputenv("HOME", directory.path().toUtf8());
+    qputenv("XDG_DATA_HOME", directory.filePath("share").toUtf8());
+
+    // Each fake terminal records its own name and arguments, one per line.
+    const QString bin = directory.filePath("bin");
+    QVERIFY(QDir().mkpath(bin));
+    for (const QString &terminal : std::as_const(installed)) {
+        QVERIFY(writeFile(bin + '/' + terminal,
+                          "#!/bin/sh\nprintf '%s\\n' \"${0##*/}\" \"$@\" > \"$HOME/terminal.txt\"\n"));
+        QVERIFY(QFile::setPermissions(bin + '/' + terminal, QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner));
+    }
+    const QByteArray previousPath = qgetenv("PATH");
+    const QByteArray previousTerminal = qgetenv("TERMINAL");
+    const auto restore = qScopeGuard([&] {
+        qputenv("PATH", previousPath);
+        if (previousTerminal.isNull()) {
+            qunsetenv("TERMINAL");
+        } else {
+            qputenv("TERMINAL", previousTerminal);
+        }
+    });
+    qputenv("PATH", bin.toUtf8());
+    if (terminalVariable.isEmpty()) {
+        qunsetenv("TERMINAL");
+    } else {
+        qputenv("TERMINAL", terminalVariable.toUtf8());
+    }
+
+    const QString applications = directory.filePath("share/applications");
+    QVERIFY(QDir().mkpath(applications));
+    QVERIFY(writeFile(applications + "/console-tool.desktop",
+                      "[Desktop Entry]\nType=Application\nName=Console Tool\nTerminal=true\n"
+                      "Exec=/bin/echo \"two words\" last\n"));
+    const QString listPath = directory.filePath("console.list");
+    QVERIFY(writeFile(listPath, "Name=Console\nCategory=Utilities\nconsole-tool\n"));
+
+    QCommandLineParser parser;
+    parser.addOption({QStringLiteral("remove-checkbox"), QStringLiteral("test option")});
+    QVERIFY(parser.parse({QStringLiteral("custom-toolbox")}));
+    LauncherIconProvider icons;
+    LauncherModel model(parser, listPath, icons);
+    QCOMPARE(model.rowCount(), 1);
+    QSignalSpy errors(&model, &LauncherModel::errorOccurred);
+    model.launch(model.data(model.index(0), LauncherModel::SourceIndexRole).toInt());
+
+    if (expected.isEmpty()) {
+        QCOMPARE(errors.count(), 1);
+        QVERIFY(errors.constFirst().at(1).toString().contains(QStringLiteral("No terminal emulator found")));
+        return;
+    }
+    QFile output(directory.filePath("terminal.txt"));
+    QTRY_VERIFY(output.exists() && output.size() > 0);
+    QVERIFY(output.open(QFile::ReadOnly));
+    QCOMPARE(QString::fromUtf8(output.readAll()).split('\n', Qt::SkipEmptyParts), expected);
+    QCOMPARE(errors.count(), 0);
+}
+
+void TestLauncherModel::runsRootTerminalsFromSystemDirectories()
+{
+    if (getuid() == 0) {
+        QSKIP("needs an unprivileged user so root launches and protected edits go through pkexec");
+    }
+    QTemporaryDir directory;
+    QVERIFY(directory.isValid());
+    qputenv("HOME", directory.path().toUtf8());
+    qputenv("XDG_DATA_HOME", directory.filePath("share").toUtf8());
+
+    // The session offers its own terminals, through $TERMINAL and through PATH; neither may
+    // host a root process. The fake pkexec only records what it was asked to run.
+    const QString bin = directory.filePath("bin");
+    QVERIFY(QDir().mkpath(bin));
+    QVERIFY(writeFile(bin + "/pkexec", "#!/bin/sh\nprintf '%s\\n' \"$@\" > \"$HOME/pkexec.txt\"\n"));
+    for (const char *name : {"/x-terminal-emulator", "/session-term"}) {
+        QVERIFY(writeFile(bin + name, "#!/bin/sh\nexit 0\n"));
+    }
+    for (const char *name : {"/pkexec", "/x-terminal-emulator", "/session-term"}) {
+        QVERIFY(QFile::setPermissions(bin + name, QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner));
+    }
+    const QByteArray previousPath = qgetenv("PATH");
+    const QByteArray previousTerminal = qgetenv("TERMINAL");
+    const auto restore = qScopeGuard([&] {
+        qputenv("PATH", previousPath);
+        if (previousTerminal.isNull()) {
+            qunsetenv("TERMINAL");
+        } else {
+            qputenv("TERMINAL", previousTerminal);
+        }
+    });
+    qputenv("PATH", bin.toUtf8());
+    qputenv("TERMINAL", (bin + "/session-term").toUtf8());
+
+    // Whichever known terminal the system has, it must come from a system directory by
+    // absolute path; with none installed, the launch is refused.
+    const QStringList systemDirectories {"/usr/sbin", "/usr/bin", "/sbin", "/bin"};
+    auto verifyRecordedTerminal = [&](const QStringList &tail, QSignalSpy &errors) {
+        QFile record(directory.filePath("pkexec.txt"));
+        if (!errors.isEmpty()) {
+            QVERIFY(errors.constFirst().at(1).toString().contains(QStringLiteral("system directories")));
+            QVERIFY(!record.exists());
+            return;
+        }
+        QTRY_VERIFY(record.exists() && record.size() > 0);
+        QVERIFY(record.open(QFile::ReadOnly));
+        const QStringList arguments = QString::fromUtf8(record.readAll()).split('\n', Qt::SkipEmptyParts);
+        record.close();
+        QVERIFY(record.remove());
+        // pkexec runs env, whose NAME=value and --chdir= arguments precede the terminal.
+        QVERIFY(!arguments.isEmpty() && arguments.constFirst() == QLatin1String("env"));
+        const auto terminal = std::find_if(arguments.cbegin() + 1, arguments.cend(),
+                                           [](const QString &argument) { return !argument.contains('='); });
+        QVERIFY(terminal != arguments.cend());
+        QVERIFY2(QFileInfo(*terminal).isAbsolute() && systemDirectories.contains(QFileInfo(*terminal).path()),
+                 qPrintable(*terminal));
+        QCOMPARE(arguments.mid(arguments.size() - tail.size()), tail);
+    };
+
+    const QString applications = directory.filePath("share/applications");
+    QVERIFY(QDir().mkpath(applications));
+    QVERIFY(writeFile(applications + "/root-console.desktop",
+                      "[Desktop Entry]\nType=Application\nName=Root Console\nTerminal=true\n"
+                      "Exec=/bin/echo \"two words\"\n"));
+    const QString listPath = directory.filePath("protected.list");
+    QVERIFY(writeFile(listPath, "Name=Protected\nCategory=Utilities\nroot-console root\n"));
+
+    QCommandLineParser parser;
+    parser.addOption({QStringLiteral("remove-checkbox"), QStringLiteral("test option")});
+    QVERIFY(parser.parse({QStringLiteral("custom-toolbox")}));
+    LauncherIconProvider icons;
+    LauncherModel model(parser, listPath, icons);
+    QCOMPARE(model.rowCount(), 1);
+
+    QSignalSpy launchErrors(&model, &LauncherModel::errorOccurred);
+    model.launch(model.data(model.index(0), LauncherModel::SourceIndexRole).toInt());
+    verifyRecordedTerminal({"/bin/echo", "two words"}, launchErrors);
+    if (QTest::currentTestFailed()) {
+        return;
+    }
+
+    // A list the user can't write is edited through pkexec; with xdg-mime unavailable the
+    // default editor is nano, which needs a terminal that then runs as root as well.
+    QVERIFY(QFile::setPermissions(listPath, QFile::ReadOwner));
+    QSignalSpy editErrors(&model, &LauncherModel::errorOccurred);
+    model.edit();
+    verifyRecordedTerminal({"nano", listPath}, editErrors);
 }
 
 void TestLauncherModel::tracksLaunchersPerWorkingDirectory()
