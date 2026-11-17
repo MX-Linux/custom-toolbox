@@ -137,7 +137,11 @@ if [ "$ARCH_BUILD" = true ]; then
     rm -rf pkg
 
     echo "Arch Linux package build completed!"
-    echo "Package: $(ls *.pkg.tar.zst 2>/dev/null || echo 'not found')"
+    # Ask makepkg for the archive names so PKGEXT and split debug packages are honored
+    BUILDDIR="$ARCH_BUILDDIR" PKGDEST="$PKG_DEST_DIR" PKGVER="$ARCH_VERSION" makepkg --packagelist |
+        while IFS= read -r package; do
+            if [ -f "$package" ]; then echo "Package: $package"; fi
+        done
     echo "Binary available at: build/custom-toolbox"
     exit 0
 fi
