@@ -406,15 +406,18 @@ ItemInfo LauncherModel::getDesktopFileInfo(const QString &path) const
     }
 
     ItemInfo item;
+    // Name, Comment and Icon are Desktop Entry strings, so decode escapes such as \s.
+    // %c expands to the full Name; dropping the "MX " prefix only affects the label.
+    const QString fullName = LauncherParser::decodeDesktopString(desktopEntryValue(text, QStringLiteral("Name"), lang));
     static const QRegularExpression mxPrefix(QStringLiteral("^MX "));
-    item.name = desktopEntryValue(text, QStringLiteral("Name"), lang).remove(mxPrefix);
-    item.comment = desktopEntryValue(text, QStringLiteral("Comment"), lang);
-    item.iconName = desktopEntryValue(text, QStringLiteral("Icon"), lang);
+    item.name = fullName.trimmed().remove(mxPrefix);
+    item.comment = LauncherParser::decodeDesktopString(desktopEntryValue(text, QStringLiteral("Comment"), lang));
+    item.iconName = LauncherParser::decodeDesktopString(desktopEntryValue(text, QStringLiteral("Icon"), lang));
     item.terminal = desktopEntryValue(text, QStringLiteral("Terminal"), lang)
                         .compare(QLatin1String("true"), Qt::CaseInsensitive) == 0;
     item.workingDirectory = LauncherParser::decodeDesktopString(desktopEntryValue(text, QStringLiteral("Path"), lang));
     if (item.name.isEmpty()
-        || !LauncherParser::parseDesktopExec(desktopEntryValue(text, QStringLiteral("Exec"), lang), item.name,
+        || !LauncherParser::parseDesktopExec(desktopEntryValue(text, QStringLiteral("Exec"), lang), fullName,
                                              item.iconName, path, &item.exec, &item.execArgs)) {
         return {};
     }

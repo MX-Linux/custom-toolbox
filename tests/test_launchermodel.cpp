@@ -41,6 +41,7 @@ private slots:
     void releasesTrackedLauncherThatFailsToStartOnExit();
     void leavesTargetAutostartWhenOpeningSymlink();
     void keepsAutostartAcrossSymlinkRetarget();
+    void decodesDesktopEntryStrings();
     void reloadsEditedDesktopFile();
     void reloadsWhenOnlyEntryIsUnhidden();
     void reloadsWhenRemovedDesktopFileReturns();
@@ -654,6 +655,44 @@ void TestLauncherModel::keepsAutostartAcrossSymlinkRetarget()
     QCOMPARE(errors.count(), 0);
     QVERIFY(!model.startupEnabled());
     QVERIFY(autostart.entryList({"*.desktop"}, QDir::Files).isEmpty());
+}
+
+void TestLauncherModel::decodesDesktopEntryStrings()
+{
+    QTemporaryDir directory;
+    QVERIFY(directory.isValid());
+    qputenv("HOME", directory.path().toUtf8());
+    qputenv("XDG_DATA_HOME", directory.filePath("share").toUtf8());
+    const QString applications = directory.filePath("share/applications");
+    QVERIFY(QDir().mkpath(applications));
+    const QString probe = directory.filePath("name-probe");
+    QVERIFY(writeFile(probe, "#!/bin/sh\nprintf '%s' \"$1\" > \"$HOME/name.txt\"\n"));
+    QVERIFY(QFile::setPermissions(probe, QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner));
+    QVERIFY(writeFile(applications + "/suite.desktop",
+                      "[Desktop Entry]\nType=Application\nName=MX Tools\\sSuite\nComment=First\\sline\nExec="
+                          + probe.toUtf8() + " %c\n"));
+    // A translation that starts with an escaped space still loses the MX prefix.
+    QVERIFY(writeFile(applications + "/leading.desktop",
+                      "[Desktop Entry]\nType=Application\nName=\\sMX Leading\nExec=/bin/true\n"));
+    const QString listPath = directory.filePath("decode.list");
+    QVERIFY(writeFile(listPath, "Name=Decode\nCategory=Utilities\nsuite\nleading\n"));
+
+    QCommandLineParser parser;
+    parser.addOption({QStringLiteral("remove-checkbox"), QStringLiteral("test option")});
+    QVERIFY(parser.parse({QStringLiteral("custom-toolbox")}));
+    LauncherIconProvider icons;
+    LauncherModel model(parser, listPath, icons);
+    QCOMPARE(model.rowCount(), 2);
+    QCOMPARE(model.data(model.index(0), LauncherModel::NameRole).toString(), QStringLiteral("Tools Suite"));
+    QCOMPARE(model.data(model.index(0), LauncherModel::CommentRole).toString(), QStringLiteral("First line"));
+    QCOMPARE(model.data(model.index(1), LauncherModel::NameRole).toString(), QStringLiteral("Leading"));
+
+    // %c gets the full decoded Name, including the prefix the label drops.
+    model.launch(model.data(model.index(0), LauncherModel::SourceIndexRole).toInt());
+    QFile output(directory.filePath("name.txt"));
+    QTRY_VERIFY(output.exists() && output.size() > 0);
+    QVERIFY(output.open(QFile::ReadOnly));
+    QCOMPARE(QString::fromUtf8(output.readAll()), QStringLiteral("MX Tools Suite"));
 }
 
 void TestLauncherModel::reloadsEditedDesktopFile()
