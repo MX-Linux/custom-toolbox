@@ -287,12 +287,38 @@ ApplicationWindow {
                     font.weight: Font.DemiBold
                     font.letterSpacing: 1.1
                 }
-                Repeater {
+                // Long category lists scroll here, keeping the launch-at-login control in view.
+                ListView {
+                    id: sidebarCategories
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    clip: true
+                    spacing: 6
+                    boundsBehavior: Flickable.StopAtBounds
+                    ScrollBar.vertical: ScrollBar {}
                     model: root.backend.categories
-                    CategoryButton {
+
+                    // See the comment on the compact category Flickable below: bypass the default
+                    // flick-momentum wheel handling so touchpad scrolling can reverse immediately.
+                    WheelHandler {
+                        target: null
+                        acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
+                        onWheel: (event) => {
+                            const minimumY = sidebarCategories.originY
+                            const maximumY = Math.max(minimumY, minimumY + sidebarCategories.contentHeight
+                                                                - sidebarCategories.height)
+                            sidebarCategories.contentY = Math.max(minimumY, Math.min(
+                                maximumY, sidebarCategories.contentY - event.angleDelta.y))
+                        }
+                    }
+
+                    delegate: CategoryButton {
                         required property string modelData
                         required property int index
-                        Layout.fillWidth: true
+                        width: ListView.view.width
+                        // The button's fixed 44 px suits the compact strip; the layout this list
+                        // replaced sized sidebar rows to the implicit height, so keep that.
+                        height: implicitHeight
                         text: modelData
                         selected: searchField.text.length === 0
                                   && (root.backend.selectedCategory === modelData
@@ -306,7 +332,6 @@ ApplicationWindow {
                         }
                     }
                 }
-                Item { Layout.fillHeight: true }
                 Rectangle { Layout.fillWidth: true; Layout.preferredHeight: 1; color: root.borderColor }
                 RowLayout {
                     visible: root.backend.startupVisible

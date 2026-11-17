@@ -42,44 +42,44 @@
         <translation>CATEGORIES</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="320"/>
-        <location filename="../qml/Main.qml" line="626"/>
+        <location filename="../qml/Main.qml" line="345"/>
+        <location filename="../qml/Main.qml" line="651"/>
         <source>Launch at login</source>
         <translation>Lancer à la connexion (login)</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="327"/>
+        <location filename="../qml/Main.qml" line="352"/>
         <source>Open this toolbox automatically</source>
         <translation>Ouvrir automatiquement cette boîte à outils</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="337"/>
-        <location filename="../qml/Main.qml" line="636"/>
+        <location filename="../qml/Main.qml" line="362"/>
+        <location filename="../qml/Main.qml" line="661"/>
         <source>Launch this toolbox at login</source>
         <translation>Lancer cette boîte à outils à la connexion (login)</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="424"/>
+        <location filename="../qml/Main.qml" line="449"/>
         <source>Search results</source>
         <translation>Résultats de la recherche</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="426"/>
+        <location filename="../qml/Main.qml" line="451"/>
         <source>All launchers</source>
         <translation>Tous les lanceurs</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="436"/>
+        <location filename="../qml/Main.qml" line="461"/>
         <source>Results matching “%1”</source>
         <translation>Résultats correspondant à «&#xa0;%1&#xa0;»</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="437"/>
+        <location filename="../qml/Main.qml" line="462"/>
         <source>Choose a launcher to start an application or task</source>
         <translation>Choisir un lanceur pour démarrer une application ou une tâche</translation>
     </message>
     <message numerus="yes">
-        <location filename="../qml/Main.qml" line="451"/>
+        <location filename="../qml/Main.qml" line="476"/>
         <source>%n launcher(s)</source>
         <translation>
             <numerusform>1 lanceur</numerusform>
@@ -88,65 +88,65 @@
     </message>
     <message>
         <location filename="../qml/Main.qml" line="230"/>
-        <location filename="../qml/Main.qml" line="467"/>
+        <location filename="../qml/Main.qml" line="492"/>
         <source>Condensed view</source>
         <translation>Vue condensée</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="477"/>
+        <location filename="../qml/Main.qml" line="502"/>
         <source>Use condensed launcher view</source>
         <translation>Utiliser la vue condensée des lanceurs</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="480"/>
+        <location filename="../qml/Main.qml" line="505"/>
         <source>Show more launchers at once</source>
         <translation>Afficher davantage de lanceurs à la fois</translation>
     </message>
     <message>
         <location filename="../qml/Main.qml" line="239"/>
-        <location filename="../qml/Main.qml" line="499"/>
+        <location filename="../qml/Main.qml" line="524"/>
         <source>Hide categories</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="509"/>
+        <location filename="../qml/Main.qml" line="534"/>
         <source>Hide the category list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="512"/>
+        <location filename="../qml/Main.qml" line="537"/>
         <source>Use the whole window for launchers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="609"/>
+        <location filename="../qml/Main.qml" line="634"/>
         <source>No launchers found
 Try a different search or category.</source>
         <translation>Aucun lanceur trouvé
 Essayez une autre recherche ou catégorie.</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="667"/>
+        <location filename="../qml/Main.qml" line="692"/>
         <source>About %1</source>
         <translation>À propos de %1</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="714"/>
+        <location filename="../qml/Main.qml" line="739"/>
         <source>Version %1</source>
         <translation>Version %1</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="720"/>
+        <location filename="../qml/Main.qml" line="745"/>
         <source>Custom Toolbox creates focused collections of application launchers and system tasks.</source>
         <translation>Boîte à outils personnalisée «&#xa0;Custom Toolbox&#xa0;» crée des collections ciblées de lanceurs d’applications et de tâches système.</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="728"/>
+        <location filename="../qml/Main.qml" line="753"/>
         <source>License</source>
         <translation>Licence</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="737"/>
+        <location filename="../qml/Main.qml" line="762"/>
         <source>Copyright © MX Linux</source>
         <translation>Copyright © MX Linux</translation>
     </message>
@@ -165,7 +165,7 @@ Essayez une autre recherche ou catégorie.</translation>
         <translation>À propos&#xa0;…</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="641"/>
+        <location filename="../qml/Main.qml" line="666"/>
         <source>Edit</source>
         <translation>Éditer</translation>
     </message>
@@ -177,7 +177,7 @@ Essayez une autre recherche ou catégorie.</translation>
         <translation>Aide</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="649"/>
+        <location filename="../qml/Main.qml" line="674"/>
         <source>Close</source>
         <translation>Quitter</translation>
     </message>
