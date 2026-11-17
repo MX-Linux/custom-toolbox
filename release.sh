@@ -76,6 +76,33 @@ tag_exists() {
     return 1
 }
 
+# Push an existing local tag that never reached origin (e.g. its push failed on an
+# earlier run); the AUR tarball is downloaded from GitHub, so the tag must be there.
+ensure_tag_pushed() {
+    local version=$1
+
+    if ! git rev-parse -q --verify "refs/tags/${version}" >/dev/null; then
+        return 0
+    fi
+
+    local rc=0
+    git ls-remote --exit-code --tags origin "refs/tags/${version}" >/dev/null || rc=$?
+    case $rc in
+        0)
+            return 0
+            ;;
+        2)
+            print_step "Tag '$version' exists only locally; pushing it to GitHub..."
+            git push origin "refs/tags/${version}"
+            print_success "Tag pushed to GitHub"
+            ;;
+        *)
+            print_error "Could not check whether tag '$version' is on origin"
+            exit 1
+            ;;
+    esac
+}
+
 # Get latest tag version for comparison
 get_latest_tag() {
     {
@@ -467,6 +494,7 @@ main() {
     if tag_exists "$version"; then
         print_warning "Tag '$version' already exists; no new tag will be created"
         tag_status="existing"
+        ensure_tag_pushed "$version"
         ANNOTATION=$(get_tag_annotation "$version")
         if [ -z "$ANNOTATION" ]; then
             ANNOTATION="Update AUR package to $version"
