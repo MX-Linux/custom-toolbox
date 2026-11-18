@@ -11,6 +11,8 @@ class LauncherParserTest : public QObject
 
 private slots:
     void parsesCustomFormatWithQuotedAliasAndComment();
+    void keepsEqualsSignsInCustomAliases_data();
+    void keepsEqualsSignsInCustomAliases();
     void skipsConflictingCustomFlags();
     void parsesIniFormatWithColonInAlias();
     void keepsLiteralIniAliasBoundaries_data();
@@ -43,6 +45,58 @@ void LauncherParserTest::parsesCustomFormatWithQuotedAliasAndComment()
     QVERIFY(item.root);
     QVERIFY(item.terminal);
     QVERIFY(!item.user);
+}
+
+void LauncherParserTest::keepsEqualsSignsInCustomAliases_data()
+{
+    QTest::addColumn<QByteArray>("line");
+    QTest::addColumn<QString>("appName");
+    QTest::addColumn<QString>("alias");
+    QTest::addColumn<bool>("root");
+    QTest::addColumn<bool>("terminal");
+
+    QTest::newRow("space-double-quotes")
+        << QByteArray(R"(sample alias "Mode=Expert")") << "sample" << "Mode=Expert" << false << false;
+    QTest::newRow("space-single-quotes")
+        << QByteArray("sample root alias 'Mode=Expert'") << "sample" << "Mode=Expert" << true << false;
+    QTest::newRow("assignment")
+        << QByteArray(R"(sample alias="Mode=Expert")") << "sample" << "Mode=Expert" << false << false;
+    QTest::newRow("assignment-flag")
+        << QByteArray(R"(sample root alias="A=B=C")") << "sample" << "A=B=C" << true << false;
+    // Quotes outside the alias value are literal, so the alias and its flag-like words survive.
+    QTest::newRow("apostrophe-path-assignment")
+        << QByteArray(R"(/home/o'brien/tool alias="Run as root=now")") << "/home/o'brien/tool" << "Run as root=now"
+        << false << false;
+    QTest::newRow("apostrophe-path-space")
+        << QByteArray(R"(/home/o'brien/tool alias "Run as root=now")") << "/home/o'brien/tool" << "Run as root=now"
+        << false << false;
+    QTest::newRow("leading-apostrophe-assignment")
+        << QByteArray(R"('90s-radio alias="Favorite=Mix")") << "'90s-radio" << "Favorite=Mix" << false << false;
+    QTest::newRow("leading-apostrophe-space")
+        << QByteArray(R"('90s-radio alias "Play root mix=1")") << "'90s-radio" << "Play root mix=1" << false << false;
+    QTest::newRow("flag-word-in-quoted-label")
+        << QByteArray(R"(sample terminal alias "Play root mix=1")") << "sample" << "Play root mix=1" << false << true;
+    // Only spaces separate tokens; after a tab there is no alias keyword, and the quoted words
+    // must not turn into flags.
+    QTest::newRow("tab-after-alias")
+        << QByteArray("sample alias\t\"Mode=Expert terminal settings\"") << "sample" << QString() << false << false;
+}
+
+void LauncherParserTest::keepsEqualsSignsInCustomAliases()
+{
+    QFETCH(QByteArray, line);
+    QFETCH(QString, appName);
+    QFETCH(QString, alias);
+    QFETCH(bool, root);
+    QFETCH(bool, terminal);
+
+    const auto result = LauncherParser::parse("Name=A=B\nCategory=Utilities\n" + line + "\n", "en_US");
+    QCOMPARE(result.name, "A=B");
+    QCOMPARE(result.items.size(), 1);
+    QCOMPARE(result.items.first().appName, appName);
+    QCOMPARE(result.items.first().alias, alias);
+    QCOMPARE(result.items.first().root, root);
+    QCOMPARE(result.items.first().terminal, terminal);
 }
 
 void LauncherParserTest::skipsConflictingCustomFlags()

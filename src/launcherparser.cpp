@@ -344,6 +344,45 @@ qsizetype unquotedCommentIndex(QStringView line)
     }
     return -1;
 }
+
+// Index of the assignment '=' in a custom-format line. It is the first '=', unless a
+// standalone `alias` keyword comes before it and is followed by a quoted value
+// (`app alias "Mode=Expert"`): any '=' inside that value belongs to the alias. Quotes
+// anywhere else, as in /home/o'brien/tool or '90s-radio, are literal. Tokens are separated
+// by spaces only, as when the key is split into the app name, flags and alias below.
+qsizetype assignmentIndex(QStringView line)
+{
+    const qsizetype firstEquals = line.indexOf(QLatin1Char('='));
+    qsizetype i = 0;
+    while (i < line.size()) {
+        while (i < line.size() && line[i] == QLatin1Char(' ')) {
+            ++i;
+        }
+        const qsizetype tokenStart = i;
+        if (firstEquals >= 0 && tokenStart > firstEquals) {
+            break;
+        }
+        while (i < line.size() && line[i] != QLatin1Char(' ')) {
+            ++i;
+        }
+        if (line.sliced(tokenStart, i - tokenStart) != QLatin1String("alias")) {
+            continue;
+        }
+        qsizetype valueStart = i;
+        while (valueStart < line.size() && line[valueStart] == QLatin1Char(' ')) {
+            ++valueStart;
+        }
+        if (valueStart < line.size()
+            && (line[valueStart] == QLatin1Char('"') || line[valueStart] == QLatin1Char('\''))) {
+            const qsizetype closing = line.indexOf(line[valueStart], valueStart + 1);
+            if (closing >= 0) {
+                return line.indexOf(QLatin1Char('='), closing + 1);
+            }
+        }
+        break;
+    }
+    return firstEquals;
+}
 } // namespace
 
 // Decode the Desktop Entry string escapes \s, \n, \t, \r and \\; other escapes are kept.
@@ -582,7 +621,7 @@ LauncherParser::ParseResult LauncherParser::parse(const QString &text, const QSt
         }
 #endif
 
-        const qsizetype splitPos = lineView.indexOf(QLatin1Char('='));
+        const qsizetype splitPos = assignmentIndex(lineView);
         QStringView keyView;
         QStringView valueView;
         if (splitPos > 0) {
