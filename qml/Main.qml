@@ -705,7 +705,10 @@ ApplicationWindow {
                 accentColor: root.accentColor
             }
         }
+        // The IDs intentionally make this deferred Dialog property immediate.
+        // qmllint disable deferred-property-id
         contentItem: Flickable {
+            // qmllint enable deferred-property-id
             id: aboutContentArea
             implicitHeight: aboutContent.implicitHeight
             contentWidth: width
@@ -793,7 +796,10 @@ ApplicationWindow {
                 accentColor: root.accentColor
             }
         }
+        // The IDs intentionally make this deferred Dialog property immediate.
+        // qmllint disable deferred-property-id
         contentItem: Flickable {
+            // qmllint enable deferred-property-id
             id: errorMessageArea
             implicitHeight: errorText.implicitHeight
             contentWidth: width
