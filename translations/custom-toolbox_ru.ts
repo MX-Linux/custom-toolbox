@@ -131,22 +131,22 @@ Try a different search or category.</source>
         <translation>О %1</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="739"/>
+        <location filename="../qml/Main.qml" line="742"/>
         <source>Version %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="745"/>
+        <location filename="../qml/Main.qml" line="748"/>
         <source>Custom Toolbox creates focused collections of application launchers and system tasks.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="753"/>
+        <location filename="../qml/Main.qml" line="756"/>
         <source>License</source>
         <translation>Лицензия</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="762"/>
+        <location filename="../qml/Main.qml" line="765"/>
         <source>Copyright © MX Linux</source>
         <translation type="unfinished"></translation>
     </message>
@@ -221,15 +221,15 @@ Try a different search or category.</source>
         <translation>Не удалось запустить программу: %1</translation>
     </message>
     <message>
+        <location filename="../src/main.cpp" line="70"/>
         <location filename="../src/launchermodel.cpp" line="509"/>
         <location filename="../src/launchermodel.cpp" line="1047"/>
-        <location filename="../src/main.cpp" line="70"/>
         <source>File Open Error</source>
         <translation>Ошибка открытия файла</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="496"/>
         <location filename="../src/main.cpp" line="166"/>
+        <location filename="../src/launchermodel.cpp" line="496"/>
         <source>File Not Found</source>
         <translation>Файл не найден</translation>
     </message>
@@ -239,8 +239,8 @@ Try a different search or category.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="496"/>
         <location filename="../src/main.cpp" line="167"/>
+        <location filename="../src/launchermodel.cpp" line="496"/>
         <source>The file %1 does not exist.</source>
         <translation>Файл %1 не существует.</translation>
     </message>

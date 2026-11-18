@@ -131,22 +131,22 @@ Essayez une autre recherche ou catégorie.</translation>
         <translation>À propos de %1</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="739"/>
+        <location filename="../qml/Main.qml" line="742"/>
         <source>Version %1</source>
         <translation>Version %1</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="745"/>
+        <location filename="../qml/Main.qml" line="748"/>
         <source>Custom Toolbox creates focused collections of application launchers and system tasks.</source>
         <translation>Boîte à outils personnalisée «&#xa0;Custom Toolbox&#xa0;» crée des collections ciblées de lanceurs d’applications et de tâches système.</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="753"/>
+        <location filename="../qml/Main.qml" line="756"/>
         <source>License</source>
         <translation>Licence</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="762"/>
+        <location filename="../qml/Main.qml" line="765"/>
         <source>Copyright © MX Linux</source>
         <translation>Copyright © MX Linux</translation>
     </message>
@@ -221,15 +221,15 @@ Essayez une autre recherche ou catégorie.</translation>
         <translation>Impossible de démarrer le programme&#xa0;: %1</translation>
     </message>
     <message>
+        <location filename="../src/main.cpp" line="70"/>
         <location filename="../src/launchermodel.cpp" line="509"/>
         <location filename="../src/launchermodel.cpp" line="1047"/>
-        <location filename="../src/main.cpp" line="70"/>
         <source>File Open Error</source>
         <translation>Erreur d’ouverture du fichier</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="496"/>
         <location filename="../src/main.cpp" line="166"/>
+        <location filename="../src/launchermodel.cpp" line="496"/>
         <source>File Not Found</source>
         <translation>Fichier introuvable</translation>
     </message>
@@ -239,8 +239,8 @@ Essayez une autre recherche ou catégorie.</translation>
         <translation>Impossible de déterminer l’utilisateur normal. Refus d’exécuter ce lanceur en tant que root.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="496"/>
         <location filename="../src/main.cpp" line="167"/>
+        <location filename="../src/launchermodel.cpp" line="496"/>
         <source>The file %1 does not exist.</source>
         <translation>Le fichier %1 n’existe pas.</translation>
     </message>

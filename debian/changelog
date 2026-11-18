@@ -1,3 +1,30 @@
+custom-toolbox (26.11.1) mx; urgency=medium
+
+  * Closing the toolbox no longer hangs while an app started as administrator
+    is still running, and apps started from the toolbox keep running after it
+    closes
+  * When the toolbox itself runs as administrator, apps and editors meant to
+    run as your normal account can no longer end up running as root
+  * The package now installs pkexec, which is needed for apps that run as
+    administrator
+  * Terminal apps and text editors now open in another installed terminal
+    when the default one is missing, with a message if no terminal is found
+  * App names and descriptions with spaces written as escape codes in their
+    menu entry are now shown correctly
+  * Un-hiding an app's menu entry now makes it appear in the toolbox even when
+    every app in the list had been hidden
+  * At small window sizes, the header buttons and view switches stay
+    reachable through a menu, and the About and error dialogs fit the window
+    and show their Close and OK buttons
+  * The category list in the sidebar now scrolls, so long lists no longer
+    push categories and the "Launch at login" switch off the window
+  * A display name in quotes that contains an equals sign is now shown in
+    full instead of being cut off
+  * Opening a list through a link with the same name as the original no
+    longer moves the original list's older login entry onto the link
+
+ -- Adrian <adrian@mxlinux.org>  Tue, 17 Nov 2026 19:28:01 -0500
+
 custom-toolbox (26.11) mx; urgency=medium
 
   * A new "Hide categories" switch hides the category list to make room for

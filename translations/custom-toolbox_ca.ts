@@ -131,22 +131,22 @@ Proveu una cerca o categoria diferent.</translation>
         <translation>Quant a %1</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="739"/>
+        <location filename="../qml/Main.qml" line="742"/>
         <source>Version %1</source>
         <translation>Versió %1</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="745"/>
+        <location filename="../qml/Main.qml" line="748"/>
         <source>Custom Toolbox creates focused collections of application launchers and system tasks.</source>
         <translation>L a Caixa d&apos;Eines personalitzada crea col·leccions de llançadors d&apos;aplicacions i tasques de sistema específics. </translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="753"/>
+        <location filename="../qml/Main.qml" line="756"/>
         <source>License</source>
         <translation>Llicència</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="762"/>
+        <location filename="../qml/Main.qml" line="765"/>
         <source>Copyright © MX Linux</source>
         <translation>Copyright © MX Linux</translation>
     </message>
@@ -221,15 +221,15 @@ Proveu una cerca o categoria diferent.</translation>
         <translation>Ha fallat en engegar el programa: %1</translation>
     </message>
     <message>
+        <location filename="../src/main.cpp" line="70"/>
         <location filename="../src/launchermodel.cpp" line="509"/>
         <location filename="../src/launchermodel.cpp" line="1047"/>
-        <location filename="../src/main.cpp" line="70"/>
         <source>File Open Error</source>
         <translation>Error en obrir el fitxer</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="496"/>
         <location filename="../src/main.cpp" line="166"/>
+        <location filename="../src/launchermodel.cpp" line="496"/>
         <source>File Not Found</source>
         <translation>No he trobat el fitxer</translation>
     </message>
@@ -239,8 +239,8 @@ Proveu una cerca o categoria diferent.</translation>
         <translation>No he pogut determinar l&apos;usuari sense privilegis. S&apos;evita executar aquest llançador com a administrador.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="496"/>
         <location filename="../src/main.cpp" line="167"/>
+        <location filename="../src/launchermodel.cpp" line="496"/>
         <source>The file %1 does not exist.</source>
         <translation>El fitxer %1 no existeix.</translation>
     </message>

@@ -131,22 +131,22 @@ Por favor, pesquise outro nome ou categoria.</translation>
         <translation>Sobre o ‘%1’</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="739"/>
+        <location filename="../qml/Main.qml" line="742"/>
         <source>Version %1</source>
         <translation>Versão do ‘%1’</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="745"/>
+        <location filename="../qml/Main.qml" line="748"/>
         <source>Custom Toolbox creates focused collections of application launchers and system tasks.</source>
         <translation>O Personalizador da Caixa de Ferramentas cria uma coleção de lançadores de programas e de tarefas do sistema. </translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="753"/>
+        <location filename="../qml/Main.qml" line="756"/>
         <source>License</source>
         <translation>Licença</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="762"/>
+        <location filename="../qml/Main.qml" line="765"/>
         <source>Copyright © MX Linux</source>
         <translation>Direitos Autorais © MX Linux</translation>
     </message>
@@ -221,15 +221,15 @@ Por favor, pesquise outro nome ou categoria.</translation>
         <translation>Ocorreu uma falha ao executar o programa %1</translation>
     </message>
     <message>
+        <location filename="../src/main.cpp" line="70"/>
         <location filename="../src/launchermodel.cpp" line="509"/>
         <location filename="../src/launchermodel.cpp" line="1047"/>
-        <location filename="../src/main.cpp" line="70"/>
         <source>File Open Error</source>
         <translation>Ocorreu um erro ao abrir o arquivo</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="496"/>
         <location filename="../src/main.cpp" line="166"/>
+        <location filename="../src/launchermodel.cpp" line="496"/>
         <source>File Not Found</source>
         <translation>O arquivo não foi encontrado</translation>
     </message>
@@ -239,8 +239,8 @@ Por favor, pesquise outro nome ou categoria.</translation>
         <translation>Como não foi possível determinar o usuário sem os privilégios, este inicializador não será executado como administrador.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="496"/>
         <location filename="../src/main.cpp" line="167"/>
+        <location filename="../src/launchermodel.cpp" line="496"/>
         <source>The file %1 does not exist.</source>
         <translation>O arquivo %1 não existe.</translation>
     </message>

@@ -1,6 +1,6 @@
 # Maintainer: Adrian <adrian@mxlinux.org>
 pkgname=custom-toolbox
-pkgver=${PKGVER:-26.11}
+pkgver=${PKGVER:-26.11.1}
 pkgrel=1
 pkgdesc="Graphical launcher toolbox for user-defined .list files"
 arch=('x86_64' 'i686')

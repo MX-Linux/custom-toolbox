@@ -131,22 +131,22 @@ Pruebe con otra búsqueda o categoría.</translation>
         <translation>Acerca de %1</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="739"/>
+        <location filename="../qml/Main.qml" line="742"/>
         <source>Version %1</source>
         <translation>Versión %1</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="745"/>
+        <location filename="../qml/Main.qml" line="748"/>
         <source>Custom Toolbox creates focused collections of application launchers and system tasks.</source>
         <translation>Herramientas personalizadas crea colecciones específicas de iconos de inicio de aplicaciones y tareas del sistema.</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="753"/>
+        <location filename="../qml/Main.qml" line="756"/>
         <source>License</source>
         <translation>Licencia</translation>
     </message>
     <message>
-        <location filename="../qml/Main.qml" line="762"/>
+        <location filename="../qml/Main.qml" line="765"/>
         <source>Copyright © MX Linux</source>
         <translation>Derechos de autor © MX Linux</translation>
     </message>
@@ -221,15 +221,15 @@ Pruebe con otra búsqueda o categoría.</translation>
         <translation>Fallo al iniciar el programa: %1</translation>
     </message>
     <message>
+        <location filename="../src/main.cpp" line="70"/>
         <location filename="../src/launchermodel.cpp" line="509"/>
         <location filename="../src/launchermodel.cpp" line="1047"/>
-        <location filename="../src/main.cpp" line="70"/>
         <source>File Open Error</source>
         <translation>Error al abrir el archivo</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="496"/>
         <location filename="../src/main.cpp" line="166"/>
+        <location filename="../src/launchermodel.cpp" line="496"/>
         <source>File Not Found</source>
         <translation>Archivo no encontrado</translation>
     </message>
@@ -239,8 +239,8 @@ Pruebe con otra búsqueda o categoría.</translation>
         <translation>No se pudo determinar el usuario sin privilegios. No se ejecutará este lanzador como root.</translation>
     </message>
     <message>
-        <location filename="../src/launchermodel.cpp" line="496"/>
         <location filename="../src/main.cpp" line="167"/>
+        <location filename="../src/launchermodel.cpp" line="496"/>
         <source>The file %1 does not exist.</source>
         <translation>El archivo %1 no existe. </translation>
     </message>
