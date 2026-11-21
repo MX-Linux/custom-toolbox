@@ -41,6 +41,7 @@
 #include "common.h"
 #include "launchermodel.h"
 #include <cstdlib>
+#include <memory>
 #include <unistd.h>
 
 #ifndef VERSION
@@ -78,34 +79,37 @@ static QString promptForListFile()
 
 int main(int argc, char *argv[])
 {
-    if (qEnvironmentVariableIsEmpty("DISPLAY") && qEnvironmentVariableIsEmpty("WAYLAND_DISPLAY")
-        && qEnvironmentVariableIsEmpty("QT_QPA_PLATFORM")) {
-        qWarning("custom-toolbox: no display available (DISPLAY and WAYLAND_DISPLAY are both unset); "
-                "a graphical session is required to run this program.");
-        return EXIT_FAILURE;
-    }
+    const QByteArray option = argc == 2 ? QByteArray(argv[1]) : QByteArray();
+    const bool informational = option == "-h" || option == "--help" || option == "--help-all"
+                               || option == "-v" || option == "--version";
+    std::unique_ptr<QCoreApplication> app;
+    if (informational) {
+        app = std::make_unique<QCoreApplication>(argc, argv);
+    } else {
+        if (qEnvironmentVariableIsEmpty("DISPLAY") && qEnvironmentVariableIsEmpty("WAYLAND_DISPLAY")
+            && qEnvironmentVariableIsEmpty("QT_QPA_PLATFORM")) {
+            qWarning("custom-toolbox: no display available (DISPLAY and WAYLAND_DISPLAY are both unset); "
+                    "a graphical session is required to run this program.");
+            return EXIT_FAILURE;
+        }
 
-    if (getuid() == 0) {
-        qputenv("XDG_RUNTIME_DIR", "/run/user/0");
-        qunsetenv("SESSION_MANAGER");
-    }
-    // Set Qt platform to XCB (X11) if not already set and we're in X11 environment
-    if (qEnvironmentVariableIsEmpty("QT_QPA_PLATFORM")) {
-        if (!qEnvironmentVariableIsEmpty("DISPLAY") && qEnvironmentVariableIsEmpty("WAYLAND_DISPLAY")) {
+        if (getuid() == 0) {
+            qputenv("XDG_RUNTIME_DIR", "/run/user/0");
+            qunsetenv("SESSION_MANAGER");
+        }
+        // Set Qt platform to XCB (X11) if not already set and we're in X11 environment
+        if (qEnvironmentVariableIsEmpty("QT_QPA_PLATFORM") && !qEnvironmentVariableIsEmpty("DISPLAY")
+            && qEnvironmentVariableIsEmpty("WAYLAND_DISPLAY")) {
             qputenv("QT_QPA_PLATFORM", "xcb");
+        }
+
+        app = std::make_unique<QApplication>(argc, argv);
+        if (getuid() == 0) {
+            qputenv("HOME", "/root");
         }
     }
 
-    QApplication app(argc, argv);
-    if (getuid() == 0) {
-        qputenv("HOME", "/root");
-    }
-
     QApplication::setApplicationName("custom-toolbox");
-    QApplication::setApplicationDisplayName(QObject::tr("Custom Toolbox"));
-    const auto bundledIcon = QStringLiteral(":/qt/qml/CustomToolbox/icons/custom-toolbox.svg");
-    QApplication::setWindowIcon(
-        QIcon::fromTheme(QApplication::applicationName(), QIcon(bundledIcon)));
     QApplication::setOrganizationName("MX-Linux");
     QApplication::setApplicationVersion(VERSION);
 
@@ -134,7 +138,12 @@ int main(int argc, char *argv[])
     parser.addPositionalArgument(
         "file", QObject::tr("Full path and name of the .list file you want to load. "
                             "Supports both custom format (Key=Value) and INI format ([Section])."));
-    parser.process(app);
+    parser.process(*app);
+
+    QApplication::setApplicationDisplayName(QObject::tr("Custom Toolbox"));
+    const auto bundledIcon = QStringLiteral(":/qt/qml/CustomToolbox/icons/custom-toolbox.svg");
+    QApplication::setWindowIcon(
+        QIcon::fromTheme(QApplication::applicationName(), QIcon(bundledIcon)));
 
     // Root guard
     QFile loginUidFile {"/proc/self/loginuid"};
@@ -184,7 +193,7 @@ int main(int argc, char *argv[])
     engine.addImageProvider(QStringLiteral("launchericons"), iconProvider);
     engine.setInitialProperties({{QStringLiteral("backend"), QVariant::fromValue(&launcherModel)},
                                  {QStringLiteral("version"), QStringLiteral(VERSION)}});
-    QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed, &app,
+    QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed, app.get(),
                      [] { QCoreApplication::exit(EXIT_FAILURE); }, Qt::QueuedConnection);
 #if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
     engine.loadFromModule(QStringLiteral("CustomToolbox"), QStringLiteral("Main"));
