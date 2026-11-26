@@ -327,9 +327,21 @@ QString unescapeIniToken(QStringView token)
 // is not enclosed in single or double quotes. Returns -1 if there is none.
 qsizetype unquotedCommentIndex(QStringView line)
 {
+    qsizetype i = 0;
+    while (i < line.size() && line[i].isSpace()) {
+        ++i;
+    }
+    // An executable name is a literal token, even when it contains an apostrophe.
+    while (i < line.size() && line[i] != QLatin1Char(' ') && line[i] != QLatin1Char('=')) {
+        if (line[i] == QLatin1Char('#')) {
+            return i;
+        }
+        ++i;
+    }
+
     QChar quote;
     bool inQuote = false;
-    for (qsizetype i = 0; i < line.size(); ++i) {
+    for (; i < line.size(); ++i) {
         const QChar c = line[i];
         if (inQuote) {
             if (c == quote) {

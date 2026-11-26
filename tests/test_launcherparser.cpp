@@ -13,6 +13,7 @@ private slots:
     void parsesCustomFormatWithQuotedAliasAndComment();
     void keepsEqualsSignsInCustomAliases_data();
     void keepsEqualsSignsInCustomAliases();
+    void stripsCommentsAfterLiteralExecutableNames();
     void skipsConflictingCustomFlags();
     void parsesIniFormatWithColonInAlias();
     void keepsLiteralIniAliasBoundaries_data();
@@ -97,6 +98,20 @@ void LauncherParserTest::keepsEqualsSignsInCustomAliases()
     QCOMPARE(result.items.first().alias, alias);
     QCOMPARE(result.items.first().root, root);
     QCOMPARE(result.items.first().terminal, terminal);
+}
+
+void LauncherParserTest::stripsCommentsAfterLiteralExecutableNames()
+{
+    const auto result = LauncherParser::parse(
+        "Category=\"Tools #1\" # category note\n"
+        "  /home/o'brien/tool # optional terminal\n"
+        "'90s-radio alias 'Station #1' # note\n", "en_US");
+
+    QCOMPARE(result.items.size(), 2);
+    QCOMPARE(result.items[0].category, "Tools #1");
+    QCOMPARE(result.items[0].appName, "/home/o'brien/tool");
+    QVERIFY(!result.items[0].terminal);
+    QCOMPARE(result.items[1].alias, "Station #1");
 }
 
 void LauncherParserTest::skipsConflictingCustomFlags()
