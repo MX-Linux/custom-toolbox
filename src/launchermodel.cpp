@@ -40,6 +40,11 @@ QString commandDescription(const QString &program, const QStringList &arguments)
     return parts.join(QLatin1Char(' '));
 }
 
+bool isPkexecProgram(const QString &program)
+{
+    return QFileInfo(program).fileName() == QLatin1String("pkexec");
+}
+
 bool isProcessRunning(qint64 pid)
 {
     QFile statFile(QStringLiteral("/proc/%1/stat").arg(pid));
@@ -620,7 +625,7 @@ bool LauncherModel::prepareCommand(const ItemInfo &item, QString *program, QStri
     // pkexec normally starts the command in the target user's home directory. For an Exec
     // line that already runs pkexec, ask it to keep the working directory rather than
     // wrapping the command in env, which would change the program Polkit authorizes.
-    if (!launchDirectory.isEmpty() && QFileInfo(launchProgram).fileName() == QLatin1String("pkexec")
+    if (!launchDirectory.isEmpty() && isPkexecProgram(launchProgram)
         && !launchArguments.contains(QLatin1String("--keep-cwd"))) {
         launchArguments.prepend(QStringLiteral("--keep-cwd"));
     }
@@ -691,7 +696,7 @@ void LauncherModel::launch(int sourceIndex)
     }
     runningLaunchers.remove(trackingKey);
 
-    if (program == QLatin1String("pkexec") || hideGui) {
+    if (isPkexecProgram(program) || hideGui) {
         runningLaunchers.insert(trackingKey, -1);
         runTracked(program, arguments, trackingKey, workingDirectory);
         return;
@@ -733,7 +738,7 @@ void LauncherModel::runTracked(const QString &program, const QStringList &argume
         emit hideRequested();
     }
     const QString command = commandDescription(program, arguments);
-    const bool isPkexec = program == QLatin1String("pkexec");
+    const bool isPkexec = isPkexecProgram(program);
     auto *process = new QProcess(this);
     process->setProcessChannelMode(QProcess::ForwardedChannels);
     process->setWorkingDirectory(workingDirectory);
@@ -857,7 +862,7 @@ void LauncherModel::edit()
         emit errorOccurred(QCoreApplication::translate("MainWindow", "Error"), error);
         return;
     }
-    if (program == QLatin1String("pkexec")) {
+    if (isPkexecProgram(program)) {
         runTracked(program, arguments);
     } else if (!QProcess::startDetached(program, arguments)) {
         emit errorOccurred(QCoreApplication::translate("MainWindow", "Error"), QCoreApplication::translate("MainWindow", "Failed to launch the editor."));

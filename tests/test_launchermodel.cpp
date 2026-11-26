@@ -36,6 +36,8 @@ private slots:
     void readsLayoutSettings();
     void launchesInDesktopWorkingDirectory_data();
     void launchesInDesktopWorkingDirectory();
+    void handlesAbsolutePkexecExitCodes_data();
+    void handlesAbsolutePkexecExitCodes();
     void neverResolvesInvokingUserToRoot();
     void runsTerminalEntriesInAvailableTerminal_data();
     void runsTerminalEntriesInAvailableTerminal();
@@ -391,6 +393,43 @@ exec "$@"
     }
     QTest::qWait(100);
     QCOMPARE(errors.count(), 0);
+}
+
+void TestLauncherModel::handlesAbsolutePkexecExitCodes_data()
+{
+    QTest::addColumn<int>("exitCode");
+    QTest::addColumn<int>("expectedErrors");
+    QTest::newRow("cancelled") << 126 << 0;
+    QTest::newRow("authorization-error") << 127 << 1;
+}
+
+void TestLauncherModel::handlesAbsolutePkexecExitCodes()
+{
+    QFETCH(int, exitCode);
+    QFETCH(int, expectedErrors);
+    QTemporaryDir directory;
+    QVERIFY(directory.isValid());
+    const QString program = directory.filePath("pkexec");
+    QVERIFY(writeFile(program, "#!/bin/sh\nexit " + QByteArray::number(exitCode) + "\n"));
+    QVERIFY(QFile::setPermissions(program, QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner));
+    const QString entry = directory.filePath("absolute.desktop");
+    QVERIFY(writeFile(entry, "[Desktop Entry]\nType=Application\nName=Test\nExec=\"" + program.toUtf8() + "\"\n"));
+    const QString list = directory.filePath("absolute.list");
+    QVERIFY(writeFile(list, "Category=Tools\n" + entry.toUtf8() + "\n"));
+
+    QCommandLineParser parser;
+    parser.addOption({QStringLiteral("remove-checkbox"), QStringLiteral("test option")});
+    QVERIFY(parser.parse({QStringLiteral("custom-toolbox")}));
+    LauncherIconProvider icons;
+    LauncherModel model(parser, list, icons);
+    QCOMPARE(model.rowCount(), 1);
+    QSignalSpy errors(&model, &LauncherModel::errorOccurred);
+    model.launch(0);
+    auto *process = model.findChild<QProcess *>();
+    QVERIFY(process);
+    QSignalSpy finished(process, &QProcess::finished);
+    QTRY_COMPARE(finished.count(), 1);
+    QCOMPARE(errors.count(), expectedErrors);
 }
 
 void TestLauncherModel::neverResolvesInvokingUserToRoot()
