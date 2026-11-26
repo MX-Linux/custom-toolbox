@@ -110,4 +110,4 @@ jobs:
           timeout 10s custom-toolbox example.list >startup.log 2>&1 || status=$?
           cat startup.log
           test "$status" -eq 124
-          ! grep -E 'failed to load component|is not installed|is not a type|ReferenceError|TypeError' startup.log
+          ! grep -E 'failed to load component|is not installed|is not a type|ReferenceError|TypeError|Error decoding.*custom-toolbox\.svg|Unsupported image format' startup.log
