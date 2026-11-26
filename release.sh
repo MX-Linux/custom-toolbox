@@ -198,7 +198,7 @@ create_tag() {
 }
 
 # Update AUR package
-update_aur_package() {
+update_aur_package() (
     local version=$1
     local annotation=$2
 
@@ -275,12 +275,15 @@ update_aur_package() {
     fi
 
     # Download tarball and calculate checksum (with retry)
+    local archive
+    archive=$(mktemp)
+    trap 'rm -f -- "$archive"' EXIT
     local checksum=""
     local retries=5
     for i in $(seq 1 $retries); do
         print_step "Attempting to download tarball (attempt $i/$retries)..."
-        if curl -L --fail --silent --show-error "$tarball_url" -o "/tmp/${version}.tar.gz" 2>/dev/null; then
-            checksum=$(sha256sum "/tmp/${version}.tar.gz" | cut -d' ' -f1)
+        if curl -L --fail --silent --show-error "$tarball_url" -o "$archive" 2>/dev/null; then
+            checksum=$(sha256sum "$archive" | cut -d' ' -f1)
             if [ -n "$checksum" ]; then
                 print_success "Checksum calculated: ${checksum:0:16}..."
                 break
@@ -334,10 +337,7 @@ update_aur_package() {
         echo
         git -C "$AUR_DIR" show --stat HEAD
     fi
-
-    # Clean up downloaded tarball
-    rm -f "/tmp/${version}.tar.gz"
-}
+)
 
 # The AUR directory must be its own checkout on the branch that gets published
 check_aur_checkout() {
