@@ -457,12 +457,9 @@ ItemInfo LauncherModel::getDesktopFileInfo(const QString &path) const
     if (type != QLatin1String("Application") || hidden) {
         return {};
     }
-    const QString tryExec = desktopEntryValue(text, QStringLiteral("TryExec"), lang);
-    if (!tryExec.isEmpty()) {
-        const QString program = QProcess::splitCommand(tryExec).value(0);
-        if (program.isEmpty() || QStandardPaths::findExecutable(program, defaultPath).isEmpty()) {
-            return {};
-        }
+    const QString tryExec = LauncherParser::decodeDesktopString(desktopEntryValue(text, QStringLiteral("TryExec"), lang));
+    if (!tryExec.isEmpty() && QStandardPaths::findExecutable(tryExec, defaultPath).isEmpty()) {
+        return {};
     }
 
     ItemInfo item;

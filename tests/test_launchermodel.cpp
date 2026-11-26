@@ -897,12 +897,13 @@ void TestLauncherModel::decodesDesktopEntryStrings()
     qputenv("XDG_DATA_HOME", directory.filePath("share").toUtf8());
     const QString applications = directory.filePath("share/applications");
     QVERIFY(QDir().mkpath(applications));
-    const QString probe = directory.filePath("name-probe");
+    const QString probe = directory.filePath("name probe tool");
     QVERIFY(writeFile(probe, "#!/bin/sh\nprintf '%s' \"$1\" > \"$HOME/name.txt\"\n"));
     QVERIFY(QFile::setPermissions(probe, QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner));
     QVERIFY(writeFile(applications + "/suite.desktop",
-                      "[Desktop Entry]\nType=Application\nName=MX Tools\\sSuite\nComment=First\\sline\nExec="
-                          + probe.toUtf8() + " %c\n"));
+                      "[Desktop Entry]\nType=Application\nName=MX Tools\\sSuite\nComment=First\\sline\nExec=\""
+                          + probe.toUtf8() + "\" %c\nTryExec=" + directory.path().toUtf8()
+                          + "/name\\sprobe tool\n"));
     // A translation that starts with an escaped space still loses the MX prefix.
     QVERIFY(writeFile(applications + "/leading.desktop",
                       "[Desktop Entry]\nType=Application\nName=\\sMX Leading\nExec=/bin/true\n"));
