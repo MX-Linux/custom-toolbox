@@ -1,10 +1,15 @@
 #!/bin/bash
 
-APPNAME="$(basename $(dirname $(pwd)))-desktop"
+if ! command -v tx >/dev/null; then
+   echo "Transifex CLI (tx) is required to pull translations." >&2
+   exit 1
+fi
+
+APPNAME="$(basename "$(dirname "$PWD")")-desktop"
 
 echodo() {
   echo "${@}"
-  ${@}
+  "$@"
 }
 
 # prepare transifex 
@@ -20,14 +25,7 @@ source_file = ${APPNAME}.pot
 source_lang = en
 type = po
 EOF
-fi    
-
-
-#remove existing translations
-rm po/*
-
-# get all translations
-if command -v tx >/dev/null; then
-   echodo tx pull -r antix-development.$APPNAME  --all
 fi
 
+# Pull into the existing catalogs so a failed refresh preserves untouched files.
+echodo tx pull -r "antix-development.$APPNAME" --all --force
