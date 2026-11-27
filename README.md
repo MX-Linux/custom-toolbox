@@ -59,8 +59,8 @@ sudo dnf install qt6-qtbase-devel qt6-qttools-devel cmake ninja-build gcc-c++
 **Arch/Manjaro:**
 ```bash
 sudo pacman -S --needed base-devel cmake ninja qt6-base qt6-declarative qt6-tools polkit
-./build.sh --arch  # builds the package into build/ and prints its path
-sudo pacman -U build/custom-toolbox-26.11-1-x86_64.pkg.tar.zst  # use the path printed above
+./build.sh --arch  # builds the package into build/arch/ and prints its path
+sudo pacman -U build/arch/custom-toolbox-26.11-1-x86_64.pkg.tar.zst  # use the path printed above
 ```
 Use `./build.sh --arch` rather than running `makepkg` in the checkout: there makepkg's
 disposable source directory is the project's own `src/`, which `makepkg -c` or `-C` would delete.
