@@ -391,3 +391,22 @@ This program is free software: you can redistribute it and/or modify it under th
 - **Bug Reports**: [GitHub Issues](https://github.com/MX-Linux/custom-toolbox/issues)
 - **MX Linux Forum**: [https://forum.mxlinux.org](https://forum.mxlinux.org)
 - **Documentation**: [MX Linux Wiki](https://mxlinux.org/wiki/)
+
+## AppImage
+
+Download the x86-64 AppImage from a GitHub release’s **Assets**, make it executable with `chmod +x`, and launch it as your desktop user. Qt Quick, its controls, and example launcher lists are bundled. You can open your own `.list` file or use the examples when the host has no `/etc/custom-toolbox` directory. Programs named in a launcher list must be available on the host. On hosts without FUSE, use `--appimage-extract-and-run`.
+
+To build locally on Debian 13 (trixie), install the build dependencies and run the packaging script:
+
+```sh
+sudo apt-get install \
+    ca-certificates git build-essential cmake ninja-build dpkg-dev curl file \
+    qt6-base-dev qt6-tools-dev qt6-tools-dev-tools qt6-svg-plugins qt6-translations-l10n \
+    qt6-wayland qt6-declarative-dev \
+    qml6-module-qtcore qml6-module-qtqml qml6-module-qtqml-models qml6-module-qtqml-workerscript \
+    qml6-module-qtquick qml6-module-qtquick-controls qml6-module-qtquick-layouts qml6-module-qtquick-nativestyle \
+    qml6-module-qtquick-shapes qml6-module-qtquick-templates qml6-module-qtquick-window
+./make-appimage.sh
+```
+
+The script writes `build-appimage/custom-toolbox-<version>-x86_64.AppImage` using the version in `debian/changelog`. GitHub Actions builds the same image and attaches it to each non-Arch release.

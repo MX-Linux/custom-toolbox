@@ -21,6 +21,7 @@
  **********************************************************************/
 #pragma once
 
+#include <QFileInfo>
 #include <QString>
 
 #ifndef CUSTOM_TOOLBOX_SYSCONFDIR
@@ -32,10 +33,18 @@
 #endif
 
 namespace Config {
-    inline const QString ConfigDir = QStringLiteral(CUSTOM_TOOLBOX_SYSCONFDIR) + "/custom-toolbox";
+    inline const QString SystemConfigDir = QStringLiteral(CUSTOM_TOOLBOX_SYSCONFDIR) + "/custom-toolbox";
+#ifdef APPIMAGE_BUILD
+    inline const QString BundleDir = qEnvironmentVariable("APPDIR");
+    inline const QString ConfigDir = QFileInfo(SystemConfigDir).isDir() ? SystemConfigDir : BundleDir + "/etc/custom-toolbox";
+    inline const QString DataDir = BundleDir + "/usr/share";
+#else
+    inline const QString ConfigDir = SystemConfigDir;
+    inline const QString DataDir = QStringLiteral(CUSTOM_TOOLBOX_DATADIR);
+#endif
     inline const QString ConfigFile = ConfigDir + "/custom-toolbox.conf";
-    inline const QString LocaleDir = QStringLiteral(CUSTOM_TOOLBOX_DATADIR) + "/custom-toolbox/locale";
-    inline const QString DocDir = QStringLiteral(CUSTOM_TOOLBOX_DATADIR) + "/doc/custom-toolbox";
+    inline const QString LocaleDir = DataDir + "/custom-toolbox/locale";
+    inline const QString DocDir = DataDir + "/doc/custom-toolbox";
     inline const QString HelpFile = DocDir + "/help.html";
     inline const QString LicenseFile = DocDir + "/license.html";
     inline const QString ChangelogFile = DocDir + "/changelog.gz";

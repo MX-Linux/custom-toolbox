@@ -224,6 +224,11 @@ else()
 endif()
 
 # Set compile definitions
+option(APPIMAGE_BUILD "Build the relocatable AppImage" OFF)
+if(APPIMAGE_BUILD)
+    target_compile_definitions(custom-toolbox PRIVATE APPIMAGE_BUILD)
+endif()
+
 target_compile_definitions(custom-toolbox PRIVATE
     QT_DEPRECATED_WARNINGS
     VERSION="${PROJECT_VERSION_FROM_CHANGELOG}"
